@@ -1,0 +1,112 @@
+\documentclass[a4paper,twoside,openright]{report}
+% \documentclass[a4paper]{article}
+\usepackage[english]{babel}
+\usepackage{fancyhdr}
+\usepackage{fontspec}
+\usepackage{emptypage}
+\usepackage[driver=xetex,a4paper]{geometry} % propper margins on a4 paper
+\usepackage{amsmath}
+\usepackage{pstricks-add}
+%% \usepackage[official]{eurosym}
+\usepackage[nottoc,numbib]{tocbibind}
+\graphicspath{{./plaatjes/}}
+\DeclareGraphicsExtensions{.png}
+%\usepackage[utf8]{inputenc}
+\setmainfont{Source Serif Pro}
+\setmonofont{Source Code Pro}
+%\usepackage{biblatex}
+%\usepackage{cite}
+%% \usepackage{url}
+\usepackage{multicol}
+\usepackage[section]{placeins}
+\usepackage{enumerate}
+%% \usepackage{pdfpages}
+
+\usepackage{listings}
+\usepackage{xcolor}
+\lstset{
+   basicstyle=\footnotesize\ttfamily,
+   frame=single,
+   keepspaces=true
+}
+
+\newcommand*\schrijver{Louis van der Burg}
+
+\newcommand\BrText[2]{%
+   \par\smallskip
+   \noindent\makebox[\textwidth][r]{$\text{#1}\left\{
+         \begin{minipage}{\textwidth}
+            \lstset{#2}
+         \end{minipage}
+      \right.\nulldelimiterspace=0pt$}\par\smallskip
+   }
+
+   %header & footer
+   \pagestyle{fancy}
+   \fancyhf{}
+   \fancyhead[LE,RO]{\nouppercase\leftmark}
+   \fancyhead[RE,LO]{\title\ \thesection}
+   \fancyfoot[CE,CO]{\schrijver}
+   \fancyfoot[LE,RO]{\thepage}
+
+   %title page stuff
+   \fancypagestyle{plain}{
+      \fancyhf{}\fancyfoot[LE,RO]{\thepage}%
+      \fancyfoot[CE,CO]{\schrijver}
+   \renewcommand{\headrulewidth}{0pt}}
+
+   %% \newenvironment{poliabstract}[1]
+   %%                {\renewcommand{\abstractname}{#1}\begin{abstract}}
+   %%                {\end{abstract}}
+
+   % start actual doc
+   \begin{document}
+   % \title{Shit with MC and other useless crap}
+   % \author{\schrijver}
+   % \date{25 January 2016}
+
+   % \begin{titlepage}
+      % \include{voorpagina}
+   % \end{titlepage}
+
+   %\maketitle
+
+   % state the problem
+   % say why it's an interesting problem
+   % say what your solution is
+   % say what follows from your solution
+
+   % \begin{abstract}
+      % MC has not been tested in the field yet and we want to know how it fares.
+      % We will put it to the test and see that it still needs some development, but has promise.
+   % \end{abstract}
+   % \newpage
+
+   \pagenumbering{gobble}
+   \setcounter{tocdepth}{2}
+   % \tableofcontents
+   \cleardoublepage
+   \pagenumbering{arabic}
+   \addtocounter{page}{4}
+
+   \include{mandate}
+   % part{intro}
+   % \include{introduction}
+
+   % part{background}
+   % \include{problem}
+   % \include{idea}
+
+   % part{work done}
+   % \include{details}
+
+   % part{conclusion/reflection}
+   % \include{conclusion}
+
+   % part{appendixes}
+   % \include{related}
+
+   % \bibliographystyle{plain}
+   % \bibliography{biblio}
+
+   \end{document}
