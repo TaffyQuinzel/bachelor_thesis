@@ -1,7 +1,7 @@
 % samenvatting
 
 
-Emerging practical patterns within programs written in a modern, stat-of-the-ort language
+Emerging practical patterns within programs written in a modern, state-of-the-art language
 
 INPUT COMPACT VERSION HERE
 
@@ -9,7 +9,7 @@ INPUT COMPACT VERSION HERE
 
 \chapter{Introduction}
 \section{Working title}
-Emerging practical patterns within programs written in a modern, stat-of-the-ort language
+Emerging practical patterns within programs written in a modern, state-of-the-art language.
 \section{Motive}
 Making compilers for programming languages is a difficult task, as every language is different and needs different features.
 From this problem Meta-Compiler (from now on abreviate as MC) came into existence.
@@ -22,15 +22,16 @@ However MC has not yet been tested in the field yet, which brings us to the goal
 The result of this paper will give some insight of the practicality of MC and how far it is from its endgoal.
 This will be used in the further development and improvment of MC.
 
-\section{Goal}
+\section{Goal}\label{sec:goalsmandate}
 The main goal is to test MC with a practical application.
 This is done by creating a test application which has the following steps of progressing difficulty:
+
 \begin{enumerate}
-   \item For a minnimum passing grade of 6:
+   \item For a minnimum passing grade of 6: \newline
       A small interactive and graphical application.
-   \item For an 8:
+   \item For an 8: \newline
       Within the application for a 6, add traversable and changable datastructures.
-   \item And for a 1
+   \item And for a 10: \newline
       Within the application for an 8, add coroutines.
 \end{enumerate}
 
@@ -38,29 +39,74 @@ After which the result is reflected upon.
 
 \section{Problem}
 Currently there are several working versions of MC available, but none of these implement the entire language.
+We want to have a full version of MC which works as desired.
+That is to say, it matches the design specifications.
+However the last documented version is implemented in the latest working version of MC.
+These versions are already proven to be adequate\cite{giuseppe2015mc}.
+
 The newest development version is the one that will be used for this assignment.
 This version has no working compiler yet and is therefor easily adapted to bugs found during testing.
+The new version also implements new features not presen in the previous versions.
+Because this newer version is still in development we want to detect any flaws and mishaps in the design during this fase.
+This makes otherwise fatal flaws fixable.
+
+The usability of the new version is also not tested yet and we want to see how MC compares to other programming languages.
+For this reason we will be testing the current development version of MC.
 
 \section{Central research question and subquestions}
-How practical is the programming language MC in comparison to other languages?
+From this problemstatement follows the following research question:
+
+\textit{How good is the programming language MC in comparison to other languages?} \newline
+Which is divided into these subquestions:
 \begin{enumerate}
+   \item What constitutes a good programming language?
    \item What is MC?
    \item How does MC work?
    \item How does MC differ with other languages?
    \item Which purpose does MC have?
    \item How practical is MC in its use?
 \end{enumerate}
+
+This will also translate to the actual assignments and goals as described in section \ref{sec:goalsmandate}.
+
 \section{The client}
+The graduation assignment will be carried out at Kenniscentrum Creating 010.
+The company is located in Rotterdam.
+\textit{Kenniscentrum Creating 010 is a transdisciplinary design-inclusive Research Center enabling citizens, students and creative industry making the future of Rotterdam}\cite{creating2016home}.
+
 \section{Working environment and tasks}
+During the internship the student will work as a part of the existing research team, whom do research in the Casanova and MC languages.
+The student will be doing research and programming and will be supported and helped by the entire research team.
+Every two weeks the student will present his progress and receive feedback.
+
 
 \chapter{Method}
 \section{Research methods}
+During the internship there will be made use of different research methods.
+This stems from the wide scope of the project and the fact that there are multiple research questions which require different approaches.
+
+At the start there will be a preliminary research concerning MC.
+This will consist of describing and comparing MC and the ways it works.
+
+After this there will be a basic definition of the testprogram which will we written to further test MC.
+
+When this is done there will be a evaluation of the testprogram and MC.
+
 \section{Gathering information}
+The information needed will be gathered from the research team involved, via personal interviews, and via published papers concerning the material.
+
 \section{Validation of results}
+
 \section{Validity and trustwortiness of sources}
+
 \section{Project methods}
+During the internship the LEAN-software development wethod will be used\cite{ries2011lean}.
+Using this method gives the ability to quickly itterate through versions and gather knowledge more easily through these itterations.
+
 \section{Risk analyses}
 \section{Quality expectations}
+MC makes use of typetheory and the programs written in it will therefor need to be in line with the typetheory, as described in \cite{pierce2002types}.
+Because the version of MC used in this internship has no compiler yet, the student will need to manually make sure that the program has no bugs and/or errors in them.
 
 \chapter{Results}
 \section{Intended result}
