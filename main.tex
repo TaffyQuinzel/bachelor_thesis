@@ -9,9 +9,9 @@
 \author{\writer}
 % \date{25 January 2016}
 
-\begin{titlepage}
-   \include{voorpaginamandate}
-\end{titlepage}
+% \begin{titlepage}
+   % \include{voorpaginamandate}
+% \end{titlepage}
 
 %\maketitle
 % state the problem
@@ -25,22 +25,17 @@
 % \end{abstract}
 % \newpage
 
-\pagenumbering{gobble}
-\setcounter{tocdepth}{2}
-\tableofcontents
-\cleardoublepage
-\pagenumbering{arabic}
-\addtocounter{page}{4}
+% \pagenumbering{gobble}
+% \setcounter{tocdepth}{2}
+% \tableofcontents
+% \cleardoublepage
+% \pagenumbering{arabic}
+% \addtocounter{page}{4}
 
-% \begin{multicols}{2}
-\include{mandate}
-\include{planning}
-part{intro}
-\include{introduction}
 
-part{background}
-\include{problem}
-\include{idea}
+\part{Introduction}
+
+\chapter{People involved}
 
 \chapter{interlude}
 MC stands for MetaCasanova. The reason behind the name is explained in chapter \refchapter{MetaCasanova}.
@@ -49,57 +44,21 @@ We will first talk about what MC is and explain the basics of the language.
 Then we will discuss the Standard Library of MC, which is written completely in MC.
 After which we will show some practical examples.
 
-
-\chapter{MetaCasanova}
-
-\section{What is MC}
-MC stands for MetaCasanova and is MC is a declaritive functional language.
-\section{Why MC}
+\chapter{The company}
 
 
-\section{Goal}
-The goal of MC is to use higher abstractions with type safety.
-
-\section{Basics}
-We will now go through the basics of MC.
-
-\subsection{Func}
-First we need to declare a function.
-   \begin{lstlisting}
-Func "foo" -> Bool -> Int -> Int -> Int
-   \end{lstlisting}
-   For this we use the keyword \emph{Func}.
-   Here we see that the function \emph{foo} is declared by a String, which is the name of the function, a Boolean and three Integers.
-   The last parameter is the return type of the function and all the parameters between the name and the return type, are the arguments of the function.
-
-   When no parameters are given the function becomes a variable, as seen in figure \ref{}.
-   \begin{lstlisting}
-Func "foo" -> Int
-foo -> 5
-   \end{lstlisting}
-
-   \begin{lstlisting}
-add b c -> res
----------------
-foo True b c -> res
-
-mul b c -> res
----------------
-foo False b c -> res
-   \end{lstlisting}
-
-   Here we see the basic syntax for declaring and defining a function.
-
-\subsection{Data}
-\subsection{TypeFunc}
-\subsection{TypeAlias}
-\subsection{Module}
+\part{Preliminary research}
+\chapter{MC}
 
 
-\chapter{standard library}
+\part{MC expanded}
+
+\chapter{Standard library}
 \section{BasicMonads}
-\subsection{Monads}
-\subsection{Monad transformers}
+\subsection{Background}
+\subsubsection{Monads}
+\subsubsection{Monad transformers}
+\subsection{Implemented monads}
 \subsubsection{Id}
 \subsubsection{List}
 \subsubsection{Either}
@@ -107,39 +66,33 @@ foo False b c -> res
 \subsubsection{Result}
 \subsubsection{State}
 \subsubsection{IO}
+\section{Match}
+\section{Monad}
+\section{Prelude}
+\section{Number}
+\section{Record}
+\section{TryableMonad}
 
-\section{Standard Library}
-\subsection{match}
-\subsection{monad}
-\subsection{prelude}
-\subsection{number}
-\subsection{record}
-\subsection{tryableMonad}
+\chapter{Casanova}
+\section{Entity}
+\section{Coroutines}
 
-\section{Casanova}
-\subsection{Entity}
-\subsection{Coroutines}
+\chapter{Test programs}
+\section{Bouncing ball}
+\section{Tron}
+\subsection{Bike}
+\subsection{Playfield}
+\subsection{Powerups}
 
 
-\chapter{test programs}
-\section{bouncing ball}
-\section{tron}
-\subsection{bike}
-\subsection{playfield}
-\subsection{powerups}
-
+\part{Conclusion}
 
 \chapter{Conclusion}
 \chapter{Reflection}
 
-\part{work done}
-\include{details}
 
-part{conclusion/reflection}
-\include{conclusion}
 
-part{appendixes}
-\include{related}
+\part{appendixes}
 
 % \bibliographystyle{ieeetr}
 % \bibliography{biblio}
