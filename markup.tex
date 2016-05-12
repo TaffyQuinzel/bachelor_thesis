@@ -1,4 +1,5 @@
-\documentclass[landscape,a4paper,twocolumn]{report}
+% \documentclass[landscape,a4paper,twocolumn]{report}
+\documentclass[landscape,a4paper]{report}
 \usepackage[landscape,driver=xetex,a4paper,margin=25mm]{geometry} % propper margins on a4 paper
 % \documentclass[a4paper,twoside,openright]{report}
 
@@ -10,11 +11,14 @@
 \usepackage{pstricks-add}
 %% \usepackage[official]{eurosym}
 \usepackage[nottoc,numbib]{tocbibind}
+
+\usepackage{graphicx}
 \graphicspath{{./plaatjes/}}
+
 \DeclareGraphicsExtensions{.png}
 %\usepackage[utf8]{inputenc}
 
-font stuyy
+% font stuff
 \usepackage{fontspec}
 \setmainfont[
    BoldFont={Source Sans Pro Black},
@@ -23,7 +27,7 @@ font stuyy
 \setmonofont{Source Code Pro}
 
 \usepackage{url}
-% \usepackage{multicol}
+\usepackage{multicol}
 \usepackage[section]{placeins}
 \usepackage{enumerate}
 
