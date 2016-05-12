@@ -26,24 +26,28 @@
 % \end{abstract}
 % \newpage
 
-\pagenumbering{gobble}
-\setcounter{tocdepth}{2}
-\tableofcontents
-\cleardoublepage
-\pagenumbering{arabic}
-\addtocounter{page}{4}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%% real paper %%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% \pagenumbering{gobble}
+% \setcounter{tocdepth}{2}
+% \tableofcontents
+% \cleardoublepage
+% \pagenumbering{arabic}
+% \addtocounter{page}{4}
 
 
-\part{Introduction}
+% \part{Introduction}
 
-\chapter{Stakeholders}
+% \include{stakeholders}
 
 \chapter{Interlude}
 % MC stands for MetaCasanova. The reason behind the name is explained in chapter \refchapter{MetaCasanova}.
 
-We will first talk about what MC is and explain the basics of the language.
-Then we will discuss the Standard Library of MC, which is written completely in MC.
-After which we will show some practical examples.
+% We will first talk about what MC is and explain the basics of the language.
+% Then we will discuss the Standard Library of MC, which is written completely in MC.
+% After which we will show some practical examples.
 
 % explain why the layout landscape and three collumns
 
@@ -53,28 +57,11 @@ After which we will show some practical examples.
 \include{basicmc}
 
 
-\part{MC expanded}
-% \include{expandedmc}
+\part{MC expanded}\label{part:mcexpanded}
+\include{syntaxevolution}
 
-\chapter{Standard library}
-\section{BasicMonads}
-\subsection{Background}
-\subsubsection{Monads}
-\subsubsection{Monad transformers}
-\subsection{Implemented monads}
-\subsubsection{Id}
-\subsubsection{List}
-\subsubsection{Either}
-\subsubsection{Option}
-\subsubsection{Result}
-\subsubsection{State}
-\subsubsection{IO}
-\section{Match}
-\section{Monad}
-\section{Prelude}
-\section{Number}
-\section{Record}
-\section{TryableMonad}
+\include{standardlibrary}
+\include{basicmonads}
 
 \chapter{Casanova}
 \section{Entity}
@@ -101,6 +88,5 @@ After which we will show some practical examples.
 % \bibliographystyle{ieeetr}
 % \bibliography{biblio}
 
-% \end{multicols}{3}
 \end{multicols}{3}
 \end{document}

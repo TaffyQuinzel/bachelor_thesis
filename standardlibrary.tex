@@ -1,0 +1,89 @@
+\chapter{Standard library}\label{chap:standardlibrary}
+The standard library of MC consists of three seperate parts:
+
+\begin{description}[align=right,labelwidth=2cm]
+   \item [StandardLibrary] contains all the basic Library items
+   \item [BasicMonads] contains all the basic monads
+\end{description}
+
+We will now look at the standard library and explain the evolution it went through during the assignment.
+For readability only the neccesary parts of the code is shown.
+The complete can be found on~\cite{}.
+
+\section{Prelude}
+\emph{Prelude} contains some basic definitions making basic programming possible.
+We will go through \emph{prelude} in parts, the complete file can be found here~\ref{}.
+
+\begin{lstlisting}
+import System
+
+Data "unit" -> Unit
+\end{lstlisting}
+
+This first part shows how MC imports the .NET \emph{System} library and how \verb|Unit| is defined within MC.
+The \emph{System} library will be used later on in the code.
+\verb|Unit|, or \verb|unit| on term level, defines the empty or null value in MC.
+
+\begin{lstlisting}
+TypeAlias #a => "*" => #b => #c
+'a * 'b => tuple<'a 'b>
+Data 'a -> "," -> 'b -> 'a * 'b    #> 5
+\end{lstlisting}
+Next we have the declaration and definition of a tuple on both term and type level.
+
+\begin{lstlisting}
+TypeAlias #a => "|" => #b => pipe<#a #b>
+Data "Left" -> 'a -> 'a | 'b       #> 5
+Data "Right" -> 'b -> 'a | 'b      #> 5
+
+Data "then" -> Then
+Data "else" -> Else
+
+Func "if" -> Boolean^System -> Then -> 'a -> Else -> 'a -> 'a
+if True^builtin then f else g -> f
+if False^builtin then f else g -> g
+\end{lstlisting}
+
+\section{Match}
+\emph{Match} works with the pipe operator.
+It takes a variable and matches it on either \verb|Left| or \verb|Right| and executes the function specified.
+
+\begin{lstlisting}
+import prelude
+
+Data "with" -> With
+
+TypeFunc "match" => #a => Module
+match ('a | 'b) => Module ('a | 'b) {
+  TypeFunc "Head" => #a
+  Head => 'a
+
+  TypeFunc "Tail" => #a
+  Tail => 'b
+
+  Func "do" -> 'a -> With -> (Head -> 'b) -> (Tail -> 'b) -> 'b
+  do (Left x) with f g -> f x
+
+  do y with g h -> res
+  --------------------
+  do (Right y) with f (g h) -> res
+
+  do (Right y) with f g -> g y
+}
+\end{lstlisting}
+\section{Number}
+\emph{Number} was created to give the user a generic interface to create numbers.
+It can be used to create integers, floats or a newly created number type.
+However because of the import system of MC it can directly import the integer and float types with all their functions from DotNet.
+It can still be used for self defined number types.
+
+
+
+
+During development \emph{number} was used to create integers and floats.
+This was before the .NET import system was in place and it was thus needed.
+Currently it is only needed for user defined number types.
+
+\section{Record}
+\section{Monad}
+\section{TryableMonad}

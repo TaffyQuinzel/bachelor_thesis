@@ -12,13 +12,12 @@ The goal of MC is to use higher abstractions with type safety.
 We will now go through the basics of MC.
 What systems MC uses, learn how the syntax works and use small code samples to explain the workings.
 
-The changes and reasons why it works the way it currently works will be explained in part~\ref{part:}.
+The changes and reasons why it works the way it currently works will be explained in part~\ref{part:mcexpanded}.
 This way we will first have a basic understanding of how MC works and we are more able to understand the reasons why it works this way.
 
-
-\subsection{Terms, types \& kinds}
+\subsection{Terms, types \& kinds}\label{sec:basiclevels}
 With MC you program on three different levels:
-\begin{enumerate}
+\begin{enumerate}[noitemsep]
    \item Terms
    \item Types
    \item Kinds
@@ -26,11 +25,28 @@ With MC you program on three different levels:
 Terms are the values of variables, like 5, 'c' or "Hello".
 Types are the types of variables, like Integer, String or Boolean.
 Kinds are for types, what types are to terms.
-You could say the are the types of the types.
+You could say the kinds are the types of the types.
 
 Types and kinds only exist on compile time and are either resolved or inlined during code compilation.
-This is done because the executed code can become much quicker when doing complex operations on type and term level.
+This will make the executed code much faster when doing complex operations.
 The compilation time will suffer from it, but because compilation only happens once, it is a good compromise for faster runtime code.
+
+\subsubsection{Identifiers}
+Because there kinds are on such a high level there can be very little said about them, other then the fact that they are the same or different from each other.
+This is why a syntax was divised to show this, the \verb|#| notation.
+The \verb|#| is supplemented by a identifier, which is usually a letter or word.
+
+For example you can use \verb\#a\ or \verb\#foo\.
+
+On type level the same thing is done when the specific type is not yet known.
+Instead of the \verb\#\ the \verb\'\ is used.
+So instead of \verb\#a\ and \verb\#foo\, it would be \verb\'a\ and \verb\'foo\.
+
+This is usefull when declaring generic functions.
+
+\subsection{Runtime and compile time}
+In MC there is a clear difference between compile time.
+Everything on the term level is on runtime and everything on type and kind level is on compiletime.
 
 \subsection{Func}
 First we need to declare a function.
@@ -51,7 +67,7 @@ add b c -> res
 foo True b c -> res
 \end{lstlisting}
 
-A function is defined by a \emph{rule} and one or more \emph{premises}.
+A function is defined by a \emph{rule} which has one or more \emph{premises}.
 They are separated by the \emph{bar}.
 The rule stands underneath the bar and the premises above.
 This syntax is similiar to the one used in natural deduction~\cite{}.
@@ -69,9 +85,10 @@ mul b c -> res
 foo False b c -> res
 \end{lstlisting}
 
-When this happens the rules get executed in order if the above rule failes.
+When this happens the rules get executed in order.
+If the above rule failes and the rule beneath it is matched.
 
-Let's take for example the following function call:
+Let's take the following function call:
 \begin{lstlisting}
 foo true 5 3 -> newValue
 \end{lstlisting}
@@ -117,36 +134,39 @@ In this case a \verb|String|, when it matches on \verb|Left|, or a \verb|Float|,
 Because \verb|Data| can work two ways, constructing and deconstructing, it can be seen as an alias for types.
 
 \subsection{TypeAlias}
-\verb|TypeAlias| was created during the assignment.
-Because of the complex constructs of, for example, monads there was a need for a \verb|Data| like contruct on kind level.
-These constructs were thought to be served by \verb|TypeFunc|, but a two way construct was needed and, as stated in section~\ref{subsec:typefunc}, \verb|TypeFunc| only works one way.
-
-\verb|TypeAlias| is the same as \verb|Data| only then a level higher.
+\verb|TypeAlias| is the same as \verb|Data| only on a level higher.
 It constructs and deconstructs kinds.
+
+\begin{lstlisting}
+TypeAlias #a => "*" => #b => #c
+'a * 'b => tuple<'a 'b>
+\end{lstlisting}
+
+Here we see how a tuple gets created with the help of \verb|TypeAlias|.
+We also see how we can declare that an argument will be in front of the the name of the \verb|TypeAlias| function.
+This can also be done with \verb|Func|, \verb|Data| and \verb|TypeFunc|.
+
+There is one limitation to the use of argument before the name of the declaration, there may only be one.
+This is because of the parser used.
+The parser would become overly complex when adding multiple arguments in before the name of the declaration.
+
+
+The syntax reflects the difference between the levels used, to easily know on which level the function operates.
+
+The declaration uses the \verb|=>| to indicate it operates on the type and kind level.
+Just like \verb|->| indicates the operation on term and type level.
 
 \subsection{TypeFunc}
 \verb|TypeFunc| creates a function on type level.
-It works much like \verb|Func| only instead of terms it uses types and instead of types it uses terms.
-
-The syntax reflects the difference between the levels used, to easily know on which level the function operates.
 
 \begin{lstlisting}
 TypeFunc "bar" => #a => #b
 \end{lstlisting}
 
-The declaration uses the \verb|=>| to indicate it operates on the type and kind level.
-Just like \verb|->| indicates the operation on term and type level.
+It works much like \verb|Func| only instead of terms it uses types and instead of types it uses terms.
 
-What this means is that \verb|TypeFunc| works with kinds in its declaration to check the types used in the definition.
+This means that \verb|TypeFunc| works with kinds in its declaration to check the types used in the definition.
 Which is the same principle as \verb|Func|, which uses types in its declaration to check the terms used in the definition.
-
-The \verb|\#a| and \verb|\#b| indicate the terms used.
-When working on term level it is hard to give a concise definition of the actual term.
-This is why we have opted for the simple syntax of the \verb|\#|.
-
-The \verb|\#| indicates it is a term and that we do not know the precise definition of this term.
-We therefor supplement the \verb|\#| with an extra identifier, in this case \verb|a|.
-Now we can declare that the first term, \verb|\#a|, is different from the second term, \verb|\#b|, by using different indetifiers after the \verb|\#|.
 
 \begin{lstlisting}
 a => (c * d)
@@ -157,14 +177,15 @@ bar a => res
 
 As we can see function \emph{bar} takes a type, deconstructs the type, switches the arguments of this type and returns that as the result.
 
-This might be a bit confusing, since we do not know what the \verb|*| is or does.
-So let's take a look at the definition of \verb|*|:
-
-
-
+As with \verb|TypeAlias| it uses the \verb|=>| to indicate it works on type and kind level.
 
 \subsection{Module}
-Defines an interface
+\verb|Module| is used to create an interface on compiletime.
+It is a collection of functions and can be inherited.
+
+It does not fit within the levels defined in section~\ref{sec:basiclevels}.
+
+
 \begin{lstlisting}
 TypeFunc "MonoidAdd" => #a => Module
 MonoidAdd 'a => Module {
@@ -173,14 +194,58 @@ MonoidAdd 'a => Module {
 }
 \end{lstlisting}
 
+Here we see a basic inteface for a generic add functionality.
+As shown it can contain \verb|Func|s, but can also contain \verb|Data|, \verb|TypeFunc|, \verb|TypeAlias| and even another \verb|module|.
+
+The \verb|Func|s within the Module do not have to be defined, they can just be the declarations.
+This way we can define different behavior for every instance of the module.
+
+But it is possible to have a function declared and defined within a module, this creates a property-like behavior within the module.
+When this is done, the user must be certain that the function will always be executable.
+If this is not the case the typechecker will fail.
+
+When we want to define the above declared \verb|MonoidAdd| for an integer, it will look like this:
+
+\begin{lstlisting}
+MonoidAdd Int = {
+  Int -> "+" -> Int -> Int
+  identityAdd -> 0
+}
+\end{lstlisting}
+
+The \verb|Func|s are defined as the normally are, only now they are wrapped within a \verb|Module|.
+The \verb|Module| is defined in much the same way other functions are defined.
+They simply contain function definitions within itself.
+
+\subsubsection{The caret}
+When we want to call a function within a module from outside the module the \verb\^\ is used.
+
+\begin{lstlisting}
+Func "caretTest" -> Int
+caretTest -> identityAdd^Int
+\end{lstlisting}
+
+This creates a constant named \verb\caretTest\ with the same value as the \verb\identityAdd\ from the module \verb\Int\.
+The \verb\^\ can be seen as the `\verb\.\` (the dot) used in C\#.
+The main difference with most languages implementing such a feature, is the hierarchy of the elements.
+In C\# the first element is the uppermost class.
+The \verb\^\ puts the elements in the oposite order.
+
+In the example we first say what we want and then say where to find it.
+This has the advantage of knowing immediately what you are using and if you want to know where it actually comes from you can read on.
+
+\section{Import}
+In section~\ref{sec:basicmodule}
+\verb\Import\ is used when importing or including other files in the current file.
+It is called \verb\import\ because it literaly imports all the code of the imported file into the current file.
+The programmer cannot directly use the declarations and definitions used in the imported file.
+There is a syntax element that
+
+
+\section{Comments}
 
 
 
-syntax tuple<a,b> WHY:
+\bigskip
 
-array<array<'a,12>,16>
-array(array('a 12) 16)
-
-with () you do not know what 'a uses the 12 or if the 12 is part of array together with 'a
-
-is easier for typechecker
+Now that we know the basics of MC lets take a look at how the syntax has come to this point.

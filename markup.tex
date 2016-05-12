@@ -29,13 +29,18 @@
 \usepackage{url}
 \usepackage{multicol}
 \usepackage[section]{placeins}
+
 \usepackage{enumerate}
+\usepackage{enumitem}
 
 \usepackage{listings}
+\usepackage{amsmath}
 \usepackage{xcolor}
 \lstset{%
    basicstyle=\footnotesize\ttfamily,
    frame=single,
+   breaklines=true,
+   postbreak=\raisebox{0ex}[0ex][0ex]{\ensuremath{\color{red}\hookrightarrow\space}},
    keepspaces=true
 }
 

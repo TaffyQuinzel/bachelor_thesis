@@ -1,0 +1,51 @@
+\chapter{Syntax evolution}
+Here we will look into the overal syntax changes.
+The changes concerning specific items of the standard library, will be discussed in chapter~\ref{chap:standardlibrary}.
+
+\section{Generic type and kind identifiers}
+about the \verb|#a| and \verb|'a| notations
+
+\section{Generic type annotations}
+\begin{lstlisting}
+syntax tuple<a,b> WHY:
+
+Func "array" -> 'a -> Int -> Array<'a,Int>
+
+array<array<'a,12>,16>
+array(array('a 12) 16)
+\end{lstlisting}
+
+When using the parentheses instead of ...... the typechecker can't be sure if the \verb|'a| uses the \verb|12|, and thus creating a partial application, or if \verb|array| uses it to coate a new array
+with \verb|()| you do not know what 'a uses the 12 or if the 12 is part of array together with 'a
+
+However the problem is non existing when you look at what \verb|'a| actually is. lookup it's declaration.
+This however makes the readability of the code less coherent and makes the typechecker more complex.
+
+For these reasons the code was changed to \verb|array<array<'a,12>,16>| instead of \verb|array(array('a 12) 16)|.
+
+is easier for typechecker
+
+\section{TypeAlias}
+Before there was \verb|TypeAlias|, \verb|TypeFunc| was used for the same functionality.
+The main problem, with \verb|Typefunc| being used in this manner, is that it only works one way.
+It constructs.
+It can not deconstruct what it creates.
+
+But the functionality needed in the cases where \verb|TypeAlias| is now used, is the construction and deconstruction of the types and kinds created.
+Therefor we needed a \verb|Data|-like functionality, but then on type and kind level.
+
+Hence \verb|TypeAlias| was created.
+
+\verb|TypeAlias| was created during the assignment.
+Because of the complex constructs of, for example, monads there was a need for a \verb|Data| like contruct on kind level.
+These constructs were thought to be served by \verb|TypeFunc|, but a two way construct was needed and, as stated in section~\ref{subsec:typefunc}, \verb|TypeFunc| only works one way.
+
+\section{Module}
+At the start \verb|Module| was called \verb|Signature|.
+It performed the same functionality as \verb|Module|.
+The name was changed for the user.
+From the language creators perspective \verb|Module| creates a specific signature on compile time.
+For the user it looks more like a container or class, when coming from object-oriented programming.
+
+Because the user will be the one actually using the language, the name was changed to what it resembles to the user.
+Thus \verb|Signature| became \verb|module|.
