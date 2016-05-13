@@ -26,17 +26,17 @@
 % \end{abstract}
 % \newpage
 
-% \pagenumbering{gobble}
-% \setcounter{tocdepth}{2}
-% \tableofcontents
-% \cleardoublepage
-% \pagenumbering{arabic}
-% \addtocounter{page}{4}
+\pagenumbering{gobble}
+\setcounter{tocdepth}{2}
+\tableofcontents
+\cleardoublepage
+\pagenumbering{arabic}
+\addtocounter{page}{4}
 
 
 \part{Introduction}
 
-\chapter{People involved}
+\chapter{Stakeholders}
 
 \chapter{Interlude}
 % MC stands for MetaCasanova. The reason behind the name is explained in chapter \refchapter{MetaCasanova}.
@@ -45,14 +45,16 @@ We will first talk about what MC is and explain the basics of the language.
 Then we will discuss the Standard Library of MC, which is written completely in MC.
 After which we will show some practical examples.
 
+% explain why the layout landscape and three collumns
+
 \include{assignment}
 
 \part{Preliminary research}
-\chapter{Terms, types \& kinds}
-\include{mc}
+\include{basicmc}
 
 
 \part{MC expanded}
+% \include{expandedmc}
 
 \chapter{Standard library}
 \section{BasicMonads}
@@ -93,7 +95,8 @@ After which we will show some practical examples.
 
 
 
-\part{appendixes}
+\part{Appendixes}
+\chapter{Glossery}
 
 % \bibliographystyle{ieeetr}
 % \bibliography{biblio}

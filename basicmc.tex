@@ -1,0 +1,186 @@
+\chapter{MC in detail}
+
+\section{What is MC}
+MC stands for MetaCasanova and is MC is a declaritive functional language.
+\section{Why MC}
+
+
+\section{Goal}
+The goal of MC is to use higher abstractions with type safety.
+
+\section{Basics}
+We will now go through the basics of MC.
+What systems MC uses, learn how the syntax works and use small code samples to explain the workings.
+
+The changes and reasons why it works the way it currently works will be explained in part~\ref{part:}.
+This way we will first have a basic understanding of how MC works and we are more able to understand the reasons why it works this way.
+
+
+\subsection{Terms, types \& kinds}
+With MC you program on three different levels:
+\begin{enumerate}
+   \item Terms
+   \item Types
+   \item Kinds
+\end{enumerate}
+Terms are the values of variables, like 5, 'c' or "Hello".
+Types are the types of variables, like Integer, String or Boolean.
+Kinds are for types, what types are to terms.
+You could say the are the types of the types.
+
+Types and kinds only exist on compile time and are either resolved or inlined during code compilation.
+This is done because the executed code can become much quicker when doing complex operations on type and term level.
+The compilation time will suffer from it, but because compilation only happens once, it is a good compromise for faster runtime code.
+
+\subsection{Func}
+First we need to declare a function.
+For this we use the keyword \verb|Func|.
+
+\begin{lstlisting}
+Func "foo" -> Bool -> Int -> Int -> Int
+\end{lstlisting}
+
+Here we see that the function \emph{foo} is declared by a String, which is the name of the function, a Boolean and three Integers.
+The parameters are seperated by the \verb|->|.
+The last parameter is the return type of the function and all the parameters between the name and the return type, are the arguments of the function.
+
+Now let's define the function just declared.
+\begin{lstlisting}
+add b c -> res
+---------------
+foo True b c -> res
+\end{lstlisting}
+
+A function is defined by a \emph{rule} and one or more \emph{premises}.
+They are separated by the \emph{bar}.
+The rule stands underneath the bar and the premises above.
+This syntax is similiar to the one used in natural deduction~\cite{}.
+
+In this case we have one premise above the bar.
+
+We can also have multiple function definitions, like so:
+\begin{lstlisting}
+add b c -> res
+---------------
+foo True b c -> res
+
+mul b c -> res
+---------------
+foo False b c -> res
+\end{lstlisting}
+
+When this happens the rules get executed in order if the above rule failes.
+
+Let's take for example the following function call:
+\begin{lstlisting}
+foo true 5 3 -> newValue
+\end{lstlisting}
+
+The first rule to be tested is the one written first in the source code, so:
+\begin{lstlisting}
+foo True b c -> res
+\end{lstlisting}
+This rule will fail, because the first argument is false and not true.
+So this function definition will not be executed.
+
+The next rule to be matched on, is:
+\begin{lstlisting}
+foo False b c -> res
+\end{lstlisting}
+And this rule will get executed because the first argument matches.
+The rule will be executed and the result will be put in \verb|newValue|.
+
+Ofcourse the other arguments passed will also need to match.
+
+When no parameters are given, the function acts like a variable.
+\begin{lstlisting}
+Func "bar" -> Int
+bar -> 5
+\end{lstlisting}
+
+As we have seen \verb|Func| uses types in it's declaration and terms in it's definition.
+The types enables to make sure the function will always be able to execute, when the argumenttypes match those declared.
+This also means that function declared by \verb|func| are on runtime.
+
+As we will see in section~\ref{subsec:typefunc} MC also has the ability to declare and define functions on a level higher.
+
+\subsection{Data}
+With \verb|Data| we can create constructor and deconstructors for a new type.
+\begin{lstlisting}
+Data "Left"  -> String -> String | Float
+Data "Right" -> Float  -> String | Float
+\end{lstlisting}
+Here we create two constructors whom both go to the same type, \verb_string | float_.
+And when we have a term with type \verb_string | float_, so either of type \verb|Left| or \verb|Right|, we can match to get the original term back.
+In this case a \verb|String|, when it matches on \verb|Left|, or a \verb|Float|, when it matches on \verb|Right|.
+
+Because \verb|Data| can work two ways, constructing and deconstructing, it can be seen as an alias for types.
+
+\subsection{TypeAlias}
+\verb|TypeAlias| was created during the assignment.
+Because of the complex constructs of, for example, monads there was a need for a \verb|Data| like contruct on kind level.
+These constructs were thought to be served by \verb|TypeFunc|, but a two way construct was needed and, as stated in section~\ref{subsec:typefunc}, \verb|TypeFunc| only works one way.
+
+\verb|TypeAlias| is the same as \verb|Data| only then a level higher.
+It constructs and deconstructs kinds.
+
+\subsection{TypeFunc}
+\verb|TypeFunc| creates a function on type level.
+It works much like \verb|Func| only instead of terms it uses types and instead of types it uses terms.
+
+The syntax reflects the difference between the levels used, to easily know on which level the function operates.
+
+\begin{lstlisting}
+TypeFunc "bar" => #a => #b
+\end{lstlisting}
+
+The declaration uses the \verb|=>| to indicate it operates on the type and kind level.
+Just like \verb|->| indicates the operation on term and type level.
+
+What this means is that \verb|TypeFunc| works with kinds in its declaration to check the types used in the definition.
+Which is the same principle as \verb|Func|, which uses types in its declaration to check the terms used in the definition.
+
+The \verb|\#a| and \verb|\#b| indicate the terms used.
+When working on term level it is hard to give a concise definition of the actual term.
+This is why we have opted for the simple syntax of the \verb|\#|.
+
+The \verb|\#| indicates it is a term and that we do not know the precise definition of this term.
+We therefor supplement the \verb|\#| with an extra identifier, in this case \verb|a|.
+Now we can declare that the first term, \verb|\#a|, is different from the second term, \verb|\#b|, by using different indetifiers after the \verb|\#|.
+
+\begin{lstlisting}
+a => (c * d)
+(d * c) => res
+---------------
+bar a => res
+\end{lstlisting}
+
+As we can see function \emph{bar} takes a type, deconstructs the type, switches the arguments of this type and returns that as the result.
+
+This might be a bit confusing, since we do not know what the \verb|*| is or does.
+So let's take a look at the definition of \verb|*|:
+
+
+
+
+\subsection{Module}
+Defines an interface
+\begin{lstlisting}
+TypeFunc "MonoidAdd" => #a => Module
+MonoidAdd 'a => Module {
+  Func 'a -> "+" -> 'a -> 'a
+  Func "identityAdd" -> 'a
+}
+\end{lstlisting}
+
+
+
+
+syntax tuple<a,b> WHY:
+
+array<array<'a,12>,16>
+array(array('a 12) 16)
+
+with () you do not know what 'a uses the 12 or if the 12 is part of array together with 'a
+
+is easier for typechecker
