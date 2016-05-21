@@ -2,7 +2,11 @@
 
 \section{What is MC}
 MC stands for MetaCasanova and is MC is a declaritive functional language.
+It tries to be a completely pure language, which means no side-effects are allowed directly.
+It does not allow direct manipulation of values.
+
 \section{Why MC}
+because casanova
 
 
 \section{Goal}
@@ -41,19 +45,18 @@ For example you can use \verb\#a\ or \verb\#foo\.
 On type level the same thing is done when the specific type is not yet known.
 Instead of the \verb\#\ the \verb\'\ is used.
 So instead of \verb\#a\ and \verb\#foo\, it would be \verb\'a\ and \verb\'foo\.
-
 This is usefull when declaring generic functions.
 
-\subsection{Runtime and compile time}
+\subsubsection{Runtime and compile time}
 In MC there is a clear difference between compile time.
 Everything on the term level is on runtime and everything on type and kind level is on compiletime.
 
-\subsection{Func}
+\subsection{Func}\label{sec:basicfunc}
 First we need to declare a function.
 For this we use the keyword \verb|Func|.
 
 \begin{lstlisting}
-Func "foo" -> Bool -> Int -> Int -> Int
+Func "foo" -> Boolean -> Int -> Int -> Int
 \end{lstlisting}
 
 Here we see that the function \emph{foo} is declared by a String, which is the name of the function, a Boolean and three Integers.
@@ -133,6 +136,15 @@ In this case a \verb|String|, when it matches on \verb|Left|, or a \verb|Float|,
 
 Because \verb|Data| can work two ways, constructing and deconstructing, it can be seen as an alias for types.
 
+\verb\Data\ can also have a priority.
+
+\begin{lstlisting}
+Data "Left"  -> String -> String | Float  #> 7
+Data "Right" -> Float  -> String | Float  #> 5
+\end{lstlisting}
+
+This gives \verb\Left\ a higher priority then \verb\Right\.
+
 \subsection{TypeAlias}
 \verb|TypeAlias| is the same as \verb|Data| only on a level higher.
 It constructs and deconstructs kinds.
@@ -143,12 +155,23 @@ TypeAlias #a => "*" => #b => #c
 \end{lstlisting}
 
 Here we see how a tuple gets created with the help of \verb|TypeAlias|.
+Because \verb\TypeAlias\ works on the type level, we need a declaration and a definition.
+\verb\Data\ does not need this, because it creates types which directly relate to the terms.
+Because kinds can create more complex data con- and deconstructors it is necessary to have a separate declaration and definition.
+
+The definition can be more precise of what the \verb\TypeAlias\ actually does.
+This is especially necessary with the monadic part op the standard library.
+For more on this see~\ref{chap:....}.
+
 We also see how we can declare that an argument will be in front of the the name of the \verb|TypeAlias| function.
 This can also be done with \verb|Func|, \verb|Data| and \verb|TypeFunc|.
+\verb\TypeFunc\ is explained in the next section.
 
 There is one limitation to the use of argument before the name of the declaration, there may only be one.
 This is because of the parser used.
 The parser would become overly complex when adding multiple arguments in before the name of the declaration.
+
+Because the benefits of having multiple arguments in front of the function name do not outway the time it consumes to expand the parser, the choice was made to only allow one argument in front.
 
 
 The syntax reflects the difference between the levels used, to easily know on which level the function operates.
@@ -179,12 +202,15 @@ As we can see function \emph{bar} takes a type, deconstructs the type, switches 
 
 As with \verb|TypeAlias| it uses the \verb|=>| to indicate it works on type and kind level.
 
+The special thing about \verb\TypeFunc\ is that it can also directly work with terms.
+This means that........FILL THIS IN PLEASE
+
+
 \subsection{Module}
 \verb|Module| is used to create an interface on compiletime.
 It is a collection of functions and can be inherited.
 
 It does not fit within the levels defined in section~\ref{sec:basiclevels}.
-
 
 \begin{lstlisting}
 TypeFunc "MonoidAdd" => #a => Module
@@ -217,6 +243,35 @@ The \verb|Func|s are defined as the normally are, only now they are wrapped with
 The \verb|Module| is defined in much the same way other functions are defined.
 They simply contain function definitions within itself.
 
+\verb\Module\s can also be expanded.
+This is done by taking an existing module and adding declarations and/or definitions to it.
+
+\begin{lstlisting}
+Int{
+  Func "extraAdd" -> Int -> Int
+  a + a -> b
+  ---------------
+  extraAdd a -> b
+}
+\end{lstlisting}
+
+The module \verb\Int\ is expanded with the \verb\extraAdd\ function.
+When we look inside \verb\Int\ it will look like this:
+
+\begin{lstlisting}
+Int{
+  Int -> "+" -> Int -> Int
+  identityAdd -> 0
+
+  a + a -> b
+  ---------------
+  extraAdd a -> b
+}
+\end{lstlisting}
+
+It contains the \verb\+\ operator, the \verb\IdentityAdd\ constant and the \verb\extraAdd\ function.
+
+
 \subsubsection{The caret}
 When we want to call a function within a module from outside the module the \verb\^\ is used.
 
@@ -234,17 +289,142 @@ The \verb\^\ puts the elements in the oposite order.
 In the example we first say what we want and then say where to find it.
 This has the advantage of knowing immediately what you are using and if you want to know where it actually comes from you can read on.
 
-\section{Import}
+\subsubsection{Inherit}
+Modules can also inherit from other modules.
+This is done with \verb\inherit\.
+
+\begin{lstlisting}
+TypeFunc "GroupAdd" => #a => Module
+GroupAdd 'a => Module {
+  inherit MonoidAdd 'a
+  Func 'a -> "-" -> 'a -> 'a #> 60
+}
+\end{lstlisting}
+
+The module \verb\MonoidAdd\ from section~\ref{sec:basicmodule} is instantiated with \verb\'a\.
+The created module is then inherited from.
+The function declarations from the inherited module, \verb\MonoidAdd\ are then directly usable within the new module, \verb\GroupAdd\.
+
+If a module takes another module as an argument, the module can also directly inherit.
+
+\begin{lstlisting}
+TypeFunc "GroupAdd" => MonoidAdd => Module
+GroupAdd M => Module {
+  inherit M
+}
+\end{lstlisting}
+
+Now everything from module \verb\M\ is inherited into \verb\GroupAdd\.
+
+When inheriting a module which contains an inherit, they are also inherited in to the current module.
+This works recursively.
+
+\subsection{priority}
+Do this .......
+higher number is higher priority
+Default is left associative with \verb\R\ associative is right.
+
+\subsection{Import}
 In section~\ref{sec:basicmodule}
 \verb\Import\ is used when importing or including other files in the current file.
 It is called \verb\import\ because it literaly imports all the code of the imported file into the current file.
-The programmer cannot directly use the declarations and definitions used in the imported file.
-There is a syntax element that
 
+If the file imported has any imports, they are ignored.
+Unlike \verb\inherit\ \verb\import\ is not recursive.
+
+The programmer cannot directly use the declarations and definitions used in the imported file.
+The \verb|^| is used to do this and works in the same way as it does with modules.
+
+\begin{lstlisting}
+import vector
+
+Func "output" -> Vector2^vector
+output -> createVector2^vector 5.9 19.0
+\end{lstlisting}
+
+The importing of MC files always works with non capitalized import statements, even when the actual files does contains capitals.
+This is done to differentiate between MC imports and .NET imports.
+
+The order of elments is the same as with modules, only when using .NET imports there is a difference in syntax.
+When calling a .NET function the elements are in the same order as with .NET, instead of doing it the other way around when using the \verb\^\ with modules.
+
+\begin{lstlisting}
+import System
+
+Func "dotNetTest" -> String
+dotNetTest -> System^DateTime^Now^ToString()
+\end{lstlisting}
+
+Here \verb\dotNetTest\ becomes a String which contains the current date and time.
+
+In keeping constistency with the .NET way of calling, the programmer does not have to reverse the order of the elements in the call.
+This might seem like a trivial thing to do, but from experiments we concluded that it confused the programmer more than initially thought.
+For this reason the order of elements in a .NET call will stay in synchonicity with the .NET standard.
+
+\section{Builtin}
+Some things cannot be created out of nothing and therefor need to be built in the compiler.
+An example is boolean and is further explained in section~\ref{sec:standardprelude}.
+
+When using such a builtin literal the keyword \verb\builtin\ is used.
+We can now correctly implement the function \verb\foo\ from section~\ref{sec:basicfunc} using the \verb\builtin\ keyword:
+
+\begin{lstlisting}
+add b c -> res
+---------------
+foo True^builtin b c -> res
+
+mul b c -> res
+---------------
+foo False^builtin b c -> res
+\end{lstlisting}
+
+It can be seen as if they are imported
 
 \section{Comments}
+There are two sorts of comments in MC: a single line comment, indicated by \verb\$$\, and a block comment, indicated by \verb\$* *$\.
+With these two options the programmer can sufficiently insert comments in the code.
 
+\section{Lambdas}
+MC also has a fully implemented lambda calculus system.
 
+\begin{lstlisting}
+(\ input -> outputFuncion )
+\end{lstlisting}
+
+The basic syntax is as one would expect of a lambda, it has input and returns the function or the value the function produces.
+
+In practice this would look like:
+
+\begin{lstlisting}
+(\ a -> divide^Int 10 a )
+\end{lstlisting}
+
+Lambdas do not need to be declared because they always are generic functions.
+The typechecker will check the lambdas the same way as any other generic function.
+From the context of what the lambda does together with the types of the arguments, it can deduct what the output type should be.
+
+\subsection{Partial application}
+Lastly MC supports partial application.
+What this means is that you do not have to give all the arguments to a function.
+When this is done a lambda is created and given as output.
+
+\begin{lstlisting}
+Func "add" -> Int -> Int -> Int
+
+a + b -> c
+--------------
+add a b -> res
+
+add 2 -> addTwo
+
+addTwo 6 -> foo
+
+addTwo 7 -> bar
+\end{lstlisting}
+
+We have defined the function \verb\add\ and with it created the function \verb\addTwo\.
+The function \verb\addTwo\ always adds \verb\2\ to the input value.
+This way \verb\foo\ has a value of \verb\8\ and \verb\bar\ of \verb\9\.
 
 \bigskip
 
