@@ -191,6 +191,18 @@ match ('a | 'b) => Module {
 Now we see why the module is needed.
 It was thought that the \verb\match\ module would get a separate instance for every match that was executed.
 
+\begin{lstlisting}
+(do^(match(List)) l with
+  (\empty -> return^'M empty)
+  (\(x :: xs) ->
+    {x >>=^'M y
+      return^'M k x} -> z
+    xs >>= k -> zs
+    (z @ zs)))} -> res
+\end{lstlisting}
+
+
+
 The \verb\Head\ and \verb\Tail\ are the checks to ensure the first function takes the \verb\Left\ as input and the second function takes the \verb\Right\.
 As \verb\Head\ gets set to \verb\'a\ and \verb\Tail\ to \verb\'b\.
 
@@ -400,6 +412,65 @@ The programmer has to use \verb\EmptyRecord\ as the \verb\rest\ argument of the 
 This creates an end to the record.
 
 
+\subsection{Updatable record}
+The current record can only be instantiated and not updated.
+To expand the record to be updatable we need to add the update function.
+
+First we declare and define a \verb\TypeFunc\ which expands a record given to it.
+
+\begin{lstlisting}
+TypeFunc "updatableRecord" => Record => Record
+updatableRecord r => r{
+\end{lstlisting}
+
+The record \verb\r\ is used as input and is returned with added functions.
+Because MC does not support mutables, the returned record is a new record.
+The \verb\r\ used as output is a copy of the original, which gets expanded.
+
+Another way of writing it would be:
+
+\begin{lstlisting}
+TypeFunc "updatableRecord" => Record => Record
+updatableRecord r => Module {
+   inherit r
+\end{lstlisting}
+
+The above syntax is the verbose version.
+
+The we declare and define the update function.
+
+\begin{lstlisting}
+  TypeFunc "update" => Record => #a => Record
+  r == Empty
+  --------------------
+  update r dt => Empty
+}
+\end{lstlisting}
+
+Only the definition of \verb\update\ which checks for an empty record can be defined.
+It is the only situation in which we can be certain what the return value will be, namely \verb\Empty\.
+
+If the record is not \verb\Empty\ we cannot know what the programmer wants to do with \verb\update\.
+That is why we leave that definition of \verb\update\ up to the programmer.
+
+\subsection{Rule}
+When we have a record with alot of nested or complex datastructures that we want to update, we have to go through the entire structure to be able to call the update function.
+To fix this \verb\Rule\ was created.
+
+\verb\Rule\ takes a record a record and calls the update function directly, without going through the datastructure of the record.
+
+\begin{lstlisting}
+TypeFunc "apply" => Record => #a => Record
+update^r dt => res
+------------------
+apply r dt => res
+\end{lstlisting}
+
+Here we can see that all \verb\Rule\ does is call the update function directly.
+This way we only have to go through the structure of the record once, to get the record we will then pass to the rule.
+
+We can now call the update function indirectly by executing the rule which is linked with it.
+
 
 \subsection{Evolution}
 
@@ -408,7 +479,6 @@ for this fields was needed
 because of a fault, there needs to be no checking of the field, because field con be anything, fields became obsolete.
 
 
-CONS IS OBSOLETE ASWELL BECAUSE THE TYPE OF THE RECORD IS ALWAYS \verb\RECORD\
 
 Now the record also has a its own type signature, because \verb\Field\ can be anything the type signature of every record is different.
 For this we created \verb\Cons\.
@@ -433,4 +503,23 @@ Then we need to specify what the type is of the argument which contains these fi
 
 INSERT OLD SET AND GETTER AND EXPLAIN FURTHER
 
+
+OLD CONS FUNC IN STILL OBSOLETE AS THE TYPE OF A RECORD IS ALWAYS RECORD
+
+One which contains the current type of the record and one which updates the current record.
+The update function needs to be able to check if the newly created record has the same type of the original record.
+This ensures type safety.
+When the programmer would be able to change the type of the record, the new type could behave in a such a way that unpredicted things will happen.
+This problem could be left for the programmer to solve, but it is better to fix the problem before it happens.
+
+If the programmer still wants to create a updatable record without the type safety, a new update function can be created by hand to circumvent the ready made update function.
+
+The \verb\Cons\ function was created to hold the type information of the record and is added in \verb\r\.
+
+\begin{lstlisting}
+  TypeFunc "Cons" => #a
+  Cons => (Label,Field,Rest)
+\end{lstlisting}
+
+The types of \verb\Label\, \verb\Field\ and \verb\Rest\ make up the type of the entire
 

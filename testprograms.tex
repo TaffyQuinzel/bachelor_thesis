@@ -1,0 +1,41 @@
+\chapter{Test programs}
+There have been several test programs written to further test the language and detect any faults.
+
+The first of which is a simple bouncing ball.
+
+\section{Bouncing ball}
+This program bounces a ball up and down.
+It uses the entity from the Casanova library and the Microsoft XNA library for the \verb\Vector2\.
+
+\begin{lstlisting}
+import Microsoft^Xna^Framework
+import record
+
+RecordEntry "Velocity" Vector2(0.0f, 98.1f) Empty
+RecordEntry "Position" Vector2(100.0f, 0.0f) Velocity
+
+updatableRecord (RecordEntry "Ball" unit Position) => Ball
+
+Ball{
+  get^e "Position" Rest^e => position
+  get^e "Velocity" Rest^e => velocity
+  (if ((Field^position).Y <= 500.0f) then
+    ((set^e "Position"
+           (Field^position +^Vector2 (Field^velocity *^Vector2 dt))
+           Rest^position)
+     (set^e "Velocity"
+            (Field^velocity +^Vector2 (Vector2(0.0f, 98.1f) *^Vector2 dt))
+            Rest^velocity))
+  else
+    (set^e "Position"
+           Vector2((Field^position).X, 500.0f)
+           -^Vector2(Field^velocity))) -> res
+  --------------------------------------------
+  update e dt -> res
+}
+\end{lstlisting}
+
+\section{Tron}
+\subsection{Bike}
+\subsection{Playfield}
+\subsection{Powerups}

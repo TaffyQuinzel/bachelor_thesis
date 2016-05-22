@@ -124,6 +124,7 @@ This also means that function declared by \verb|func| are on runtime.
 
 As we will see in section~\ref{subsec:typefunc} MC also has the ability to declare and define functions on a level higher.
 
+
 \subsection{Data}
 With \verb|Data| we can create constructor and deconstructors for a new type.
 \begin{lstlisting}
@@ -402,6 +403,49 @@ In practice this would look like:
 Lambdas do not need to be declared because they always are generic functions.
 The typechecker will check the lambdas the same way as any other generic function.
 From the context of what the lambda does together with the types of the arguments, it can deduct what the output type should be.
+
+\subsection{ArrowFunc}\label{sec:basicmcarrowfunc}
+MC also has another way of creating lambdas, with \verb\ArrowFunc\.
+
+\verb\ArrowFunc\ always needs an argument on the left of the name and atleast one function to the right.
+
+\begin{lstlisting}
+ArrowFunc Int -> ">>~" -> (Int -> Int) -> Int
+f a -> res
+-------------
+a >>~ f -> res
+\end{lstlisting}
+
+Here \verb\another\ takes an integer and a function that takes an integer and returns an integer.
+
+The definition is looks like a normal function.
+When we call \verb\>>~\ it can be done in two ways.
+
+The normal way we call a function:
+
+\begin{lstlisting}
+a >>~ f -> res
+\end{lstlisting}
+
+And like this:
+
+\begin{lstlisting}
+{a >>~ out
+  f out} -> res
+\end{lstlisting}
+
+When called like this it creates a converts it to a lambda.
+
+\begin{lstlisting}
+(\ out -> f out ) a -> res
+\end{lstlisting}
+
+There is a lambda created from the function declared below the \verb\>>~\ and \verb\a\ is used as input for this lambda.
+The result from this is then returned as the output in \verb\res\.
+
+This syntax exists to remove the neccessity of the lambda syntax in this perticular situation and compress the code.
+It stems from the use of the bind of monads, which will be explained in further detail in section~\ref{sec:standardmonad}.
+
 
 \subsection{Partial application}
 Lastly MC supports partial application.

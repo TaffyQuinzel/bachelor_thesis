@@ -1,7 +1,6 @@
-% \documentclass[landscape,a4paper,twocolumn]{report}
+% \documentclass[a4paper,twoside,openright]{report}
 \documentclass[landscape,a4paper]{report}
 \usepackage[landscape,driver=xetex,a4paper,margin=25mm]{geometry} % propper margins on a4 paper
-% \documentclass[a4paper,twoside,openright]{report}
 
 \usepackage[hidelinks]{hyperref} % make contents and references clickable in pdf
 \usepackage[english]{babel}
@@ -55,8 +54,8 @@
 %header & footer
 \pagestyle{fancy}
 \fancyhf{}
-\fancyhead[LE,RO]{\writer}
-\fancyhead[RE,LO]{\chaptermark}
+\fancyhead[LE,RO]{\nouppercase\leftmark}
+\fancyhead[RE,LO]{\partname\ \thepart}
 \fancyfoot[CE,CO]{\writer}
 \fancyfoot[LE,RO]{\thepage}
 
