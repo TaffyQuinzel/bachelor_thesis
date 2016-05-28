@@ -2,19 +2,16 @@
 Now we come to the module \verb\Monad\.
 This module takes a mathematical concept and makes into practical programming construct.
 
+Monads are the main reason MC has type manipulation.
+
 First we are going to look at what monads exactly are within programming.
 Then we will see how they are implemented within MC.
 
 \subsection{Monads}
-Monads are a container like, generic interface.
-They contain two functions:
+Monads are a container-like generic interface.
+They contain two functions, \emph{return} and \emph{bind}.
 
-\begin{itemize}
-   \item Return
-   \item Bind
-\end{itemize}
-
-These two functions create the basis on which the monads are built.
+These two functions are the basic way we can use monads.
 
 \subsubsection{The return}
 The return function takes a value and wraps it inside a monad.
@@ -22,7 +19,9 @@ The return function takes a value and wraps it inside a monad.
 {
    \centering
    \includegraphics[width=\columnwidth]{return}\\
-   \captionof{figure}{The return}\label{fig:monadreturn}
+   \captionof{figure}{The return}
+   \label{fig:monadreturn}
+   \bigskip
 }
 
 The box in figure~\ref{fig:monadreturn} visualizes the monad and \verb\2\ is the value that is being put inside the monad.
@@ -33,32 +32,36 @@ This is where the bind comes in.
 
 \subsubsection{The bind}
 Having a monad is fine, but what if you want to manupilate the value of the monad?
-The bind function supplies this functionality.
+The \verb\>>=\ (pronounced \emph{bind}) function supplies this functionality.
+
+When we want to apply the function \verb\(+3)\ to the monad containing \verb\2\, we call the bind.
+The bind unpacks the monad, as visualised in figure~\ref{fig:monadbind1}.
 
 {
    \centering
    \includegraphics[width=\columnwidth]{bind1}\\
-   \captionof{figure}{A function and a monad}\label{fig:monadreturn}
+   \captionof{figure}{A function and a monad}
+   \label{fig:monadbind1}
+   \bigskip
 }
 
-When we want to apply the function \verb\(+3)\ to the monad containing \verb\2\, we call the bind.
-The bind unpacks the monad.
+It then applies the function to the value.
+And then packs the new value inside the monad, as visualised in figure~\ref{fig:monadbind2}.
 
 {
    \centering
    \includegraphics[width=\columnwidth]{bind2}\\
-   \captionof{figure}{The return}\label{fig:monadreturn}
+   \captionof{figure}{The return}
+   \label{fig:monadbind2}
+   \bigskip
 }
 
-Applies the function to the value.
-And then packs the new value inside the monad.
-
-Using these two basic functions, we can always work with monads.
-The monads have then become the generic interface of every function.
-This gives us greater safety when moving values between functions, because the values thrown between functions are always monads.
+Using these two basic functions, we can always work with monads and the values they contain.
 
 \subsubsection{More than a wrapper}
 But just a monad offers very little besides being a wrapper for values.
+\textbf{FIX THE NEXT SENTENCE}
+This means a lot of ..... map to monads.
 That is why there have been created a few different sorts of monads.
 
 We will discuss two of these for now.
@@ -78,7 +81,6 @@ In MC the functionality might look like this:
 Func "state" -> 's -> ('a,'s)
 state dice -> (numberRoled,newDice)
 \end{lstlisting}
-MAYBE LEAVE IT IN BUT PROBABLY BEST TO LEAVE CODE OUT OF STATE MONAD FOR NOW.
 
 
 \paragraph{The maybe monad}
@@ -102,43 +104,47 @@ In the example the term a is checked for a being a value, the \verb\Left\, or be
 This is a very basic example of how the maybe works.
 It acts like a pipe and can contain either a value, \verb\Left\, or nothing, \verb\Right\.
 
+\textbf{MOVE THIS UP}
+The implementations of these monads are far from complete, these examples simply show the functionality of the monad.
+The actual implementation will be given in section~\ref{sec:basicmonadsimplementation}.
+
 \subsubsection{Combining monads}
-Apart from having different sorts of monads, they can also be combined.
-Since they are the same generic interface they can be combined into another generic inteface.
+Monads can also be combined.
+Since they have the same generic interface they can be combined into another generic inteface.
 These new monads can utilise the functionality of the all combined monads.
 
-In this manner the functionality of a monad can be extended.
+In this way the functionality of a monad can be extended.
+
+Combining monads can be seen as putting one monad inside another monad, as illustrated in figure~\ref{fig:monadcombinig}.
 
 {
    \centering
    \includegraphics{transformers}\\
-   \captionof{figure}{Combining monads}\label{fig:monadcombining}
+   \captionof{figure}{Combining monads}
+   \label{fig:monadcombining}
+   \bigksip
 }
 
-Combining monads can be seen as putting one monad inside another monad, as illustrated in figure~\ref{fig:monadcombinig}.
-
 We will take the state and maybe monad and combine these into a parser monad.
-A parser monad can parse through a data structure and scan for certain elements.
+A parser monad can parse through a piece of text and scan for certain elements.
 
-The state monad will be used for the scanning functionality and the maybe monad will be used to determine of the elemnt has been found.
+The state monad will be used for the scanning functionality and the maybe monad will be used to determine of the element has been found.
 The state monad returns the maybe monad as its result.
 When the maybe monad has a value as result the parser monad stops.
 
 Like the normal monads they have to be build manually.
 This is a very error prone process when combining more than two monads or when using more complex monads.
 
-What we actually want is to write the monads once and use combine them automatically.
+What we actually want is to write the monads once and combine them automatically.
 This is where monad transformers come in.
+
 
 \subsection{Monad transformers}
 Monad transformers are a way to automatically combine monads.
-Instead of simply having a monad which takes the arguments it needs, it also takes another monad transformor as one of its arguments.
-This monad transformer is then used to wrap the result.
+Instead of simply having a monad which takes the arguments it needs, it also takes another monad transformer as one of its arguments.
+This monad transformer is then used to given the actual value.
 
-Combining monads this way is quite useful when having complex monads.
-Because the combining happens naturally with monad transformers, there are no errors created in the process of combining.
-
-MC has an implementation of the basic monad transformer with which all monad transformers can be created.
+MC has an implementation of the basic monad transformer with which all monad transformers and monads can be created.
 
 \subsection{Implementation}\label{sec:basicmonadsimplementation}
 Now we will look at how the monad transformer is implemented.

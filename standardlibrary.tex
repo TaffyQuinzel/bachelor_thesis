@@ -1,20 +1,14 @@
 \chapter{Standard library}\label{chap:standardlibrary}
-The standard library of MC consists of two seperate parts:
-
-\begin{description}[align=right,labelwidth=2cm]
-   \item [StandardLibrary] contains all the basic Library items
-   \item [BasicMonads] contains all the basic monads
-\end{description}
-
 We will now look at the standard library and explain the evolution it went through during the assignment.
 For readability only the neccesary parts of the code is shown.
-The complete code samples can be found on~\cite{}.
+The complete code samples can be found in~\cite{}.
 
-An explanation will be given per item and after wards the evolution of that item will be told.
+Each item will be explained with the evolution after the explanation.
 When we have an idea of how it should work, the choices made during the development will be clearer.
 
 \section{Prelude}\label{sec:standardprelude}
 \emph{Prelude} contains a few definitions making basic programming easier.
+The .NET \emph{System} is imported and the type \verb\Unit\ is created.
 
 \begin{lstlisting}
 import System
@@ -22,16 +16,17 @@ import System
 Data "unit" -> Unit
 \end{lstlisting}
 
-Firstly it imports the .NET \emph{System} library and creates a \verb\unit\.
-The \verb\unit\ is used as an empty or null value.
+The \verb\Unit\ is used as an empty or null value.
 
-Next we have the declaration and definition of a tuple and a pipe on both term and type level.
+Next we have the declaration and definition of a generic tuple and union.
+Because they are generic \verb\TypeAlias\ is needed for the type manipulation.
+
 \begin{lstlisting}
-TypeAlias #a => "*" => #b => #c
+TypeAlias Type => "*" => Type => Type
 'a * 'b => tuple<'a 'b>
 Data 'a -> "," -> 'b -> 'a * 'b    #> 5
 
-TypeAlias #a => "|" => #b => c#
+TypeAlias Type => "|" => Type => Type
 'a | 'b => pipe<'a 'b>
 Data "Left" -> 'a -> 'a | 'b       #> 5
 Data "Right" -> 'b -> 'a | 'b      #> 5
@@ -51,10 +46,10 @@ if False^builtin then f else g -> g
 The \verb\then\ and \verb\else\ \verb\Data\s are syntatic sugar and could be left out.
 We have left them in to enhance the clarity of the if-else construct.
 
-Here we see how the .NET \emph{System} is used.
+Here we see how \emph{System} of .NET is used.
 The boolean of .NET can be imported as shown, however the values \verb\True\ and \verb\False\ cannot be imported.
 They are built in .NET itself.
-This is why these literals are built into the language and need to be called using \verb\builtin\.
+This is why these literals are built into MC as well and need to be called using \verb\builtin\.
 
 Next we have the \verb\match\ function.
 It takes a variable, matches it on either \verb|Left| or \verb|Right| and executes the function specified.
@@ -65,33 +60,20 @@ Data "with" -> With
 Func "match" -> ('a | 'b) -> With -> ('a -> 'c) -> ('b -> 'c) -> 'c
 \end{lstlisting}
 
-First there some syntactic created to make it clearer how \verb\match\ works.
-The first argument is the pipe which needs to get matched.
-The arguments after \verb\With\, \verb\('a -> 'c)\ and \verb\('b -> 'c)\, are the functions to be executed on a match.
+First there some syntactic sugar created to make it clearer how \verb\match\ works.
+The first argument is the union which needs to get matched.
+The arguments \verb\('a -> 'c)\ and \verb\('b -> 'c)\ are the functions to be executed on a match.
 
-That they are functions, is evident from the syntax.
-Take for example the following function declaration:
-
-\begin{lstlisting}
-Func "x" -> 'a -> 'c
-\end{lstlisting}
-
-Here we can see a very simple function declaration which takes an argument and returns an argument.
-But when we remove the keyword \verb\Func\ and the name of the function, \verb\x\, the only thing that remains is the actual declaration of the function itself.
-It takes an argument \verb\'a\ and returns \verb\'c\.
-
-This stripped down syntax of a function declaration is used within declaration to indicate the argument is a function.
-
-In this case the two functions both take an argument which stems from the pipe argument, the \verb\'a\ and the \verb\'c\.
+In this case the two functions both take an argument from the union, the \verb\'a\ and the \verb\'c\.
 
 Next we have the definition of \verb\match\.
+This gives a definition for both cases of the match, namely the \verb\Right\ and the \verb\Left\.
 
 \begin{lstlisting}
 match (Left x) with f g -> f x
 match (Right y) with f g -> g y
 \end{lstlisting}
 
-This gives a definition for both cases of the match, namely the \verb\Right\ and the \verb\Left\.
 When it matches the \verb\Left\ it executes function \verb\f\ with \verb\x\ as its argument.
 And when it matches the \verb\Right\ it executes function \verb\g\ with \verb\y\ as its argument.
 
@@ -109,11 +91,12 @@ Then there is first checked on nested pipes and when there are none the actual v
 
 In this manner there is no possibility of skipping any nested pipes.
 
-\subsection{Evolution}
-Now we will look at the evolution of \emph{Prelude} during the assignment.
+
+\subsection{Evolution of prelude}
 
 \subsubsection{Boolean}
-Boolean currently does not exist anymore as a separate part of the standard library, but its birth, evolution and death make it clear why this is the case.
+Boolean currently does not exist anymore as a separate part of the standard library.
+Here we will see why this is the case.
 
 Boolean was created to implement boolean logic.
 After many itterations it was discarded due to the evolution of the language.
@@ -156,33 +139,32 @@ The choice was then made to call the boolean literals directly with \verb\True^b
 
 Which brings us to the current state of the boolean literals.
 
+
 \subsubsection{Match}
 \emph{Match} started as a separate part of the standard library containing the \verb\match\ module.
-We will now look at how it was first created and how it has evolved into \emph{Prelude}.
+We will now look at how it was first created and how it has evolved into \emph{prelude}.
 
-The first iteration of the \verb\match\ module started like this:
+The first iteration of the \verb\match\ module started with the import of \emph{prelude} and the declaration of \verb\match\ module.
 
 \begin{lstlisting}
 import prelude
 
-Data "with" -> With
-
 TypeFunc "match" => #a => Module
 \end{lstlisting}
 
-Here we see that \emph{prelude} is imported for the use of the pipe operator and the same syntactic sugar is created, as it is currently used.
-Then we see the definition of the \verb\match\ module.
-
-So far there are no reasons for doubting the module is not needed, but there is also no reason yet to actually have a module.
+So far there are no problems yet with us a module for \verb\match\.
 
 Next we see the first part of implementation of the \verb\match\ module:
+Some syntactic sugar is created and the actual function is defined which will do the matching.
 
 \begin{lstlisting}
 match ('a | 'b) => Module {
-  TypeFunc "Head" => #a
+  Data "with" -> With
+
+  TypeFunc "Head" => Type
   Head => 'a
 
-  TypeFunc "Tail" => #a
+  TypeFunc "Tail" => Type
   Tail => 'b
 
   Func "doMatch" -> 'c -> With -> (Head -> 'd) -> (Tail -> 'd) -> 'd
@@ -191,23 +173,10 @@ match ('a | 'b) => Module {
 Now we see why the module is needed.
 It was thought that the \verb\match\ module would get a separate instance for every match that was executed.
 
-\begin{lstlisting}
-(do^(match(List)) l with
-  (\empty -> return^'M empty)
-  (\(x :: xs) ->
-    {x >>=^'M y
-      return^'M k x} -> z
-    xs >>= k -> zs
-    (z @ zs)))} -> res
-\end{lstlisting}
-
-
-
 The \verb\Head\ and \verb\Tail\ are the checks to ensure the first function takes the \verb\Left\ as input and the second function takes the \verb\Right\.
 As \verb\Head\ gets set to \verb\'a\ and \verb\Tail\ to \verb\'b\.
 
 When seperate functions, like these, are needed to check the validity of another function it is better to group them together inside a module.
-
 
 The definitions of \verb\doMatch\ haven't changed compared to what they are currently.
 
@@ -222,6 +191,12 @@ The definitions of \verb\doMatch\ haven't changed compared to what they are curr
 }
 \end{lstlisting}
 
+It became clear that \verb\Head\ and \verb\Tail\ were not necessary, because they were simply passing on type of the union.
+
+With this removal the use of a module became obsolete, because we do not need to group a single function.
+The \verb\doMatch\ function was then renamed \verb\match\ and placed inside \emph{prelude}.
+
+
 \subsubsection{Recursive match}
 The first itteration of match could not match nested pipes.
 It could only detect a direct match.
@@ -233,24 +208,18 @@ This would be quite inconvenient for the programmer.
 
 For that reason the recursive functionality was added.
 
-\begin{lstlisting}
-  doMatch y with g h -> res
-  --------------------
-  doMatch (Right y) with f (g h) -> res
-\end{lstlisting}
-
-This extra definition of \verb\doMatch\ checks if there are multiple functions as arguments and checks if \verb\Right\ is a nested pipe.
-If there is nesting, \verb\doMatch\ gets called again.
-
 
 \section{Number}
 \emph{Number} was created to give the user a generic interface to create numbers.
-It can be used to create integers, floats or a newly created number type.
-However because of the import system of MC it can directly import the integer and float types with all their functions from DotNet.
+
+However because of the import system of MC it can directly import the integer and float types with all their functions from .NET.
 It can still be used for self defined number types.
 
 \emph{Number} is built up from different modules to give the programmer the freedom to choose what their custom numbers can do.
+The modules are aranged according to the mathematical way to built up numerical operators~\cite{}.
+
 It starts with the \verb\MonoidAdd\ module.
+It declares the \verb\+\ operator for the custom number.
 
 \begin{lstlisting}
 TypeFunc "MonoidAdd" => #a => Module
@@ -260,10 +229,10 @@ MonoidAdd 'a => Module {
 }
 \end{lstlisting}
 
-   It declares the \verb\+\ operator for the custom number.
-   This needs the identity as a base number from which the operations will work.
+This needs the identity as a base number from which the operations will work.
 
-   Next we have the \verb\GroupAdd\ module.
+Next we have the \verb\GroupAdd\ module.
+This inherits everything from the module \verb\MonoidAdd\ and adds the \verb\-\ operator.
 
 \begin{lstlisting}
 TypeFunc "GroupAdd" => #a => Module
@@ -272,8 +241,6 @@ GroupAdd 'a => Module {
   Func 'a -> "-" -> 'a -> 'a #> 60
 }
 \end{lstlisting}
-
-This inherits everything from the module created with \verb\MonoidAdd 'a\ and adds the \verb\-\ operator.
 
 We do the same for multiplication and dividing.
 
@@ -317,22 +284,30 @@ Ofcourse all the operators still have to be defined, but that is up to the progr
 This gives the programmer the freedom to choose what the operators do.
 
 
-\subsection{Evolution}
+\subsection{Evolution of number}
 During development \emph{number} was used to create integers and floats.
 This was before the .NET import system was in place and it was thus needed.
 Currently it is only needed for user defined number types.
 
-\section{Record}
+The first iteration of \emph{number} was just one module with all the operators declared.
+This works for the standard number types like Integer and Float.
 
-With \emph{Record} we can create a key/value pair list which can be searched and manipulated.
-The special thing about this record is that is does all the work on compile time.
+When using it to create a vector the module will have functions which are never used, because vectors cannot be divided.
+
+For this reason the current \emph{number} design is similiar to the mathematical way.
+It costs a bit more code to set things up, but there is less overhead.
+
+
+\section{Record}
+With \emph{Record} we can create a list of key/value pairs which can be searched and manipulated.
+The special thing about this record is that is does all the searching on compile time.
 This makes the runtime code much faster.
 
-Ofcourse not all the computations can be done on compile time.
-Especially when creating games the records will be manipulated on runtime, which makes it impossible to actually compile the record completely.
+When using records in practice we see that not everything can will be known on compile time.
+Which makes a record that works on compile time useless.
 
-The way MC fixes this is to inline all the code on compile time.
-In this manner the code that needs to be actually executed can be optimised by the compiler after which it is executed on runtime.
+The way MC fixes this is to inline the code on compile time.
+In this way the code that needs to be actually executed can be optimised by the compiler after which it is executed on runtime.
 
 Record is declared as a module and contains TypeFuncs to make it work on compile time.
 
@@ -340,11 +315,11 @@ Record is declared as a module and contains TypeFuncs to make it work on compile
 TypeFunc "Record" => Module
 Record => Module{
   TypeFunc "Label" => String
-  TypeFunc "Field" => #a
+  TypeFunc "Field" => *
   TypeFunc "Rest" => Record
 \end{lstlisting}
 
-Here we see a the declarations which are the basis of a key/value pair list.
+Here we see a the declarations which are the basis of a list of key/value pairs.
 \verb\Label\ acts as the key, \verb\Field\ as the value paired with the key and \verb\Rest\ contains the rest of the record.
 
 When there is just one pair in the record we can get that record out easily, we already have it.
@@ -353,7 +328,8 @@ For this the \verb\get\ function was created.
 
 \begin{lstlisting}
   TypeFunc "get" => String => Record => Record
-  (if (l = label^rs) then
+
+  (if (l == label^rs) then
     rs
   else
     get l rest^rs) => res
@@ -361,14 +337,14 @@ For this the \verb\get\ function was created.
   get l rs => res
 \end{lstlisting}
 
-The \verb\get\ function takes a labes and a record.
+The \verb\get\ function takes a labels and a record.
 It checks the label of the record and if it is the same it returns the current record and if not the it recursively calls itself with the rest of the record.
 
 To manupilate these records there the \verb\set\ function was created.
 
 \begin{lstlisting}
-  TypeFunc "set" => String => #a => Record => Record
-  (if (l = label^rs) then
+  TypeFunc "set" => String => * => Record => Record
+  (if (l == label^rs) then
     RecordEntry l f rs
   else
     set l f rest^rs) => res
@@ -388,7 +364,7 @@ First we need to create a record entry.
 This is done with the \verb\RecordEntry\ TypeFunc.
 
 \begin{lstlisting}
-TypeFunc "RecordEntry" => String => #a => Record => Record
+TypeFunc "RecordEntry" => String => * => Record => Record
 RecordEntry label field rest => Record{
   Field => field
   Label => label
@@ -402,9 +378,9 @@ This is done by the \verb\EmptyRecord\ TypeFunc.
 \begin{lstlisting}
 TypeFunc "EmptyRecord" => RecordEntry
 EmptyRecord => RecordEntry {
-  Field => unit
-  Label => unit
-  Rest => unit
+  Field => Unit
+  Label => Unit
+  Rest => Unit
 }
 \end{lstlisting}
 
@@ -416,18 +392,7 @@ This creates an end to the record.
 The current record can only be instantiated and not updated.
 To expand the record to be updatable we need to add the update function.
 
-First we declare and define a \verb\TypeFunc\ which expands a record given to it.
-
-\begin{lstlisting}
-TypeFunc "updatableRecord" => Record => Record
-updatableRecord r => r{
-\end{lstlisting}
-
-The record \verb\r\ is used as input and is returned with added functions.
-Because MC does not support mutables, the returned record is a new record.
-The \verb\r\ used as output is a copy of the original, which gets expanded.
-
-Another way of writing it would be:
+First we declare and define a \verb\TypeFunc\ which creates a new record from the original with inherit.
 
 \begin{lstlisting}
 TypeFunc "updatableRecord" => Record => Record
@@ -435,7 +400,7 @@ updatableRecord r => Module {
    inherit r
 \end{lstlisting}
 
-The above syntax is the verbose version.
+The new module now contains everything of record \verb\r\.
 
 The we declare and define the update function.
 
@@ -453,28 +418,14 @@ It is the only situation in which we can be certain what the return value will b
 If the record is not \verb\Empty\ we cannot know what the programmer wants to do with \verb\update\.
 That is why we leave that definition of \verb\update\ up to the programmer.
 
-\subsection{Rule}
-When we have a record with alot of nested or complex datastructures that we want to update, we have to go through the entire structure to be able to call the update function.
-To fix this \verb\Rule\ was created.
-
-\verb\Rule\ takes a record a record and calls the update function directly, without going through the datastructure of the record.
-
-\begin{lstlisting}
-TypeFunc "apply" => Record => #a => Record
-update^r dt => res
-------------------
-apply r dt => res
-\end{lstlisting}
-
-Here we can see that all \verb\Rule\ does is call the update function directly.
-This way we only have to go through the structure of the record once, to get the record we will then pass to the rule.
-
-We can now call the update function indirectly by executing the rule which is linked with it.
 
 
-\subsection{Evolution}
+\subsection{Evolution of record}
+\textbf{FIX THIS !!!!!!!!!!!!!!!!!!!!!!}
 
-set and get used to check the field-argument for the same type of the current value of the field
+
+\subsubsection{Set and get}
+With the original version of \verb\set\ and \verb\get\ the field-argument was checked to be the same type offor the same type of the current value of the field
 for this fields was needed
 because of a fault, there needs to be no checking of the field, because field con be anything, fields became obsolete.
 
@@ -523,3 +474,21 @@ The \verb\Cons\ function was created to hold the type information of the record 
 
 The types of \verb\Label\, \verb\Field\ and \verb\Rest\ make up the type of the entire
 
+
+\subsection{Apply}
+When we have a record with alot of nested or complex datastructures that we want to update, we have to go through the entire structure to be able to call the update function.
+To fix this \verb\Rule\ was created.
+
+\verb\Rule\ takes a record a record and calls the update function directly, without going through the datastructure of the record.
+
+\begin{lstlisting}
+TypeFunc "apply" => Record => #a => Record
+update^r dt => res
+------------------
+apply r dt => res
+\end{lstlisting}
+
+Here we can see that all \verb\Rule\ does is call the update function directly.
+This way we only have to go through the structure of the record once, to get the record we will then pass to the rule.
+
+We can now call the update function indirectly by executing the rule which is linked with it.

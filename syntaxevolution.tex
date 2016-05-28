@@ -1,64 +1,268 @@
 \chapter{Syntax evolution}
-Here we will look into the overal syntax changes.
-The changes concerning specific items of the standard library, will be discussed in chapter~\ref{chap:standardlibrary}.
+Here we will look into the overal syntax changes of the language.
+The changes concerning the standard library, will be discussed in chapter~\ref{chap:standardlibrary}.
 
-\section{Generic type and kind identifiers}
-about the \verb|#a| and \verb|'a| notations
+\section{Generic type identifiers}
+As described in section~\ref{sec:basictypeidentifiers} generic type identifiers are indicated by \verb\'\ together with a name, \verb\'a\.
+The \verb\'\ is derived from the \emph{prime} notation, which indicates a derivative of the original~\cite{}.
 
-\section{Generic type annotations}
+For example when we have variable \verb\i\, this variable might get changed and is then indicated by \verb\i'\.
+This shows that \verb\i'\ is derived from \verb\i\.
+
+Instead of placing the \emph{prime} at the end, it is placed before the variable name to indicate it is a generic type.
+
+
+\section{Generic kind identifiers}
+Generic kind identifiers are currently unused, but it was thought to be necessary after the implementation of \verb\TypeAlias\.
+
+When working with kinds they are always generic, as they indicate an unknown type.
+That was why they were indicated by an \emph{asteriks}, \verb\*\.
+
+When \verb\TypeAlias\ was created it became apparent that the type would be the same in some cases.
+This resulted in generic kind identifiers.
+
+The notation devised was similiar to the generic type identifiers.
+Instead of the \emph{prime} the \emph{hash} was used.
+
 \begin{lstlisting}
-syntax tuple<a,b> WHY:
-
-Func "array" -> 'a -> Int -> Array<'a,Int>
-
-array<array<'a,12>,16>
-array(array('a 12) 16)
+TypeFunc "unknownKinds" -> #a -> #b -> #a -> #c
 \end{lstlisting}
 
-When using the parentheses instead of ...... the typechecker can't be sure if the \verb|'a| uses the \verb|12|, and thus creating a partial application, or if \verb|array| uses it to coate a new array
-with \verb|()| you do not know what 'a uses the 12 or if the 12 is part of array together with 'a
+Here we can see that the first and third arguments are of the same kind and the second argument and the return value are different kinds.
 
-However the problem is non existing when you look at what \verb|'a| actually is. lookup it's declaration.
-This however makes the readability of the code less coherent and makes the typechecker more complex.
+However this was an error in reasoning.
 
-For these reasons the code was changed to \verb|array<array<'a,12>,16>| instead of \verb|array(array('a 12) 16)|.
+The fact that they are kinds means that they can be any type.
+The official notation used for kinds is either \verb\Type\ or \verb\*\.
 
-is easier for typechecker
+The syntax of kinds was changed to \verb\Type\.
+This way the the \verb\*\ was free to be used for other things, like the tuple in section~\ref{sec:basictypefunc}.
+
+
+\section{Type annotations}\label{sec:syntaxtypeannotations}
+Generic type annotations were created during development to lower the complexity of the parser.
+
+We use a data declaration which creates an array.
+It takes a generic type and a Integer.
+
+Using the notation without type annotations it looks like this:
+
+\begin{lstlisting}
+Data "array" -> 'a -> Int -> Array
+\end{lstlisting}
+
+The Integer sets the lenght and the generic type will be the type the array consists of.
+
+When this is called we can use parentheses to indicate which arguments are grouped together.
+
+\begin{lstlisting}
+array(Int 12) -> arrayOfInts
+\end{lstlisting}
+
+The Integer array is created with twelve elements.
+
+But when we use a variable which contains the type, there is confusion what really happens.
+
+\begin{lstlisting}
+array(var 12) -> arrayOfInts
+\end{lstlisting}
+
+This could imply that \verb\var\ is a function which uses \verb\12\ as its argument and returns a type.
+\verb\arrayOfInts\ is then a closure which still needs an argument which tells the lenght of the array.
+
+We can only be sure what happens if we look at the declaration of \verb\var\.
+
+To avoid this and clarify what happens the type annotations were created.
+They are used in the data declaration, to specify the types used.
+
+\begin{lstlisting}
+Data "array" -> 'a -> Int -> Array<'a Int>
+\end{lstlisting}
+
+Types using the type annotations cannot be partial applied, because they need to know the types they contain to be declared correctly.
+
+When this is not done a compile time error is generated.
+
+So now when we call \verb\array\ we know that \verb\var\ must be a type.
+When \verb\var\ is declared as a function which returns a type, we will have to call \verb\array\ like this:
+
+\begin{lstlisting}
+TypeFunc "var" => Int => Type
+
+nr == 12
+------------
+var nr -> Int
+
+array((var 12) 9) -> arrayOfInts
+\end{lstlisting}
+
+This also lowers the complexity of the parser.
+With the use of type annotations, the parser does not have to look at \verb\var\ and what it is.
+
+For these reasons the type annotations were implemented into the syntax.
+
 
 \section{TypeAlias}
 Before there was \verb|TypeAlias|, \verb|TypeFunc| was used for the same functionality.
-The main problem, with \verb|Typefunc| being used in this manner, is that it only works one way.
-It constructs.
-It can not deconstruct what it creates.
+However \verb\TypeFunc\ cannot deconstruct.
 
-But the functionality needed in the cases where \verb|TypeAlias| is now used, is the construction and deconstruction of the types and kinds created.
-Therefor we needed a \verb|Data|-like functionality, but then on type and kind level.
+When constructing a new kind with \verb\TypeFunc\ it can not be deconstructed to its original kind.
 
-Hence \verb|TypeAlias| was created.
+This error was noticed when updating the monadic part of the standard library, see section~\ref{sec:standardmonad}.
 
-\verb|TypeAlias| was created during the assignment.
-Because of the complex constructs of, for example, monads there was a need for a \verb|Data| like contruct on kind level.
-These constructs were thought to be served by \verb|TypeFunc|, but a two way construct was needed and, as stated in section~\ref{subsec:typefunc}, \verb|TypeFunc| only works one way.
+\verb\Data\ could not be used as it cannot manipulate types it can only construct and deconstruct them.
+That is why \verb|TypeAlias| was created.
+It provides contructing and deconstructing functionality with type manipulation.
+
 
 \section{Module}
-At the start \verb|Module| was called \verb|Signature|.
+\subsection{Signature}
+Earlier in development \verb|Module| was called \verb|Signature|.
 It performed the same functionality as \verb|Module|.
-The name was changed for the user.
+
 From the language creators perspective \verb|Module| creates a specific signature on compile time.
 For the user it looks more like a container or class, when coming from object-oriented programming.
 
 Because the user will be the one actually using the language, the name was changed to what it resembles to the user.
-Thus \verb|Signature| became \verb|module|.
+
+
+\subsection{Expanding}
+During the development there were two ways of inheriting a module, via \verb\inherit\ and via expanding an existing module.
+Expanding modules is removed from MC, because of inconsistency issues.
+
+A \verb\Module\ could be expanded via a function.
+The function takes a module as argument and expands this module by adding declarations and, optionally, definitions.
+
+\begin{lstlisting}
+TypeFunc "expandModule" => Module => Module
+expandModule M => M{
+  Func "modulo" -> Float -> Float
+
+  a % 10 -> res
+  ---------------
+  modulo a -> res
+}
+\end{lstlisting}
+
+The module \verb\M\ is opened up again and \verb\modulo\ is added.
+Module \verb\M\ is then returned and contains the new function \verb\modulo\.
+
+This would have been syntactic sugar for creating a new module which inherits from \verb\M\.
+In this new module \verb\modulo\ is then added.
+
+\begin{lstlisting}
+TypeFunc "expandModule" => Module => Module
+expandModule M => Module{
+  inherit M
+
+  Func "modulo" -> Float -> Float
+
+  a % 10 -> res
+  ---------------
+  modulo a -> res
+}
+\end{lstlisting}
+
+The expand syntax makes it look like modules are mutable, which they are not.
+This makes it inconsistent with the rest of MC and the expand-syntax was removed.
+
 
 \section{priority}
+\textbf{DO THIS!!!!!!!!}
+
+why the \verb\#>\
 there was a need for priorities
 first only implemented without associativity
 then with right, left being the default
+
+
 \section{.NET libraries}
-started with . notation
-used . with MC order
-used \^ with MC order
-became \^ with .NET order
-\section{builtin}
-was first primitives
-was turned into builtin because it only contains litterals which are builtin
+When importing and calling .NET libraries the current syntax is using the element order of .NET with \verb\^\ as divider.
+
+\begin{lstlisting}
+Func "dotNetTest" -> String
+dotNetTest -> System^DateTime^Now^ToString()
+\end{lstlisting}
+
+This was not always used.
+The syntax for .NET imports went through several stages.
+
+The first implementation was the original .NET manner:
+
+\begin{lstlisting}
+dotNetTest -> System.DateTime.Now.ToString()
+\end{lstlisting}
+
+This seemed to strange considering the rest of the MC syntax.
+The order of the elements was then switched.
+
+\begin{lstlisting}
+dotNetTest -> ToString().Now.DateTime.System
+\end{lstlisting}
+
+This made it more like MC but it was still out op place because of the dot used.
+It also looked strange when calling a method.
+
+In the next itteration the dot was replaced with the caret.
+
+\begin{lstlisting}
+dotNetTest -> ToString()^Now^DateTime^System
+\end{lstlisting}
+
+This seemed more in sync with the rest of MC.
+The only problem was with the method calls.
+
+That is how we arrived at the current syntax used.
+The .NET order of elements is used and the \verb\^\ is used as seperator.
+
+
+\section{Builtin}
+The keyword \verb\builtin\ was first called \verb\primitives\.
+
+For the developers this was a good choice, as they indicate the primitives that needed to be built in the compiler.
+
+For the user however this seemed confusing.
+The user sees the \verb\primitives\ as types that are built into the language.
+
+The name was changed to \verb\builtin\, to better reflect the way how the user sees them.
+
+
+% \section{Data}
+% why it is not called alias.
+
+
+\section{Conditionals}
+\subsection{Inside the conclusion}
+During development we tried implementing conditionals inside the conclusion of a rule.
+This could make the code more compact.
+
+We will take the example of \verb\Func\ from section~\ref{sec:basicfunc}, and implement this.
+The code is then compacted to this:
+
+\begin{lstlisting}
+add b c -> res
+---------------
+computeNumber True b c -> res
+\end{lstlisting}
+
+This is just as easy to read as the original.
+
+It does make the conclusion less conclusive as there is now something happening inside the conclusion.
+The conclusion is meant to show the input and output of the rule, it is not meant to tell what the function does.
+
+That is where the premises are for.
+
+The compiler also needed to be modified heavily.
+It now needed to do computations inside the conclusion.
+
+To keep the language and the compiler modular, a comprise was done.
+Types created with \verb\Data\ and \verb\TypeAlias\ can be used as conditionals inside the conclusion.
+This is possible because they act as aliases and need no computation to be checked.
+
+Conditionals requiring computation, a comparison of values, will be done in the premises.
+
+
+\subsection{Equals}
+When comparing values the \verb\==\ operator is used.
+This is done to keep the the single equals sign free to be used by the programmer.
+

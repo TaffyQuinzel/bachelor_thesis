@@ -1,147 +1,171 @@
 \chapter{Assignment}
 \section{Company}
-The graduation assignment will be carried out at Kenniscentrum Creating 010.
+The graduation assignment is be carried out at Kenniscentrum Creating 010.
 The company is located in Rotterdam.
 \textit{Kenniscentrum Creating 010 is a transdisciplinary design-inclusive Research Center enabling citizens, students and creative industry making the future of Rotterdam}\cite{creating2016home}.
 
-With Kenniscentum Creating 010 the assignment will be carried out within a research group who is building a new programming language.
+The assignment is carried out within a research group, who is building a new programming language.
+The new programming language is called \emph{Casanova}.
 
-EXPAND THIS ALOT: SEE  3RD YEAR INTERNSHIP BEDRIJFSORIENTATIE.
+% \section{Supervision \& work methods}
+
+% \subsection{Working environment and tasks}\label{subsec:workenvmandate}
+% During the internship the student will work as a part of the existing research team, whom do research in the Casanova and MC languages.
+% The student will be doing research and programming and will be supported and helped by the entire research team.
+% Every two weeks the student will present his progress and receive feedback.
+
+% \subsection{Research methods}
+% During the internship there will be made use of different research methods.
+% This stems from the wide scope of the project and the fact that there are multiple research questions which require different approaches.
+
+% At the start there will be a preliminary research concerning MC.
+% This will consist of describing MC and the ways it works.
+
+% After this there will be a basic definition of the test program which will we written to further test MC.
+
+% When this is done there will be a evaluation of the test program and MC.
+
+% \subsection{Gathering information}
+% The information needed will be gathered from the research team involved, via personal interviews, and via published papers concerning the material.
+
+% \subsection{Validation of results}
+% The validity of the results will be secured by regularly discussing with the client and the supervisor.
+% Further more there will be programs will be double-checked by the supervisor and the other members of the research team.
+
+% \subsection{Validity and trustworthiness of sources}
+% The sources used will be published papers only and relative to the subject matter.
+% Other sources, such as personal communications will be with people who are approved by the supervisor.
+
+% \subsection{Project methods}
+% During the internship the LEAN-software development method will be used\cite{ries2011lean}.
+% Using this method gives the ability to quickly iterate through versions and gather knowledge more easily through these iterations.
+
+% \subsection{Risk analyses}
+% \begin{center}
+   % \begin{tabular}
+      % {| p{0.2\textwidth} | p{0.25\textwidth} | l | p{0.3\textwidth} |}
+      % \hline
+      % \textbf{Risk} & \textbf{Effect} & \textbf{Possibility} & \textbf{Counter measure}
+      % \\ \hline
+      % Quick development of the language. & Because the language becomes bigger as time progresses, the assignment could become too large to do in the set time. & 70\% & The analyses of MC goes on for a set period, which prevents the analyses going an for too long.
+      % \\ \hline
+      % The compiler is not finished at the time the programs need to be written. & The programs can not be tested in practice. & 80\% & The programs will be manually checked for errors by the student and the research team.
+      % \\ \hline
+      % The company goes bankrupt during the internship & The assignment will not be finished and the student will not be able to graduate. & 1\% & There is nothing the student can do to prevent this.
+      % \\ \hline
+   % \end{tabular}
+% \end{center}
+
+% \subsection{Quality expectations}
+% MC makes use of type theory and the programs written in it will therefor need to be in line with the type theory, as described in \cite{pierce2002types}.
+
+% Because the version of MC used in this internship has no compiler yet, the student will need to manually make sure that the program has no bugs and/or errors in them.
+% This will happen with the help of the compiler developers.
 
 \section{Motive}
+
 MetaCasanova (from now on called \emph{MC}) comes forth from the language Casanova, hence the name.
 
 Casanova is a language made for building games.
-It uses high abstractions to make the programming of games easier.
-Because of the complexity of these abstractions the compiler became complex aswell.
+It uses higher order types to make the programming of complex constructs easier.
+These constucts are often used in game development.
+A few of these constructs will be explained in detail from chapter~\ref{} onward.
+Because of the higher order types the compiler became complex.
 
-The compiler worked, but was still in development.
+The compiler for Casanova worked, but was still in development.
 So when a bug was found in the compiler, fixing it was becoming more and more time consuming.
+This frustrated the developers so much a new language was created.
 
-To address this problem MC was created.
+MC was this new language.
 MC serves as the language in which the compiler for Casanova will be written.
 
-As of now the MC is still in development and I will be contributing to it's development with this bachelor thesis.
+At the beginning of the assignment MC was still in development.
+The syntax was nearly complete, but was untested, and the standard library of MC was just beginning to take shape.
+The assignment was created to debug and expand the language.
+
+I took this assignment and have written my bachelor thesis on it.
 
 \section{Goal}
-The main goal is to debug and expand the language.
+As stated the main goal of the assignment is to debug and expand the language.
+This goal is quite broad and I have created a few subgoals to create a scope for the assignment.
 
-Because this is a very general goal it will be split into more concrete goals:
 \begin{enumerate}
-\item Double checking the existing design of the language.
-\item Participating in the decision making of new design choices.
-\item Extending the standard library.
-\item Creating test programs.
+   \item Double checking the existing design of the language.
+   \item Participating in the design of the language.
+   \item Extending the standard library.
+   \item Creating test programs.
 \end{enumerate}
+
+I will now explain the subgoals in greater detail.
 
 \subsection{Double checking the existing design of the language}
 At the start of the assignment MC will have to be checked for any existing faults.
 This way we can insure that the language has a safe base point from which it can be developed further.
 
-\subsection{Participating in the decision making of new design choices}
-MC is still in development, thus the language will change during the course of the assignment.
-These choices will have an effect on the end result of what the language will be.
-Because the assignment is to debug and expand the language, I will be actively involved with new design choices.
+The checking of MC will consist of the existing syntax and the ideas for which the syntax was created.
+This will be done by exploring the current syntax and understanding the reasons why it is this way.
 
-This way there is an extra check if the choices are within the general idea of the language and if they are correctly implemented.
+\subsection{Participating in the design of the language}
+As MC is still in development and my assignment consists of debugging and expanding, I will propose design changes and new designs.
+These designs will be discussed and reviewed with the rest of the team.
+
+This will be done in an exploratory way as the language grows and changes.
 
 \subsection{Extending the standard library}
-The standard library of every language is a basis for the programmers using the language.
-MC has but a small standard library and this needs to be much bigger to be of any use and to make MC a success~\cite{}whatmakesprogramminglanguagesgreat.
-% Because of the powerfull abilities of MC, see section~\ref{}, the standard library will be written in MC itself.
+The standard library of every language is an extention of the functionality of the language.
+It contains often used constructs and functions and makes the language more productive for the programmer.
+
+MC has but a small standard library and this needs to be expanded in order to be of any practical use.
+This also could help make MC a success~\cite{}whatmakesprogramminglanguagesgreat.
 
 The standard library of MC will be completely written in MC itself.
 This will show how powerfull the simple and effective syntax of MC is.
 
+Extending the library also gives me the position of a user of MC.
+For now the only people that have used MC are the developers themselves.
+Now that I will join the research team they will get a fresh and new look at the language through me.
+
 \subsection{Creating test programs}
-As of yet there are no users of MC language.
-This gives the developers very little feedback on any design ideas and choices that are and have been made.
+Writing the standard library is one aspect of a language.
+Another are actual applications.
 
-Creating test programs will therefor be very usefull for the developers, as they will have a huser who can give feedback.
+The standard library can be seen as an application, but it is different in the sense that they create standard functions to be used by programmers.
+Applications are not part of the code base and also serve users outside of the programming community.
 
-\subsubsection{The test programs}
-The
+Because the only users so far have been the developers, there have only been small test programs written.
+They often test a specific function of the compiler.
+The test applications will test the entire language.
 
-The test programs themselves should be a game or game-like.
-This is because games use alot of complex structures.
+Because of the timelimit I will not be able to create a huge application, but I will be able to create bigger ones than those currently used for testing.
+
+I have chosen to create game or game-like test prog
 
 
-% \begin{enumerate}
-   % \item For a minimum passing grade of 6: \newline
-      % A small interactive and graphical application.
-   % \item For an 8: \newline
-      % Within the application for a 6, add traversable and changeable data structures.
-   % \item And for a 10: \newline
-      % Within the application for an 8, add coroutines.
-% \end{enumerate}
 
-% After which the result is reflected upon.
-
-\section{Scope}
-The assignment
-
-\section{How is the supervision organized within the company}
-
-\subsection{Working environment and tasks}\label{subsec:workenvmandate}
-During the internship the student will work as a part of the existing research team, whom do research in the Casanova and MC languages.
-The student will be doing research and programming and will be supported and helped by the entire research team.
-Every two weeks the student will present his progress and receive feedback.
-
-\subsection{Research methods}
-During the internship there will be made use of different research methods.
-This stems from the wide scope of the project and the fact that there are multiple research questions which require different approaches.
-
-At the start there will be a preliminary research concerning MC.
-This will consist of describing and comparing MC and the ways it works.
-
-After this there will be a basic definition of the test program which will we written to further test MC.
-
-When this is done there will be a evaluation of the test program and MC.
-
-\subsection{Gathering information}
-The information needed will be gathered from the research team involved, via personal interviews, and via published papers concerning the material.
-
-\subsection{Validation of results}
-The validity of the results will be secured by regularly discussing with the client and the supervisor.
-Further more there will be programs will be double-checked by the supervisor and the other members of the research team.
-
-\subsection{Validity and trustworthiness of sources}
-The sources used will be published papers only and relative to the subject matter.
-Other sources, such as personal communications will be with people who are approved by the supervisor.
-
-\subsection{Project methods}
-During the internship the LEAN-software development method will be used\cite{ries2011lean}.
-Using this method gives the ability to quickly iterate through versions and gather knowledge more easily through these iterations.
-
-\subsection{Risk analyses}
-\begin{center}
-   \begin{tabular}
-      {| p{0.2\textwidth} | p{0.25\textwidth} | l | p{0.3\textwidth} |}
-      \hline
-      \textbf{Risk} & \textbf{Effect} & \textbf{Possibility} & \textbf{Counter measure}
-      \\ \hline
-      Quick development of the language. & Because the language becomes bigger as time progresses, the assignment could become too large to do in the set time. & 70\% & The analyses of MC goes on for a set period, which prevents the analyses going an for too long.
-      \\ \hline
-      The compiler is not finished at the time the programs need to be written. & The programs can not be tested in practice. & 80\% & The programs will be manually checked for errors by the student and the research team.
-      \\ \hline
-      The student dies & The assignment will not be finished and the student will not be able to graduate. & 0.0001\% & The student tries to avoid deadly situations.
-      \\ \hline
-      The company goes bankrupt during the internship & The assignment will not be finished and the student will not be able to graduate. & 1\% & There is nothing the student can do to prevent this.
-      \\ \hline
-   \end{tabular}
-\end{center}
-
-\subsection{Quality expectations}
-MC makes use of type theory and the programs written in it will therefor need to be in line with the type theory, as described in \cite{pierce2002types}.
-Because the version of MC used in this internship has no compiler yet, the student will need to manually make sure that the program has no bugs and/or errors in them.
 
 \section{Correlation with other projects}
 During the internship the research team keeps developing MC.
-There are also a two other student doing an internship on MC.
-One is building the compiler for MC and the other is optimizing the code generator.
-The student will have to cooperate with the research team and with both these students.
+There are also two other students doing an internship on MC.
+They are both working on the compiler, one is developing the back-end of the compiler and the other the front-end.
+The student will cooperate with the research team and both these students.
 
-\section{Working environment}
-\subsection{Project methods}
-During the internship the LEAN-software development method will be used\cite{ries2011lean}.
-Using this method gives the ability to quickly iterate through versions and gather knowledge more easily through these iterations.
+
+% \section{Execution}
+% The assignment will consist of three stages:
+
+% \begin{enumerate}
+   % \item Research on MC
+   % \item Expanding the standard library
+   % \item Creating test programs
+% \end{enumerate}
+
+% \subsection{Research on MC}
+% This will describe MC and the way it works.
+
+   % \subsection{Expanding the standard library}
+   % \subsection{Creating test programs}
+% This will consist of describing MC and the ways it works.
+
+% After this there will be a basic definition of the test program which will we written to further test MC.
+
+% When this is done there will be a evaluation of the test program and MC.

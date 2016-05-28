@@ -1,23 +1,36 @@
 \chapter{MC in detail}
+Here we will look at MC and learn what the language is and how it works.
+\textbf{FIX THIS SENTENCE:}
+Because the current version of MC is not documented, the following information comes from interviews with the research team.
 
 \section{What is MC}
-MC stands for MetaCasanova and is MC is a declaritive functional language.
+MC stands for MetaCasanova and is a declaritive functional language.
 It tries to be a completely pure language, which means no side-effects are allowed directly.
-It does not allow direct manipulation of values.
 
-\section{Why MC}
-because casanova
+MC can use .
+The exception to this rule is the .NET functionality.
+\textbf{.NET ALLOWS MANIPULATIVES, EXPAND}
 
 
 \section{Goal}
-The goal of MC is to use higher abstractions with type safety.
+\textbf{DOUBLE CHECK}
+The goal of MC is to use higher order types with type safety, in a natural way of programming.
+These higher order types gives the ability to resolve certain computations on compile time, which can normally be resolved at run time only.
+This can substantially increase performance at run time.
+
+It also supports the .NET library natively.
+Because .NET allows for manipulation of values, MC supports this when using .NET.
+
+MC also aims to be as flexible as possible with the safety of a strong type system.
+
 
 \section{Basics}
 We will now go through the basics of MC.
 What systems MC uses, learn how the syntax works and use small code samples to explain the workings.
 
-The changes and reasons why it works the way it currently works will be explained in part~\ref{part:mcexpanded}.
-This way we will first have a basic understanding of how MC works and we are more able to understand the reasons why it works this way.
+The evolution of these basics will be given in part~\ref{part:mcexpanded}.
+This will give us a better understanding of why and how MC evolved.
+
 
 \subsection{Terms, types \& kinds}\label{sec:basiclevels}
 With MC you program on three different levels:
@@ -31,207 +44,347 @@ Types are the types of variables, like Integer, String or Boolean.
 Kinds are for types, what types are to terms.
 You could say the kinds are the types of the types.
 
-Types and kinds only exist on compile time and are either resolved or inlined during code compilation.
-This will make the executed code much faster when doing complex operations.
-The compilation time will suffer from it, but because compilation only happens once, it is a good compromise for faster runtime code.
+\subsection{Runtime and compile time}
+Kinds are resolved or inlined at compile time.
+Types are also resolved or inlined, except when they create datastructures.
+These data structures keep existing on runtime.
 
-\subsubsection{Identifiers}
-Because there kinds are on such a high level there can be very little said about them, other then the fact that they are the same or different from each other.
-This is why a syntax was divised to show this, the \verb|#| notation.
-The \verb|#| is supplemented by a identifier, which is usually a letter or word.
+The syntax reflects this in the arrows used with the functions.
+The \verb\=>\ arrow indicates a function operates on compile time and the \verb\->\ arrow indicates a function operates on runtime.
 
-For example you can use \verb\#a\ or \verb\#foo\.
-
-On type level the same thing is done when the specific type is not yet known.
-Instead of the \verb\#\ the \verb\'\ is used.
-So instead of \verb\#a\ and \verb\#foo\, it would be \verb\'a\ and \verb\'foo\.
-This is usefull when declaring generic functions.
-
-\subsubsection{Runtime and compile time}
-In MC there is a clear difference between compile time.
-Everything on the term level is on runtime and everything on type and kind level is on compiletime.
 
 \subsection{Func}\label{sec:basicfunc}
-First we need to declare a function.
+First we need to declare a function before defining it.
 For this we use the keyword \verb|Func|.
 
 \begin{lstlisting}
-Func "foo" -> Boolean -> Int -> Int -> Int
+Func "computeNumber" -> Boolean -> Int -> Int -> Int
 \end{lstlisting}
 
-Here we see that the function \emph{foo} is declared by a String, which is the name of the function, a Boolean and three Integers.
+Here we see that the function \emph{computeNumber} is a function which goes from a Boolean and two Interegers to an Integer.
+
 The parameters are seperated by the \verb|->|.
 The last parameter is the return type of the function and all the parameters between the name and the return type, are the arguments of the function.
 
-Now let's define the function just declared.
-\begin{lstlisting}
+A function is defined by one or multiple \emph{rules}.
+A \emph{rule} consists of a \emph{conclusion} and one or more \emph{premises}.
+They are separated by the \emph{bar}.
+The conclusionstands underneath the bar and the premises above.
+
+Now let's define a rule for \verb\computeNumber\.
+
+\begin{lstlisting}[xleftmargin=5.0ex,numberstyle=\tiny\color{gray},numbers=left]
+a == True
 add b c -> res
 ---------------
-foo True b c -> res
+computeNumber a b c -> res
 \end{lstlisting}
 
-A function is defined by a \emph{rule} which has one or more \emph{premises}.
-They are separated by the \emph{bar}.
-The rule stands underneath the bar and the premises above.
-This syntax is similiar to the one used in natural deduction~\cite{}.
+The conclusion is on the fourth line, the bar on the third and the premise on the first and second.
+The conclusion has the name of the function and the input arguments on the left of the arrow and the output argument on the right.
+This syntax is similiar to that of natural deduction~\cite{}.
 
-In this case we have one premise above the bar.
+\subsubsection{Local defined variables}
+The variables named in the conclusion of a function are locally defined.
+With the function \verb\computeNumber\ the variables \verb\a\, \verb\b\ and \verb\c\ are examples of these local variables.
 
-We can also have multiple function definitions, like so:
+
+\subsection{Multiple rules}
+There can also be multiple rules which form function definition.
+
 \begin{lstlisting}
+a == True
 add b c -> res
 ---------------
-foo True b c -> res
+computeNumber a b c -> res
 
+a == False
 mul b c -> res
 ---------------
-foo False b c -> res
+computeNumber a b c -> res
 \end{lstlisting}
 
-When this happens the rules get executed in order.
-If the above rule failes and the rule beneath it is matched.
+When this happens the rules are attempted in order of definition.
+If the above rule fails and the rule beneath it is attempted.
+A rule fails when the arguments do not match.
+If none of the rules match the program fails.
 
-Let's take the following function call:
+Let us go through this process with an example.
+
+First we will try the following function call:
 \begin{lstlisting}
-foo true 5 3 -> newValue
+computeNumber False 5 3 -> newValue
 \end{lstlisting}
 
-The first rule to be tested is the one written first in the source code, so:
+The first rule to be attempted is the one written first in the source code, so:
 \begin{lstlisting}
-foo True b c -> res
+a == True
+add b c -> res
+---------------
+computeNumber a b c -> res
 \end{lstlisting}
-This rule will fail, because the first argument is false and not true.
-So this function definition will not be executed.
 
-The next rule to be matched on, is:
+This rule will fail, because the first argument has the value \verb\False\ and not \verb\True\.
+So this rule will not be executed.
+
+The next rule to be attempted is:
 \begin{lstlisting}
-foo False b c -> res
+a == False
+mul b c -> res
+---------------
+computeNumber a b c -> res
 \end{lstlisting}
-And this rule will get executed because the first argument matches.
+The first argument is set to \verb\False\ and the second and third are both Integers, so the rule matches.
 The rule will be executed and the result will be put in \verb|newValue|.
 
-Ofcourse the other arguments passed will also need to match.
 
-When no parameters are given, the function acts like a variable.
+\subsection{Constants}
+Constants can be created by using \verb\Func\ without any parameters.
+The return type still has to be declared.
+
 \begin{lstlisting}
 Func "bar" -> Int
 bar -> 5
 \end{lstlisting}
 
-As we have seen \verb|Func| uses types in it's declaration and terms in it's definition.
-The types enables to make sure the function will always be able to execute, when the argumenttypes match those declared.
-This also means that function declared by \verb|func| are on runtime.
+Here the constant \verb\bar\ is set to the value \verb\5\.
 
-As we will see in section~\ref{subsec:typefunc} MC also has the ability to declare and define functions on a level higher.
+\bigskip
+
+As we have seen \verb|Func| uses types in its declaration and terms in its definition.
+The types enables the detection of wrong function calls during compile time.
+
+Important to note is that functions declared by \verb\Func\ are on runtime.
+As we will see in section~\ref{sec:basictypefunc}, MC also has the ability to declare and define functions on compile time.
+
+\subsection{Functions as parameters}
+Aside from variables, functions can also be given as parameters.
+This needs to be specified in the declaration of the function.
+
+\begin{lstlisting}
+Func "isThisEven" -> ( 'a -> 'b ) -> 'a -> 'd
+\end{lstlisting}
+
+Here we see that the first argument \verb\( 'a -> 'b )\ is a function.
+This is can be seen when we declare a function which takes one argument.
+
+\begin{lstlisting}
+Func "x" -> 'a -> 'b
+\end{lstlisting}
+
+When we strip away the name of the function and the keyword \verb\Func\, we are left with just the function.
+
+\begin{lstlisting}
+'a -> 'b
+\end{lstlisting}
+
+This we can use in declarations to indicate a function is used as the argument.
 
 
-\subsection{Data}
-With \verb|Data| we can create constructor and deconstructors for a new type.
+\subsection{Data}\label{sec:basicdata}
+With \verb|Data| we can declare a constructor and deconstructors for a new type.
+Effectively making it an alias.
+
+Say that we want to create a union, a type which can be any of the predefined types within a set~\cite{}.
+For this we need a way to construct the union type and a way to deconstructed the union back to its original type.
+The deconstructor is needed to get know which of the types inside the union is actually used.
+Only then can we know which of the types inside the inion is used.
+
+As an example we will create a union of a String and a Float.
 \begin{lstlisting}
 Data "Left"  -> String -> String | Float
 Data "Right" -> Float  -> String | Float
 \end{lstlisting}
-Here we create two constructors whom both go to the same type, \verb_string | float_.
-And when we have a term with type \verb_string | float_, so either of type \verb|Left| or \verb|Right|, we can match to get the original term back.
-In this case a \verb|String|, when it matches on \verb|Left|, or a \verb|Float|, when it matches on \verb|Right|.
 
-Because \verb|Data| can work two ways, constructing and deconstructing, it can be seen as an alias for types.
+Here we create two constructors whom both go to the same type, \verb\String | Float\.
+\verb\Left\ and \verb\Right\ can be seen as an alias for the \verb\String | Float\ union.
 
-\verb\Data\ can also have a priority.
+Let us see how this is used.
+We need a function which takes a union as argument.
 
 \begin{lstlisting}
-Data "Left"  -> String -> String | Float  #> 7
-Data "Right" -> Float  -> String | Float  #> 5
+Func "isFloat" -> ( String | Float ) -> Boolean
 \end{lstlisting}
 
-This gives \verb\Left\ a higher priority then \verb\Right\.
+The parentheses in the declaration can be left out, but are used to clarify that the union is one argument.
+
+In the definition we want to check which type the union is.
+This can be done directly in the conclusion of a rule.
+
+\begin{lstlisting}
+isFloat Float -> True
+\end{lstlisting}
+
+The deconstructor of the argument given, automatically checks if the types match.
+This can be done because they are aliases.
+Aliases are automatically resolved to their basic types by the compiler.
+
+Conditionals using aliases can be put in the conclusion.
+Other conditionals have to be put in the premises, because they need to be computed.
+As can be seen in section~\ref{sec:basicfunc}.
+
+To make the definition of \verb\IsFloat\ complete we also need a rule that checks for \verb\String\.
+
+\begin{lstlisting}
+isFloat String -> False
+\end{lstlisting}
+
+Now we will test the function \verb\isFloat\ with the help of constant \verb\iAmFloat\.
+
+\begin{lstlisting}
+Right 9.27 -> iAmFloat
+\end{lstlisting}
+
+\verb\iAmFloat\ has type \verb\String | Float\ and can now be passed to \verb\isFloat\.
+
+\begin{lstlisting}
+isFloat iAmFloat -> output
+\end{lstlisting}
+
+When \verb\iAmFloat\ is deconstructed to its original type it will match with the first rule of \verb\isFloat\.
+The variable \verb\output\ now contains the value \verb\True\.
+
 
 \subsection{TypeAlias}
-\verb|TypeAlias| is the same as \verb|Data| only on a level higher.
+Because the \verb\|\ (\emph{pipe}) operator, used in section~\ref{sec:basicdata}, is not built in the language we need to create it.
+To do this we need to manipulate types.
+
+We have already seen that \verb\TypeFunc\ can do this, see section~\ref{sec:basictypefunc}.
+But to make \verb\|\ work, we now need a constructor and deconstructor that works with kinds.
+
+\verb\TypeAlias\ is the same as \verb\Data\ only on a higher level of abstraction.
 It constructs and deconstructs kinds.
 
+With \verb\TypeAlias\ we can create a generic \verb\|\ with which we can create unions.
+Unlike \verb\Data\, \verb\TypeAlias\ needs both a declaration and a definition.
+The declaration shows what happens on kind level and the definition shows what happens on type level.
+
+
 \begin{lstlisting}
-TypeAlias #a => "*" => #b => #c
-'a * 'b => tuple<'a 'b>
+TypeAlias Type => "|" => Type => Type
 \end{lstlisting}
 
-Here we see how a tuple gets created with the help of \verb|TypeAlias|.
-Because \verb\TypeAlias\ works on the type level, we need a declaration and a definition.
-\verb\Data\ does not need this, because it creates types which directly relate to the terms.
-Because kinds can create more complex data con- and deconstructors it is necessary to have a separate declaration and definition.
+Here we see how the generic \verb\|\ is declared.
+It takes two paramaters of any type and returns a type.
 
-The definition can be more precise of what the \verb\TypeAlias\ actually does.
-This is especially necessary with the monadic part op the standard library.
-For more on this see~\ref{chap:....}.
+The \verb\Type\ is a kind and indicates an unknown type is used.
 
-We also see how we can declare that an argument will be in front of the the name of the \verb|TypeAlias| function.
-This can also be done with \verb|Func|, \verb|Data| and \verb|TypeFunc|.
-\verb\TypeFunc\ is explained in the next section.
+As shown parameters can be infix.
 
-There is one limitation to the use of argument before the name of the declaration, there may only be one.
+\subsubsection{Infix parameters}
+There is a limitation to the use left arguments, there may only be one.
 This is because of the parser used.
-The parser would become overly complex when adding multiple arguments in before the name of the declaration.
+The parser would become overly complex when adding multiple arguments on the left.
 
 Because the benefits of having multiple arguments in front of the function name do not outway the time it consumes to expand the parser, the choice was made to only allow one argument in front.
 
+\bigskip
 
-The syntax reflects the difference between the levels used, to easily know on which level the function operates.
+When defining \verb\|\ we want to use generic types.
+This way a union can be created from all types.
 
-The declaration uses the \verb|=>| to indicate it operates on the type and kind level.
-Just like \verb|->| indicates the operation on term and type level.
+\subsubsection{Generic type identifiers}\label{sec:basictypeidentifiers}
+To indicate generic types the \verb\'\ notation is used.
 
-\subsection{TypeFunc}
-\verb|TypeFunc| creates a function on type level.
+This is enhanced with the use of \emph{identifiers} after \verb\'\.
+These give the generic type a name and can be used to express if one generic type is the same as another generic type.
+
+We will use this in the definition of \verb\|\:
 
 \begin{lstlisting}
-TypeFunc "bar" => #a => #b
+'a | 'b => pipe<'a 'b>
 \end{lstlisting}
 
-It works much like \verb|Func| only instead of terms it uses types and instead of types it uses terms.
+Now we can say that two different types are used as the arguments and in the created pipe.
 
-This means that \verb|TypeFunc| works with kinds in its declaration to check the types used in the definition.
-Which is the same principle as \verb|Func|, which uses types in its declaration to check the terms used in the definition.
+\subsubsection{Type annotiatons}\label{sec:basictypeannotations}
+The angle brackets are used as type annotation for \verb\pipe\.
+They indicate that \verb\'a\ and \verb\'b\ are part of the type \verb\pipe\.
+This is only used with generic types, because it makes it easier for the parser to resolve the types.
+More on this in section~\ref{sec:syntaxtypeannotations}.
+
+
+\subsection{TypeFunc}\label{sec:basictypefunc}
+\verb|TypeFunc| creates a function on type level.
+It can do computations with both types and terms.
+
+We will demonstrate the power of \verb\TypeFunc\ with a function which manipulates a type.
+The function will take a tuple and return the same tuple, but with switched types.
+
+First we need to declare a tuple with \verb\TypeAlias\.
+
+\begin{lstlisting}
+TypeAlias Type => "*" => Type => Type
+'a * 'b => tuple<'a 'b>
+\end{lstlisting}
+
+Now that we have a tuple we can use it in the function declaration.
+The tuple argument will have generic types so it can work with any tuple.
+
+\begin{lstlisting}
+TypeFunc "switch" => tuple<'a 'b> => tuple<'b 'a>
+\end{lstlisting}
+
+Next we have the definition.
+Here we need to deconstruct the tuple to its original arguments.
+These arguments can then be used to create the return tuple.
 
 \begin{lstlisting}
 a => (c * d)
 (d * c) => res
 ---------------
-bar a => res
+switch a => res
 \end{lstlisting}
 
-As we can see function \emph{bar} takes a type, deconstructs the type, switches the arguments of this type and returns that as the result.
+Here we can see how the types inside the tuple are switched and returned as a new tuple.
 
-As with \verb|TypeAlias| it uses the \verb|=>| to indicate it works on type and kind level.
+\subsubsection{Parameters}
+Important to note is that both \verb\TypeAlias\ and \verb\TypeFunc\ can use kinds, types and terms.
+Because they work on compile time only, they cannot replace \verb\Data\ and \verb\Func\.
 
-The special thing about \verb\TypeFunc\ is that it can also directly work with terms.
-This means that........FILL THIS IN PLEASE
+\verb\Data\ and \verb\Func\ exist for explicit runtime functions.
 
 
 \subsection{Module}
-\verb|Module| is used to create an interface on compiletime.
-It is a collection of functions and can be inherited.
+\verb|Module| is used to create a container on compile time.
+It is a collection of function declarations and definitions.
 
 It does not fit within the levels defined in section~\ref{sec:basiclevels}.
+Modules can only be declared by \verb\TypeFunc\.
+
+Say we want to create a container for every type which does an addition of two variables of those types.
+The could be declared when we need them or we can put them in a \verb\Module\.
+
+When we create an addition container using a module, we do not have to type out the addition functions for every type.
+We can just call the module to create the functions for us.
+
+A \verb\Module\ is declared with a \verb\TypeFunc\.
+\begin{lstlisting}
+TypeFunc "Add" => Type => Module
+\end{lstlisting}
+
+Here we declare the \verb\Add\ to take a type and return a \verb\Module\.
+
+We then want to define the module \verb\Add\ with the \verb\+\ operator and the \verb\identityAdd\ constant.
 
 \begin{lstlisting}
-TypeFunc "MonoidAdd" => #a => Module
-MonoidAdd 'a => Module {
+Add 'a => Module {
   Func 'a -> "+" -> 'a -> 'a
   Func "identityAdd" -> 'a
 }
 \end{lstlisting}
 
-Here we see a basic inteface for a generic add functionality.
-As shown it can contain \verb|Func|s, but can also contain \verb|Data|, \verb|TypeFunc|, \verb|TypeAlias| and even another \verb|module|.
+This creates a basic container with generic addition functionality.
 
-The \verb|Func|s within the Module do not have to be defined, they can just be the declarations.
+As shown it can contain \verb|Func|, but can also contain \verb|Data|, \verb|TypeFunc|, \verb|TypeAlias| and another \verb|Module|.
+
+The declarations within the Module do not have to be defined.
 This way we can define different behavior for every instance of the module.
 
-But it is possible to have a function declared and defined within a module, this creates a property-like behavior within the module.
-When this is done, the user must be certain that the function will always be executable.
-If this is not the case the typechecker will fail.
+It is possible to have a function declared and defined within a module.
 
-When we want to define the above declared \verb|MonoidAdd| for an integer, it will look like this:
+When we want to define the above declared \verb|Add| with an integer, we instanciate the module with \verb\Int\.
+We then define the functions which are declared within \verb\Add\ to finish the module.
 
 \begin{lstlisting}
 MonoidAdd Int = {
@@ -240,37 +393,7 @@ MonoidAdd Int = {
 }
 \end{lstlisting}
 
-The \verb|Func|s are defined as the normally are, only now they are wrapped within a \verb|Module|.
-The \verb|Module| is defined in much the same way other functions are defined.
-They simply contain function definitions within itself.
-
-\verb\Module\s can also be expanded.
-This is done by taking an existing module and adding declarations and/or definitions to it.
-
-\begin{lstlisting}
-Int{
-  Func "extraAdd" -> Int -> Int
-  a + a -> b
-  ---------------
-  extraAdd a -> b
-}
-\end{lstlisting}
-
-The module \verb\Int\ is expanded with the \verb\extraAdd\ function.
-When we look inside \verb\Int\ it will look like this:
-
-\begin{lstlisting}
-Int{
-  Int -> "+" -> Int -> Int
-  identityAdd -> 0
-
-  a + a -> b
-  ---------------
-  extraAdd a -> b
-}
-\end{lstlisting}
-
-It contains the \verb\+\ operator, the \verb\IdentityAdd\ constant and the \verb\extraAdd\ function.
+The \verb|Func|s are defined as they normally are, only now they are wrapped within a \verb|Module|.
 
 
 \subsubsection{The caret}
@@ -282,34 +405,42 @@ caretTest -> identityAdd^Int
 \end{lstlisting}
 
 This creates a constant named \verb\caretTest\ with the same value as the \verb\identityAdd\ from the module \verb\Int\.
-The \verb\^\ can be seen as the `\verb\.\` (the dot) used in C\#.
-The main difference with most languages implementing such a feature, is the hierarchy of the elements.
-In C\# the first element is the uppermost class.
-The \verb\^\ puts the elements in the oposite order.
+The \verb\^\ can be seen as the `\verb\.\' (the dot) used in C\#.
+The hierarchy used in MC is different from most languages.
 
-In the example we first say what we want and then say where to find it.
-This has the advantage of knowing immediately what you are using and if you want to know where it actually comes from you can read on.
+Say we have a C\# class \verb\Int\ containing the constant \verb\identityAdd\, the constant is called like this:
+\begin{lstlisting}
+Int.identityAdd
+\end{lstlisting}
+
+As seen in the example MC does it the other way around.
+This has the advantage of knowing immediately what you are using, instead of knowing where it comes from.
+
 
 \subsubsection{Inherit}
 Modules can also inherit from other modules.
 This is done with \verb\inherit\.
 
+We will create a module which inherits from the \verb\Add\ module.
+The operator \verb\-\ will then be added aswell.
+
 \begin{lstlisting}
-TypeFunc "GroupAdd" => #a => Module
+TypeFunc "GroupAdd" => Type => Module
 GroupAdd 'a => Module {
-  inherit MonoidAdd 'a
-  Func 'a -> "-" -> 'a -> 'a #> 60
+  inherit Add 'a
+  Func 'a -> "-" -> 'a -> 'a
 }
 \end{lstlisting}
 
-The module \verb\MonoidAdd\ from section~\ref{sec:basicmodule} is instantiated with \verb\'a\.
-The created module is then inherited from.
-The function declarations from the inherited module, \verb\MonoidAdd\ are then directly usable within the new module, \verb\GroupAdd\.
+The module \verb\Add\ from section~\ref{sec:basicmodule} is instantiated with \verb\'a\.
+The created \verb\Add\ module is then inherited into \verb\GroupAdd\.
+
+The function declarations and definitions of the inherited module are directly usable within the new module.
 
 If a module takes another module as an argument, the module can also directly inherit.
 
 \begin{lstlisting}
-TypeFunc "GroupAdd" => MonoidAdd => Module
+TypeFunc "GroupAdd" => Add => Module
 GroupAdd M => Module {
   inherit M
 }
@@ -317,30 +448,58 @@ GroupAdd M => Module {
 
 Now everything from module \verb\M\ is inherited into \verb\GroupAdd\.
 
-When inheriting a module which contains an inherit, they are also inherited in to the current module.
+When inheriting a module which contains an inherit, these are also inherited in to the current module.
 This works recursively.
 
+
 \subsection{priority}
-Do this .......
-higher number is higher priority
-Default is left associative with \verb\R\ associative is right.
+We can also give a priority together with a declaration.
+The priority tells which function to execute first.
+
+The priority is indicated by the \verb\#>\ and is placed after the declaration.
+When we look at \verb\Data\ it will look like this:
+
+\begin{lstlisting}
+Data "Left"  -> String -> String | Float  #> 7
+Data "Right" -> Float  -> String | Float  #> 5
+\end{lstlisting}
+
+And with \verb\Func\ and \verb\TypeFunc\ it is used like this:
+\begin{lstlisting}
+Func "bar" -> Int #> 12
+TypeFunc "foo" => Float => 'a => 'b #> 9
+\end{lstlisting}
+
+The \verb\#>\ is also used to indicate associativity.
+Everything is left associative by default, but if we want to make it right associative we can do that by placing an \verb\R\ after the \verb\#>\.
+
+\begin{lstlisting}
+Func Int -> "\" -> Int -> Int #> R
+\end{lstlisting}
+
+The priority and associativity can also be used in combination with each other.
+
+\begin{lstlisting}
+Func Int -> "\" -> Int -> Int #> 25 R
+\end{lstlisting}
+
 
 \subsection{Import}
-In section~\ref{sec:basicmodule}
-\verb\Import\ is used when importing or including other files in the current file.
-It is called \verb\import\ because it literaly imports all the code of the imported file into the current file.
+\verb\Import\ is used when importing other files in the current file.
 
 If the file imported has any imports, they are ignored.
-Unlike \verb\inherit\ \verb\import\ is not recursive.
+Unlike \verb\inherit\, \verb\import\ is not recursive.
 
-The programmer cannot directly use the declarations and definitions used in the imported file.
-The \verb|^| is used to do this and works in the same way as it does with modules.
+The programmer can directly use the declarations and definitions used in the imported file.
+When the programmer wants to explicitely specify to use a function from the imported file the \verb|^| is used.
+
+We will import the file ``vector'' and use the \verb\Vector2\ type from it.
 
 \begin{lstlisting}
 import vector
 
-Func "output" -> Vector2^vector
-output -> createVector2^vector 5.9 19.0
+Func "location" -> Vector2
+location -> createVector2^vector 8.9 19.0
 \end{lstlisting}
 
 The importing of MC files always works with non capitalized import statements, even when the actual files does contains capitals.
@@ -353,7 +512,7 @@ When calling a .NET function the elements are in the same order as with .NET, in
 import System
 
 Func "dotNetTest" -> String
-dotNetTest -> System^DateTime^Now^ToString()
+dotNetTest -> DateTime^Now^ToString()
 \end{lstlisting}
 
 Here \verb\dotNetTest\ becomes a String which contains the current date and time.
@@ -362,9 +521,10 @@ In keeping constistency with the .NET way of calling, the programmer does not ha
 This might seem like a trivial thing to do, but from experiments we concluded that it confused the programmer more than initially thought.
 For this reason the order of elements in a .NET call will stay in synchonicity with the .NET standard.
 
-\section{Builtin}
-Some things cannot be created out of nothing and therefor need to be built in the compiler.
-An example is boolean and is further explained in section~\ref{sec:standardprelude}.
+
+\subsection{Builtin}
+Some things cannot be created out of nothing and need to be built in the compiler.
+An example of this is boolean.
 
 When using such a builtin literal the keyword \verb\builtin\ is used.
 We can now correctly implement the function \verb\foo\ from section~\ref{sec:basicfunc} using the \verb\builtin\ keyword:
@@ -381,18 +541,19 @@ foo False^builtin b c -> res
 
 It can be seen as if they are imported
 
-\section{Comments}
+\subsection{Comments}
 There are two sorts of comments in MC: a single line comment, indicated by \verb\$$\, and a block comment, indicated by \verb\$* *$\.
 With these two options the programmer can sufficiently insert comments in the code.
 
-\section{Lambdas}
-MC also has a fully implemented lambda calculus system.
+
+\subsection{Lambdas}
+MC also has a fully implemented lambdas.
+
+The basic syntax is as one would expect of a lambda, it has arguments and returns what the functionBody returns
 
 \begin{lstlisting}
-(\ input -> outputFuncion )
+(\ arguments -> functionBody )
 \end{lstlisting}
-
-The basic syntax is as one would expect of a lambda, it has input and returns the function or the value the function produces.
 
 In practice this would look like:
 
@@ -402,74 +563,116 @@ In practice this would look like:
 
 Lambdas do not need to be declared because they always are generic functions.
 The typechecker will check the lambdas the same way as any other generic function.
-From the context of what the lambda does together with the types of the arguments, it can deduct what the output type should be.
+From the context of what the function body does together with the types of the arguments, it can deduce what the output type should be.
+
 
 \subsection{ArrowFunc}\label{sec:basicmcarrowfunc}
-MC also has another way of creating lambdas, with \verb\ArrowFunc\.
-
 \verb\ArrowFunc\ always needs an argument on the left of the name and atleast one function to the right.
+A unique feature of \verb\ArrowFunc\ is the two syntax options it has when the function gets called.
+
+The first is like a normal function and the second converts it to a lambda.
+
+As with \verb\Func\ it needs a declaration and a definition.
 
 \begin{lstlisting}
-ArrowFunc Int -> ">>~" -> (Int -> Int) -> Int
+ArrowFunc Int -> ":~>" -> (Int -> Int) -> Int
 f a -> res
 -------------
-a >>~ f -> res
+a :~> f -> res
 \end{lstlisting}
 
-Here \verb\another\ takes an integer and a function that takes an integer and returns an integer.
+Here \verb\:~>\ takes an integer and a function that takes an integer and returns an integer.
 
-The definition is looks like a normal function.
-When we call \verb\>>~\ it can be done in two ways.
+The declaration and definition are the same as the rest of MC.
 
-The normal way we call a function:
+When we call \verb\:~>\, there is the normal way:
 
 \begin{lstlisting}
-a >>~ f -> res
+a :~> f -> res
 \end{lstlisting}
 
-And like this:
+And there is the second way of calling:
 
 \begin{lstlisting}
-{a >>~ out
+{a :~> out
   f out} -> res
 \end{lstlisting}
 
-When called like this it creates a converts it to a lambda.
+The brackets are used to indicate everything inside it belongs together.
+When an \verb\ArrowFunc\ is called like this it gets converted to a lambda.
+The first argument is then used a the argument for that lambda.
 
 \begin{lstlisting}
 (\ out -> f out ) a -> res
 \end{lstlisting}
 
-There is a lambda created from the function declared below the \verb\>>~\ and \verb\a\ is used as input for this lambda.
 The result from this is then returned as the output in \verb\res\.
 
-This syntax exists to remove the neccessity of the lambda syntax in this perticular situation and compress the code.
-It stems from the use of the bind of monads, which will be explained in further detail in section~\ref{sec:standardmonad}.
+This syntax exists for when the nesting of lambdas occur.
+Lambdas become unreadable when nested.
+
+\begin{lstlisting}
+(\ b -> (\ c -> f c ) b ) a -> res
+\end{lstlisting}
+
+When using the \verb\ArrowFunc\ syntax it nests neatly.
+
+\begin{lstlisting}
+{a :~> b
+  {b :~> c
+    f c}} -> res
+\end{lstlisting}
+
+This syntax stems from the use of the bind of monads, which will be explained in further detail in section~\ref{sec:standardmonad}.
 
 
 \subsection{Partial application}
 Lastly MC supports partial application.
-What this means is that you do not have to give all the arguments to a function.
-When this is done a lambda is created and given as output.
+This means that you do not have to give all the arguments to a function.
+When this is done a closure is created and given as output.
 
+We will create a closure with the function \verb\add\.
+\verb\add\ takes two Integers and returns an Integer.
+
+In the definition we will say the two arguments will be added together.
 \begin{lstlisting}
 Func "add" -> Int -> Int -> Int
 
-a + b -> c
+a + b -> res
 --------------
 add a b -> res
-
-add 2 -> addTwo
-
-addTwo 6 -> foo
-
-addTwo 7 -> bar
 \end{lstlisting}
 
-We have defined the function \verb\add\ and with it created the function \verb\addTwo\.
-The function \verb\addTwo\ always adds \verb\2\ to the input value.
-This way \verb\foo\ has a value of \verb\8\ and \verb\bar\ of \verb\9\.
+Now we will give only one argument to \verb\add\ and create a new function \verb\addThree\.
+
+\begin{lstlisting}
+add 3 -> addThree
+\end{lstlisting}
+
+With this construct we have created the partially applied function \verb\addThree\.
+When we look what it contains we see that it has a closure with a partly implemented \verb\add\.
+
+\begin{lstlisting}
+3 + b -> res
+--------------
+add 3 b -> res
+\end{lstlisting}
+
+We can now give \verb\addThree\ its second argument to complete the closure.
+This can be done multiple times.
+
+\begin{lstlisting}
+addThree 6 -> foo
+
+addThree 7 -> bar
+\end{lstlisting}
+
+The variable \verb\foo\ has a value of \verb\9\ and \verb\bar\ has a value of \verb\10\.
+
+When type annotations are used there can be no partial application.
+The type annotations need to know what types it gets or they will fail.
+This is further explained in section~\label{sec:syntaxtypeannotations}.
 
 \bigskip
 
-Now that we know the basics of MC lets take a look at how the syntax has come to this point.
+Now that we know the basics of MC lets take a look at the syntax has evolved.
