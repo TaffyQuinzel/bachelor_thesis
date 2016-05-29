@@ -1,35 +1,63 @@
 \chapter{Test programs}
-There have been two test programs written:
+There have been two test programs written to test the language.
 
-\begin{enumerate}
-   \item Bouncing ball
-   \item Tron
-\end{enumerate}
-
-\paragraph{Bouncing ball} is used as a preliminary test of the updatable records.
-It will show how the updatable records are used in practice.
-
-\paragraph{Tron} is a more advanced program which will utilise user input.
-The game tron~\cite{} has been chosen because of the minimalistic graphics.
-This allows us to focus on the internal workings of the game.
+The first of these is a simple bouncing ball.
 
 
 \section{Bouncing ball}
+Bouncing ball is used as a preliminary test of the updatable records.
+It will show how the updatable records are used in practice.
+
 This program bounces a ball up and down.
-It uses the entity from the Casanova library and the Microsoft XNA library for the \verb\Vector2\.
+
+The ball will have two properties, velocity and position, which will implemented as records.
+Both of these will then be put inside the updatable record of the ball.
+
+The update function will then add implement how the ball bounces.
+
+First we import prelude, record and the XNA framework
+The Microsoft XNA library will be used for the \verb\Vector2\ it has and the Thread library will be used to call the \verb\Sleep\ function.
 
 \begin{lstlisting}
 import Microsoft^Xna^Framework
+import System^Threading^Thread
 import record
+import prelude
+\end{lstlisting}
 
+The record of the ball will be build bottom-up.
+This is done because every record needs to have a \verb\rest\ as an argument.
+
+\verb\Velocity\ is created first, because it needs to be updated less.
+It keeps deep searches of the record to a minimum.
+
+\begin{lstlisting}
 RecordEntry "Velocity" Vector2(0.0f, 98.1f) Empty
+\end{lstlisting}
+
+Then \verb\Position\ will be created with \verb\Velocity\ as its \verb\rest\ argument.
+
+\begin{lstlisting}
 RecordEntry "Position" Vector2(100.0f, 0.0f) Velocity
+\end{lstlisting}
 
-updatableRecord (RecordEntry "Ball" unit Position) => Ball
+Lastly we create the updatable record \verb\Ball\.
+This is done in one line by creating a record entry and passing it directly as argument to \verb\updatableRecord\.
+\verb\Position\ is used as \verb\rest\ argument to complete the record.
 
-Ball{
+\begin{lstlisting}
+updatableRecord (RecordEntry "Ball" unit Position) => Ball {
+\end{lstlisting}
+
+We then need to define the \verb\update\ function.
+
+The \verb\Position\ and \verb\Velocit\ records are put in a variable, so we can use them directly.
+\begin{lstlisting}
   get^e "Position" Rest^e => position
   get^e "Velocity" Rest^e => velocity
+\end{lstlisting}
+
+\begin{lstlisting}
   (if ((Field^position).Y <= 500.0f) then
     ((set^e "Position"
            (Field^position +^Vector2 (Field^velocity *^Vector2 dt))
@@ -46,7 +74,206 @@ Ball{
 }
 \end{lstlisting}
 
+The final step is to create the \verb\run\ function to start the program.
+It will call the update function of \verb\Ball\, sleep for a set amount of time and then call itself.
+
+\begin{lstlisting}
+Func "run" -> Record -> String
+
+update^ball ball time -> ball'
+Sleep(1000)
+run ball' (time +^Int 1000) -> res
+---------------
+run ball time -> res
+\end{lstlisting}
+
+This creates an infinite loop, so the ball will keep on bouncing.
+
+The return will never be set as it will keep calling itself until the program stops.
+
 \section{Tron}
+Tron is a more advanced program which will utilise user input.
+The game tron~\cite{} has been chosen because of the minimalistic graphics.
+This allows us to focus on the internal workings of the game.
+
+
 \subsection{Bike}
+
+\begin{lstlisting}
+import Framework^Xna^Microsoft
+import Input^Windows^System
+import entity^Casanova
+import prelude
+
+TypeFunc "PositionEntity" => String => Vector2 => EntityField => EntityField
+Entity label pos rest => e
+--------------------------
+PositionEntity label pos rest => UpdatableEntity e{
+  dts -> (dt,speed)
+  Field^p +^Vector2 dt *^Vector2 speed -> newPos
+  Entity label^p newPos Rest^p -> res
+  -----------------------------------
+  update p dts -> res
+}
+
+TypeFunc "PositionRule" => Rule
+PositionRule => (Rule PositionEntity){
+  update^e dt -> res
+  ------------------
+  apply e dt -> res
+}
+
+TypeFunc "TrailEntity" => String => Vector2 => EntityField => EntityField
+Entity label field rest => e
+----------------------------
+TrailEntity label field rest => UpdatableEntity e{
+  Entity label^t pos fields^t => res
+  ----------------------------------
+  update t pos => res
+}
+
+TypeFunc "TrailRule" => Rule
+TrailRule => (Rule TrailEntity){
+  update^e dt -> res
+  ------------------
+  apply e dt -> res
+}
+
+TypeFunc "Keys" => Key => Key => Key => Key => EntityField
+Entity "Left" left Empty
+Entity "Right" right Left
+Entity "Up" up Right
+Entity "Down" down Up => res
+------------------------------
+Keys left right up down => res
+
+TypeFunc "Bike" => String => Int => Keys => Vector2 => TrialEntity => EntityField => EntityField
+Entity "Colour" rgb Empty
+Entity "IsAlive" True^builtin Colour
+Entity "Controls" keys IsAlive
+Entity "Speed" speed Controls
+PositionEntity "Position" position Speed
+Entity "Trail" trail Position => field
+Entity label field rest => e
+--------------------------------------
+Bike label rgb keys speed position trail rest => UpdatableEntity e{
+  $$ check if alive
+  (if Field^IsAlive then
+    get^b "Trial" Field^b => trial
+    get^trail "Position" Rest^trail => position
+    $$ update trail
+    apply^TrialRule Field^trial Field^position => newTrailEntity
+    $$ update position
+    get^position "Speed" Rest^position => speed
+    apply^PositionRule position (dt,Field^speed) -> newPos
+    Entity label^trial newTrialEntity newPos => newTrial
+    Entity Label^b newTrail Rest^b
+  else
+    b) -> res
+  -------------------------------------
+  update b dt -> res
+}
+
+TypeFunc "BikeRule" => Rule
+BikeRule => (Rule BikeEntity){
+  update^e dt -> res
+  ------------------
+  apply e dt -> res
+}
+\end{lstlisting}
+
+
 \subsection{Playfield}
+\begin{lstlisting}
+import Framework^Xna^Microsoft
+import entity^Casanova
+import prelude
+import bike
+
+
+TypeFunc "BikeEntity" => String => EntityField => EntityField => EntityField
+BikeEntity label bikes rest => Entity label bikes rest{
+
+  Func "updateIsAliveAll" -> EntityField -> Vector2 -> EntityField
+  Func "updateIsAliveAll" -> EntityField -> Vector2 -> EntityField
+  Field^bs -> bikeEntities
+  updateBikes bikeEntities dt -> newBikeEntities
+  set^bs label^bs newBikeEntities bs -> res
+  ------
+  updateIsAlive bs fieldsize -> updatedBikes
+
+  Func "updateBikes" -> EntityField -> Float -> EntityField
+  update^b b dt
+  updateBikes Rest^b dt
+  ---------------------
+  updateBikes b dt -> res
+
+  updateBikes Empty dt -> Empty
+
+  Field^bs -> bikeEntities
+  updateBikes bikeEntities dt -> newBikeEntities
+  set^bs label^bs newBikeEntities bs -> res
+  -----------------------------------------
+  update bs dt -> res
+}
+
+TypeFunc "Playfield" => String => EntityField => Vector2 => EntityField => EntityField
+Entity "Winner" Unit Empty
+BikeEntity (label + "bikes") bikes Winner
+Entity "FieldSize" size BikeEntity
+-> field
+-----------
+Playfield label bikes size rest => Entity label field rest{
+
+  Func "checkBikeCollisions" -> EntityField -> EntityField -> EntityField
+
+  -> newBikes
+  ------
+  checkBikeCollisions b bs -> newBikes
+
+  Func "checkFieldCollisions" -> Playfield -> EntityField -> EntityField
+  get "Position" b -> bikePosition
+  get "FieldSize" p -> playfieldSize
+  (if ((X.bikePosition > X.playfieldSize) ||^System
+       (X.bikePosition < 0.0) ||^System
+       (Y.bikePosition > Y.playfieldSize) ||^System
+       (Y.bikePosition < 0.0))then
+    set^b "IsAlive" False^builtin b
+  else
+    b) -> newBike
+  --------
+  checkFieldCollisions p b -> newBike
+
+  Func "checkCollisions" -> Playfield -> EntityField -> Playfield
+  checkFieldCollisions p b -> newBike
+  (if (Rest^newBike = Empty) then
+    set^p
+  else
+    checkBikeCollisions b Rest^b -> newNewBike
+    checkCollisions p Rest^b
+    ) -> newPlayfield
+  ------
+  checkCollisions p b -> newPlayfield
+
+  Func "checkDeaths" -> Playfield -> Playfield
+
+  checkDeaths p -> newP
+
+
+
+  get^p (Label^p + "bikes") Field^p -> bikes
+  update^bikes bikes dt -> newBikes
+  set^p (Label^p + "bikes") newBikes Fields^p -> newPlayfield
+  checkDeaths newPlayfield ->
+  --------
+  update p dt -> res
+}
+\end{lstlisting}
+
+
 \subsection{Powerups}
+\begin{lstlisting}
+Func "dottedLine" -> Bike -> Bike
+Func "ghostMode" -> Bike -> Bike
+Func "thickerLine" -> Bike -> Bike
+\end{lstlisting}

@@ -5,91 +5,102 @@
 
 % start actual doc
 \begin{document}
-\begin{multicols}{3}
-\title{Expanding the Meta-Compiler language}
+\title{Debugging and expanding MetaCasanova}
 \author{\writer}
 % \date{25 January 2016}
 
-% \begin{titlepage}
-   % \include{voorpaginamandate}
-% \end{titlepage}
+\begin{titlepage}
+   \include{voorpagina}
+\end{titlepage}
 
-%\maketitle
-% state the problem
-% say why it's an interesting problem
-% say what your solution is
-% say what follows from your solution
+% \maketitle
+\begin{multicols}{3}
+   % state the problem
+   % say why it's an interesting problem
+   % say what your solution is
+   % say what follows from your solution
 
-% \begin{abstract}
-% MC has not been tested in the field yet and we want to know how it fares.
-% We will put it to the test and see that it still needs some development, but has promise.
-% \end{abstract}
-% \newpage
+   \begin{abstract}
+      \textbf{Write shit here as very short summary}
+      mc needs testing and expanding
+      standard library has been expanded
+      test programs have been created
+      conclusion has been made
+   \end{abstract}
+   \newpage
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%% real paper %%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+   %%%%%%%%%%%%%%% real paper %%%%%%%%%%%%%%%%
+   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\pagenumbering{gobble}
-\setcounter{tocdepth}{2}
-% \setcounter{tocdepth}{1}
-\tableofcontents
-\cleardoublepage
-\pagenumbering{arabic}
-\addtocounter{page}{4}
-
-
-% \part{Introduction}
-
-% \include{stakeholders}
-
-% \chapter{Introduction}
-% MC stands for MetaCasanova. The reason behind the name is explained in chapter \refchapter{MetaCasanova}.
-
-% We will first talk about what MC is and explain the basics of the language.
-% Then we will discuss the Standard Library of MC, which is written completely in MC.
-% After which we will show some practical examples.
-
-% explain why the layout landscape and three collumns
-
-% \include{assignment}
-
-% \part{Preliminary research}
-% \include{basicmc}
+   \pagenumbering{gobble}
+   \setcounter{tocdepth}{1}
+   \tableofcontents
+   \cleardoublepage
+   \pagenumbering{arabic}
+   \addtocounter{page}{4}
 
 
-% \part{MC expanded}\label{part:mcexpanded}
-% \include{syntaxevolution}
+\end{multicols}
+\part{Preface}
 
-% \input{standardlibrary}
-\input{basicmonads}
+\include{stakeholders}
 
-% DROP THIS
-% \chapter{Casanova}
-% \section{Entity}
-% \section{Coroutines}
+\begin{multicols}{3}
+   \chapter{Introduction}
+   % MC stands for MetaCasanova. The reason behind the name is explained in chapter \refchapter{MetaCasanova}.
 
-% \include{testprograms}
+   % We will first talk about what MC is and explain the basics of the language.
+   % Then we will discuss the Standard Library of MC, which is written completely in MC.
+   % After which we will show some practical examples.
 
-% DROP THIS
-% \part{Extra curicular activities}
-% \include{plugin}
+   % explain why the layout landscape and three collumns
 
+   \include{assignment}
 
-% \part{Results}
+\end{multicols}
+\part{Preliminary research}
+\begin{multicols}{3}
 
-% \chapter{Recommendations}
-% \chapter{Conclusion}
-% \chapter{Goals \& competentions}
-% \chapter{Reflection}
+   \include{basicmc}
 
 
+\end{multicols}
+\part{MC expanded}\label{part:mcexpanded}
+\begin{multicols}{3}
 
-% \part{Appendixes}
+   \include{syntaxevolution}
+
+   \input{standardlibrary}
+   \input{basicmonads}
+
+   % DROP THIS
+   % \chapter{Casanova}
+   % \section{Entity}
+   % \section{Coroutines}
+
+   \include{testprograms}
+
+   % DROP THIS
+   % \part{Extra curicular activities}
+   % \include{plugin}
+
+
+\end{multicols}
+\part{Results}
+\begin{multicols}{3}
+
+   \include{results}
+
+   \bibliographystyle{ieeetr}
+   \bibliography{biblio}
+
+\end{multicols}
+\begin{appendices}
+   \part{Appendices}
+
+   \include{typeproofs}
+\end{appendices}
+
 % \chapter{Glossery}
-
-% \bibliographystyle{ieeetr}
-% \bibliography{biblio}
-
-\end{multicols}{3}
 \end{document}

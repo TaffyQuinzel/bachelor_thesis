@@ -51,6 +51,8 @@ The boolean of .NET can be imported as shown, however the values \verb\True\ and
 They are built in .NET itself.
 This is why these literals are built into MC as well and need to be called using \verb\builtin\.
 
+
+\subsection{Match}
 Next we have the \verb\match\ function.
 It takes a variable, matches it on either \verb|Left| or \verb|Right| and executes the function specified.
 
@@ -90,6 +92,76 @@ This definition is placed above the previous defined \verb\match\ which matches 
 Then there is first checked on nested pipes and when there are none the actual value is checked.
 
 In this manner there is no possibility of skipping any nested pipes.
+
+
+\subsection{List}
+Then we have a generic list implementation.
+For this we need to create a list that can work with types.
+
+The list is declared with a union.
+This is necessary because we need an end to the list.
+
+\textbf{fix code}
+\begin{lstlisting}
+TypeAlias "List" => Type => Unit | (Type * (List Type))
+List unit => Left unit
+List 'a => Right ('a * (List 'a))
+\end{lstlisting}
+
+The list is created with a tuple.
+An end to the list is created with a union of the list tuple and \verb\Unit\.
+
+A list is then defined with either a unit or type.
+
+We also need the basic operators to create lists.
+This is done with \verb\::\, which takes a type and a list.
+And with \verb\empty\ an empty list is created.
+
+\textbf{fix code}
+\begin{lstlisting}
+TypeAlias Type => "::" => List => List
+'a :: 'b => List ('a * 'b)
+
+TypeAlias "empty" => List
+empty => List unit
+\end{lstlisting}
+
+With \verb\::\ we can specify the head and tail of a list.
+
+But we would also like to concat lists together.
+This is done with the \verb\@\ operator.
+
+\begin{lstlisting}
+Func List 'a -> "@" -> List 'a -> List 'a  #> 200
+empty @ l -> l
+(x :: xs) @ l -> x :: (xs @ l)
+\end{lstlisting}
+
+And when we want to apply a function to the entire list we call \verb\map\.
+This executes a function and creates a new list, which it then returns.
+
+\begin{lstlisting}
+Func "map" -> List 'a -> ('a -> 'b) -> List 'b
+map empty f -> empty
+map (x :: xs) f -> (f x) :: (map xs)
+\end{lstlisting}
+
+When we want to find one or more elements in the list we can call \verb\filter\.
+It checks the entire list using a predicate function and returns the matching elements.
+
+\begin{lstlisting}
+Func "filter" -> List 'a -> ('a -> Boolean^System) -> List 'a
+filter empty p -> empty
+
+(if p x then
+  (x :: (filter xs p))
+  else
+  (filter xs p)) -> res
+-------------------------
+filter (x :: xs) p -> res
+\end{lstlisting}
+
+The programmer can specify the predicate function \verb\p\.
 
 
 \subsection{Evolution of prelude}
@@ -208,6 +280,9 @@ This would be quite inconvenient for the programmer.
 
 For that reason the recursive functionality was added.
 
+\subsubsection{List}
+\textbf{DO THIS!!!!!!!!!!}
+list was first put in the list monad but moved to prelude, because it is a generic list function not specific to the list monad.
 
 \section{Number}
 \emph{Number} was created to give the user a generic interface to create numbers.
@@ -263,7 +338,7 @@ Now we have declared the basic number operations of addition, substraction, mult
 We can combine them into a basic number like so:
 
 \begin{lstlisting}
-TypeFunc "Number" => #a => Module
+TypeFunc "Number" => Type => Module
 Number 'a => Module {
   inherit GroupAdd 'a
   inherit GroupMul 'a
@@ -273,7 +348,7 @@ Number 'a => Module {
 Or create a Vector without the dividing operator, because vectors cannot be divided~\cite{}.
 
 \begin{lstlisting}
-TypeFunc "Vector" => #a => Module
+TypeFunc "Vector" => Type => Module
 Vector 'a => Module {
   inherit GroupAdd 'a
   inherit MonoidMul 'a
@@ -315,7 +390,7 @@ Record is declared as a module and contains TypeFuncs to make it work on compile
 TypeFunc "Record" => Module
 Record => Module{
   TypeFunc "Label" => String
-  TypeFunc "Field" => *
+  TypeFunc "Field" => Type
   TypeFunc "Rest" => Record
 \end{lstlisting}
 
@@ -343,7 +418,7 @@ It checks the label of the record and if it is the same it returns the current r
 To manupilate these records there the \verb\set\ function was created.
 
 \begin{lstlisting}
-  TypeFunc "set" => String => * => Record => Record
+  TypeFunc "set" => String => Type => Record => Record
   (if (l == label^rs) then
     RecordEntry l f rs
   else
