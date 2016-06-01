@@ -31,7 +31,7 @@ When it is inside the monad it cannot be seen by the outside world.
 This is where the bind comes in.
 
 \subsubsection{The bind}
-Having a monad is fine, but what if you want to manupilate the value of the monad?
+Having a monad is good, but what if you want to manipulate the value of the monad?
 The \verb\>>=\ (pronounced \emph{bind}) function supplies this functionality.
 
 When we want to apply the function \verb\(+3)\ to the monad containing \verb\2\, we call the bind.
@@ -70,7 +70,7 @@ Func "returnFrom" -> 'a -> 'a
 returnFrom a -> a
 \end{lstlisting}
 
-As we can see the variable \verb\a\ is directly passed on.
+As we can see the identifier \verb\a\ is directly passed on.
 
 
 \subsubsection{Lift}
@@ -126,18 +126,16 @@ It works the same as the other lift functions, with the specification of using t
 
 \bigskip
 
-\textbf{FIX THE NEXT SENTENCE}
-With these functions implemented the monad can be used with a wider range.
+The monad can now be used with a wider aspect within programming.
 
 
 \subsubsection{More than a wrapper}
 But just a monad offers very little besides being a wrapper for values.
-\textbf{FIX THE NEXT SENTENCE}
-This means a lot of ..... map to monads.
 That is why there have been created a few different sorts of monads.
+This means a lot of different functionalities can be mapped to monads.
 
 We will discuss two of these for now.
-More will be explained when looking at the implemented monads in MC, see section~\ref{sec:standardimplementedmonads}.
+More will be explained when looking at the implemented monads in MC in section~\ref{sec:standardimplementedmonads}.
 
 \paragraph{The state monad}
 gives monads the ability to behave like mutables.
@@ -176,9 +174,11 @@ In the example the term a is checked for a being a value, the \verb\Left\, or be
 This is a very basic example of how the maybe works.
 It acts like a pipe and can contain either a value, \verb\Left\, or nothing, \verb\Right\.
 
-\textbf{MOVE THIS UP MAYBE}
+\bigskip
+
 The implementations of these monads are far from complete, these examples simply show the functionality of the monad.
 The actual implementation will be given in section~\ref{sec:basicmonadsimplementation}.
+
 
 \subsubsection{Combining monads}
 Monads can also be combined.
@@ -225,14 +225,16 @@ TypeFunc "MCons" -> Type
 MCons -> 'M
 \end{lstlisting}
 
-The variable \verb\'M\ is the monad given to the monad transformer.
+The identifier \verb\'M\ is the monad given to the monad transformer.
 \verb\MCons\ can be called when this monad is needed directly.
 
 
 \subsection{Implementation}\label{sec:basicmonadsimplementation}
 Now we will look at how the monad transformer is implemented.
-With this monad transformer we will be able to create actual monads, this can be seen as the base module for monads.
 
+Because monad transformers need to be able to manipulate type information, it is a good example of what MC is useful for.
+
+With this monad transformer we will be able to create actual monads, this can be seen as the base module for monads.
 First we take a look at the declaration:
 
 \begin{lstlisting}
@@ -253,7 +255,7 @@ Monad 'M => Module {
   Func "return" -> 'a -> 'M 'a
 \end{lstlisting}
 
-\textbf{PUT >>= EARLIER}
+% \textbf{PUT >>= EARLIER}
 The bind is declared with \verb\ArrowFunc\ and is called \verb\>>=\.
 It takes a monad as its first argument and a function as its second argument.
 
@@ -270,9 +272,10 @@ With those we have the complete interface of the monad transformer.
 With this we can combine and built monads automatically.
 
 \subsection{Evolution of monad}
-\textbf{DO THIS !!!!!!!!!!!!!!!!!!!}
-started with MCons, bind, return and returnFrom.
-added lift, lift2 and liftM
+The monad was first implemented with just the \verb\MCons\, \verb\>>=\, \verb\return\ and \verb\returnFrom\ functions.
+This enabled basic use of the monad.
+
+The \verb\lift\, \verb\lift2\ and \verb\liftM\ were then added to extend the usecases of monads.
 
 
 \section{Tryable monad}\label{sec:standardtryablemonad}
@@ -342,13 +345,17 @@ This is done with \verb\getMonad\.
 }
 \end{lstlisting}
 
-\textbf{INSERT CONCLUSION}
+Now we can create a \verb\Monad\ which has two options when calling the bind.
+This can be used for error handling or for creating complex dataflows within monads.
 
 
 \subsection{Evolution of tryable monad}
 \textbf{DO THIS !!!!!!!!!!!!!!!!!!!}
-No clue what to say here......
-evolved from the either monad????
+The \verb\TryableMonad\ startet out as the \verb\either\ monad.
+The \verb\either\ used the available options to create error handling.
+
+It occured then that we could also create more complex dataflows, when creating a generic tryable monad.
+This was then implemented as the \verb\TryableMonad\.
 
 
 \section{Implemented monads}\label{sec:standardimplementedmonads}
@@ -402,7 +409,7 @@ This result is then passed back to the maybe monad, where it gets wrapped inside
 In this way the \verb\id\ monad will always end the cycle.
 
 
-\subsection{List}
+\subsection{List}\label{sec:standardmonadlist}
 
 The list monad uses a list to store the values.
 
@@ -471,7 +478,10 @@ If the use of the different syntaxes of the \verb\ArrowFunc\ seems confusing, ta
 
 
 \subsubsection{Evolution of list}
-\textbf{DO THIS!!!!!!!!}
+The list that the is used within the list monad, was first implemented within the list monad.
+But the list could be used outside of the monad as well.
+
+It was then moved to \emph{prelude}.
 
 
 \subsection{Either}\label{sec:basicmonadseither}
@@ -531,31 +541,35 @@ The \verb\either\ can now be
 
 
 \subsubsection{Evolution of either}
-\textbf{DO THIS!!!!!!!!!}
-Was first implemented without tyable monad
+The \verb\either\ was first implemented without the use of \verb\TyableMonad\.
+It had the same functionality.
+All the functions of the \verb\TryableMonad\ were implemented directly within \verb\either\.
+
+When the idea occured of using a generic tryable monad, these were ported to the \verb\TryableMonad\.
+The \verb\either\ was then implemented by using the \verb\TryableMonad\.
 
 
-\subsection{Option}
-\textbf{explain that it is obsolete because of either}
-CAN THIS BE LEFT OUT???????????
-probably yes
+% \subsection{Option}
+% \textbf{explain that it is obsolete because of either}
+% CAN THIS BE LEFT OUT???????????
+% probably yes
 
-\begin{lstlisting}
-TypeFunc "Option" => Type => Type
-Option 'a => Unit | 'a
+% \begin{lstlisting}
+% TypeFunc "Option" => Type => Type
+% Option 'a => Unit | 'a
 
-Func "Some" -> 'a -> Option 'a
-Some x -> Right x
+% Func "Some" -> 'a -> Option 'a
+% Some x -> Right x
 
-Func "None" -> Option 'a
-None -> Left Unit
+% Func "None" -> Option 'a
+% None -> Left Unit
 
-TypeFunc "option" => TryableMonad
-option => either Option None {
-  return
-}
-\end{lstlisting}
-\subsubsection{Evolution of option}
+% TypeFunc "option" => TryableMonad
+% option => either Option None {
+  % return
+% }
+% \end{lstlisting}
+% \subsubsection{Evolution of option}
 
 
 \subsection{Result}
@@ -579,7 +593,10 @@ This creates an \verb\either\ with \verb\String\ as error type.
 
 
 \subsubsection{Evolution of result}
-god knows what to put here.
+The original idea of the \verb\result\ monad was a maybe monad with error handling in the form of a \verb\string\.
+
+The \verb\result\ monad was first implemented in much the same way as the \verb\either\ monad, but with explicit use of \verb\String\ as the error handler.
+When this was noticed, the \verb\result\ monad was implemented by using \verb\either\.
 
 
 \subsection{State}
@@ -650,6 +667,23 @@ To set the state we call \verb\setState\.
 
 It sets the result to unit and the state to the input state.
 
-\subsubsection{Evolution of state}
-\subsection{IO}
-\subsubsection{Evolution}
+
+\section{Other monad implementations}
+When comparing the monad transformers of MC with monad implementations of other languages, we quickly come to the conclusion that MC is very compact.
+
+When looking at a monad implementation in Python\footnote{Appendix~\ref{app:monadpython}}, we see that the code for most monads is much longer.
+And these are the direct implementations, not using monad transformers.
+
+There are only few attempts made when it comes to monad transformers.
+The main reason for this is the need for higher order types.
+
+Haskell has a few implementations of monad transformers~\cite{monadshaskell}, but these are far longer than the MC implemntation.\footnote{See appendix~\ref{app:monadshaskell} for the source code of a few of these monadic transformers}
+
+This shows what MC is capable of compared to most other languages.
+With the use of higher order types the high abstractions used for monad transformers can be implemented with very little code.
+
+
+
+% \subsubsection{Evolution of state}
+% \subsection{IO}
+% \subsubsection{Evolution}

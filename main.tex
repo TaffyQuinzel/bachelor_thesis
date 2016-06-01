@@ -10,7 +10,7 @@
 % \date{25 January 2016}
 
 \begin{titlepage}
-   \include{voorpagina}
+   \input{voorpagina}
 \end{titlepage}
 
 % \maketitle
@@ -21,12 +21,19 @@
    % say what follows from your solution
 
    \begin{abstract}
-      \textbf{Write shit here as very short summary}
-      mc needs testing and expanding
-      standard library has been expanded
-      test programs have been created
-      conclusion has been made
+      % \textbf{Write shit here as very short summary}
+      % mc needs testing and expanding
+      % standard library has been expanded
+      % test programs have been created
+      % conclusion has been made
+      This document describes the new programming language MetaCasanova and its improvements.
+
+The author was part of the research group which was developping MetaCasanova.
+
+This document is the thesis that was issued by the Rotterdam University of Applied Sciences, as a test of skill and knowledge gained after four years of education at their Computer Science department.
+The goal of this document is to demonstrate the skill of the student, the author of this document.
    \end{abstract}
+   % \input{summary}
    \newpage
 
    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -39,67 +46,49 @@
    \cleardoublepage
    \pagenumbering{arabic}
    \addtocounter{page}{4}
-
-
 \end{multicols}
+
+
 \part{Preface}
-
-\include{stakeholders}
-
+% \input{stakeholders}
 \begin{multicols}{3}
-   \chapter{Introduction}
-   % MC stands for MetaCasanova. The reason behind the name is explained in chapter \refchapter{MetaCasanova}.
+   \input{introduction}
 
-   % We will first talk about what MC is and explain the basics of the language.
-   % Then we will discuss the Standard Library of MC, which is written completely in MC.
-   % After which we will show some practical examples.
-
-   % explain why the layout landscape and three collumns
-
-   \include{assignment}
-
+   % perhaps leave out entirely
+   % \input{assignment}
 \end{multicols}
+
 \part{Preliminary research}
 \begin{multicols}{3}
+   \input{goodlanguage}
+   \input{basicmc}
 
-   \include{basicmc}
-
-
+\newpage
 \end{multicols}
 \part{MC expanded}\label{part:mcexpanded}
 \begin{multicols}{3}
-
-   \include{syntaxevolution}
+   \input{syntaxevolution}
 
    \input{standardlibrary}
    \input{basicmonads}
 
-   % DROP THIS
-   % \chapter{Casanova}
-   % \section{Entity}
-   % \section{Coroutines}
-
-   \include{testprograms}
-
-   % DROP THIS
-   % \part{Extra curicular activities}
-   % \include{plugin}
+   \input{testprograms}
 
 
 \end{multicols}
 \part{Results}
 \begin{multicols}{3}
-
-   \include{results}
+   \input{results}
 
    \bibliographystyle{ieeetr}
    \bibliography{biblio}
 
 \end{multicols}
+
 \begin{appendices}
    \part{Appendices}
-
-   \include{typeproofs}
+   \input{typeproofs}
+   \input{monadiclibraries}
 \end{appendices}
 
 % \chapter{Glossery}

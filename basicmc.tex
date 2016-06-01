@@ -1,35 +1,36 @@
 \chapter{MC in detail}
-Here we will look at MC and learn what the language is and how it works.
-\textbf{FIX THIS SENTENCE:}
-Because the current version of MC is not documented, the following information comes from interviews with the research team.
+We will now look at MC in the state after the project.
+After we have a basic understanding of MC, we will look at the improvements made.
+
+Because the current version of MC is not documented, the following information comes from interviews with the research team~\cite{researchteaminterview}.
+
+This document can serve as a basis for anyone interested in learning about MC.
+
 
 \section{What is MC}
 MC stands for MetaCasanova and is a declaritive functional language.
 It tries to be a completely pure language, which means no side-effects are allowed directly.
 
-MC can use .
-The exception to this rule is the .NET functionality.
-\textbf{.NET ALLOWS MANIPULATIVES, EXPAND}
-
 
 \section{Goal}
-\textbf{DOUBLE CHECK}
 The goal of MC is to use higher order types with type safety, in a natural way of programming.
 These higher order types gives the ability to resolve certain computations on compile time, which can normally be resolved at run time only.
 This can substantially increase performance at run time.
 
 It also supports the .NET library natively.
-Because .NET allows for manipulation of values, MC supports this when using .NET.
+Because .NET has mutables~\cite{dotnetdescription}, MC can have side-effects through the use of .NET.
 
 MC also aims to be as flexible as possible with the safety of a strong type system.
 
 
 \section{Basics}
 We will now go through the basics of MC.
-What systems MC uses, learn how the syntax works and use small code samples to explain the workings.
+We will look at how the syntax works and use small code samples to explain these workings.
 
-The evolution of these basics will be given in part~\ref{part:mcexpanded}.
+The improvements made to these basics will be given in part~\ref{part:mcexpanded}.
 This will give us a better understanding of why and how MC evolved.
+
+Inside the codeblocks a line wrap is indicated by \ensuremath{\color{red}\hookrightarrow\space}.
 
 
 \subsection{Terms, types \& kinds}\label{sec:basiclevels}
@@ -43,14 +44,6 @@ Terms are the values of variables, like 5, 'c' or "Hello".
 Types are the types of variables, like Integer, String or Boolean.
 Kinds are for types, what types are to terms.
 You could say the kinds are the types of the types.
-
-\subsection{Runtime and compile time}
-Kinds are resolved or inlined at compile time.
-Types are also resolved or inlined, except when they create datastructures.
-These data structures keep existing on runtime.
-
-The syntax reflects this in the arrows used with the functions.
-The \verb\=>\ arrow indicates a function operates on compile time and the \verb\->\ arrow indicates a function operates on runtime.
 
 
 \subsection{Func}\label{sec:basicfunc}
@@ -67,9 +60,9 @@ The parameters are seperated by the \verb|->|.
 The last parameter is the return type of the function and all the parameters between the name and the return type, are the arguments of the function.
 
 A function is defined by one or multiple \emph{rules}.
-A \emph{rule} consists of a \emph{conclusion} and one or more \emph{premises}.
+A \emph{rule} consists of a \emph{conclusion} and can contain multiple \emph{premises}.
 They are separated by the \emph{bar}.
-The conclusionstands underneath the bar and the premises above.
+The conclusion is placed underneath the bar and the premises above.
 
 Now let's define a rule for \verb\computeNumber\.
 
@@ -84,9 +77,9 @@ The conclusion is on the fourth line, the bar on the third and the premise on th
 The conclusion has the name of the function and the input arguments on the left of the arrow and the output argument on the right.
 This syntax is similiar to that of natural deduction~\cite{}.
 
-\subsubsection{Local defined variables}
-The variables named in the conclusion of a function are locally defined.
-With the function \verb\computeNumber\ the variables \verb\a\, \verb\b\ and \verb\c\ are examples of these local variables.
+\subsubsection{Locally defined identifiers}
+The identifiers named in the conclusion of a function are locally defined.
+With the function \verb\computeNumber\ the identifiers \verb\a\, \verb\b\ and \verb\c\ are examples of these local identifiers.
 
 
 \subsection{Multiple rules}
@@ -105,15 +98,16 @@ computeNumber a b c -> res
 \end{lstlisting}
 
 When this happens the rules are attempted in order of definition.
-If the above rule fails and the rule beneath it is attempted.
 A rule fails when the arguments do not match.
-If none of the rules match the program fails.
+If the above rule fails and the rule beneath it is attempted.
+If none of the rules match the program crashes.
 
 Let us go through this process with an example.
 
-First we will try the following function call:
+First we will try the following function call, from inside a premise:
 \begin{lstlisting}
 computeNumber False 5 3 -> newValue
+-----------------------------------
 \end{lstlisting}
 
 The first rule to be attempted is the one written first in the source code, so:
@@ -149,13 +143,16 @@ bar -> 5
 
 Here the constant \verb\bar\ is set to the value \verb\5\.
 
+We also see that not every rule has a \emph{bar}.
+This is possible only when no premise is needed in the rule.
+
 \bigskip
 
 As we have seen \verb|Func| uses types in its declaration and terms in its definition.
 The types enables the detection of wrong function calls during compile time.
 
 Important to note is that functions declared by \verb\Func\ are on runtime.
-As we will see in section~\ref{sec:basictypefunc}, MC also has the ability to declare and define functions on compile time.
+As we will see in section~\ref{sec:basictypefunc}, MC also has the ability to declare and define functions that run on compile time.
 
 \subsection{Functions as parameters}
 Aside from variables, functions can also be given as parameters.
@@ -166,29 +163,29 @@ Func "isThisEven" -> ( 'a -> 'b ) -> 'a -> 'd
 \end{lstlisting}
 
 Here we see that the first argument \verb\( 'a -> 'b )\ is a function.
-This is can be seen when we declare a function which takes one argument.
+This is can be seen when we declare the following function:
 
 \begin{lstlisting}
-Func "x" -> 'a -> 'b
+Func "x" -> 'a
 \end{lstlisting}
 
 When we strip away the name of the function and the keyword \verb\Func\, we are left with just the function.
 
 \begin{lstlisting}
-'a -> 'b
+(x -> 'b)
 \end{lstlisting}
 
-This we can use in declarations to indicate a function is used as the argument.
+We can use this syntax in declarations to indicate a function is used as the argument.
 
 
 \subsection{Data}\label{sec:basicdata}
 With \verb|Data| we can declare a constructor and deconstructors for a new type.
-Effectively making it an alias.
+Because it can work two ways it effectively creates an alias.
 
 Say that we want to create a union, a type which can be any of the predefined types within a set~\cite{}.
 For this we need a way to construct the union type and a way to deconstructed the union back to its original type.
 The deconstructor is needed to get know which of the types inside the union is actually used.
-Only then can we know which of the types inside the inion is used.
+Only then can we know which of the types inside the union is used.
 
 As an example we will create a union of a String and a Float.
 \begin{lstlisting}
@@ -220,8 +217,7 @@ This can be done because they are aliases.
 Aliases are automatically resolved to their basic types by the compiler.
 
 Conditionals using aliases can be put in the conclusion.
-Other conditionals have to be put in the premises, because they need to be computed.
-As can be seen in section~\ref{sec:basicfunc}.
+Other conditionals have to be put in the premises, because they need to be computed.\footnote{As can be seen in section~\ref{sec:basicfunc}}
 
 To make the definition of \verb\IsFloat\ complete we also need a rule that checks for \verb\String\.
 
@@ -242,14 +238,26 @@ isFloat iAmFloat -> output
 \end{lstlisting}
 
 When \verb\iAmFloat\ is deconstructed to its original type it will match with the first rule of \verb\isFloat\.
-The variable \verb\output\ now contains the value \verb\True\.
+The identifier \verb\output\ now contains the value \verb\True\.
+
+
+\subsection{Runtime and compile time}
+So far we have seen the \verb\->\ arrow, which indicates a function is executed on runtime.
+
+To indicate a function is resolved or inlined on compile time, the \verb\=>\ arrow is used.
+
+Types are also resolved or inlined, except when they create datastructures.
+These data structures keep existing on runtime.
+Kinds are resolved or inlined at compile time.
+
+We will see this starting from the next section onwards.
 
 
 \subsection{TypeAlias}
-Because the \verb\|\ (\emph{pipe}) operator, used in section~\ref{sec:basicdata}, is not built in the language we need to create it.
+Because the \verb\|\ (\emph{pipe}) operator\footnote{As used in section~\ref{sec:basicdata}} is not built in the language we need to create it.
 To do this we need to manipulate types.
 
-We have already seen that \verb\TypeFunc\ can do this, see section~\ref{sec:basictypefunc}.
+We have already seen that \verb\TypeFunc\ can do this.\footnote{See section~\ref{sec:basictypefunc}}
 But to make \verb\|\ work, we now need a constructor and deconstructor that works with kinds.
 
 \verb\TypeAlias\ is the same as \verb\Data\ only on a higher level of abstraction.
@@ -300,8 +308,7 @@ Now we can say that two different types are used as the arguments and in the cre
 \subsubsection{Type annotiatons}\label{sec:basictypeannotations}
 The angle brackets are used as type annotation for \verb\pipe\.
 They indicate that \verb\'a\ and \verb\'b\ are part of the type \verb\pipe\.
-This is only used with generic types, because it makes it easier for the parser to resolve the types.
-More on this in section~\ref{sec:syntaxtypeannotations}.
+This is only used with generic types, because it makes it easier for the parser to resolve the types.\footnote{More on this in section~\ref{sec:syntaxtypeannotations}}
 
 
 \subsection{TypeFunc}\label{sec:basictypefunc}
@@ -345,14 +352,14 @@ Because they work on compile time only, they cannot replace \verb\Data\ and \ver
 \verb\Data\ and \verb\Func\ exist for explicit runtime functions.
 
 
-\subsection{Module}
+\subsection{Module}\label{sec:basicmodule}
 \verb|Module| is used to create a container on compile time.
 It is a collection of function declarations and definitions.
 
 It does not fit within the levels defined in section~\ref{sec:basiclevels}.
 Modules can only be declared by \verb\TypeFunc\.
 
-Say we want to create a container for every type which does an addition of two variables of those types.
+Say we want to create a container for every type which does an addition of two identifiers of those types.
 The could be declared when we need them or we can put them in a \verb\Module\.
 
 When we create an addition container using a module, we do not have to type out the addition functions for every type.
@@ -432,7 +439,7 @@ GroupAdd 'a => Module {
 }
 \end{lstlisting}
 
-The module \verb\Add\ from section~\ref{sec:basicmodule} is instantiated with \verb\'a\.
+The module \verb\Add\\footnote{As used in section~\ref{sec:basicmodule}} is instantiated with \verb\'a\.
 The created \verb\Add\ module is then inherited into \verb\GroupAdd\.
 
 The function declarations and definitions of the inherited module are directly usable within the new module.
@@ -452,9 +459,9 @@ When inheriting a module which contains an inherit, these are also inherited in 
 This works recursively.
 
 
-\subsection{priority}
+\subsection{Priority}
 We can also give a priority together with a declaration.
-The priority tells which function to execute first.
+The priority indicitates the order of function execution.
 
 The priority is indicated by the \verb\#>\ and is placed after the declaration.
 When we look at \verb\Data\ it will look like this:
@@ -527,7 +534,7 @@ Some things cannot be created out of nothing and need to be built in the compile
 An example of this is boolean.
 
 When using such a builtin literal the keyword \verb\builtin\ is used.
-We can now correctly implement the function \verb\foo\ from section~\ref{sec:basicfunc} using the \verb\builtin\ keyword:
+We can now correctly implement the function \verb\foo\\footnote{As used in section~\ref{sec:basicfunc}} using the \verb\builtin\ keyword:
 
 \begin{lstlisting}
 add b c -> res
@@ -667,7 +674,7 @@ addThree 6 -> foo
 addThree 7 -> bar
 \end{lstlisting}
 
-The variable \verb\foo\ has a value of \verb\9\ and \verb\bar\ has a value of \verb\10\.
+The identifier \verb\foo\ has a value of \verb\9\ and \verb\bar\ has a value of \verb\10\.
 
 When type annotations are used there can be no partial application.
 The type annotations need to know what types it gets or they will fail.
@@ -675,4 +682,4 @@ This is further explained in section~\label{sec:syntaxtypeannotations}.
 
 \bigskip
 
-Now that we know the basics of MC lets take a look at the syntax has evolved.
+Now that we know the basics of MC lets take a look at how the syntax has evolved and improved.

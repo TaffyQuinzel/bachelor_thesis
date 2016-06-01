@@ -4,12 +4,15 @@ The changes concerning the standard library, will be discussed in chapter~\ref{c
 
 \section{Generic type identifiers}
 As described in section~\ref{sec:basictypeidentifiers} generic type identifiers are indicated by \verb\'\ together with a name, \verb\'a\.
-The \verb\'\ is derived from the \emph{prime} notation, which indicates a derivative of the original~\cite{}.
+The \verb\'\ is derived from the \emph{prime} notation, which indicates a derivative of the original~\cite{primesomething}.
 
-For example when we have variable \verb\i\, this variable might get changed and is then indicated by \verb\i'\.
+For example when we have identifier \verb\i\, this identifier might get changed and is then indicated by \verb\i'\.
 This shows that \verb\i'\ is derived from \verb\i\.
 
-Instead of placing the \emph{prime} at the end, it is placed before the variable name to indicate it is a generic type.
+Instead of placing the \emph{prime} at the end, it is placed before the identifier name to indicate it is a generic type.
+
+This improved the readability of the language.
+It is now clear to the user when generic types are the same of different from each other.
 
 
 \section{Generic kind identifiers}
@@ -37,6 +40,12 @@ The official notation used for kinds is either \verb\Type\ or \verb\*\.
 
 The syntax of kinds was changed to \verb\Type\.
 This way the the \verb\*\ was free to be used for other things, like the tuple in section~\ref{sec:basictypefunc}.
+
+This also improved the readability of the language.
+It is now clear when a kind is used.
+
+Because of the use of \verb\Type\ it is also instanly clear what a kind is.
+This reduces the complexity of the language.
 
 
 \section{Type annotations}\label{sec:syntaxtypeannotations}
@@ -99,7 +108,8 @@ array((var 12) 9) -> arrayOfInts
 This also lowers the complexity of the parser.
 With the use of type annotations, the parser does not have to look at \verb\var\ and what it is.
 
-For these reasons the type annotations were implemented into the syntax.
+The use of the type annotations provides greater predictability to the language.
+It is now always clear what happens when working with generic types.
 
 
 \section{TypeAlias}
@@ -114,6 +124,9 @@ This error was noticed when updating the monadic part of the standard library, s
 That is why \verb|TypeAlias| was created.
 It provides contructing and deconstructing functionality with type manipulation.
 
+This adds expessivity and functionality to the language.
+Which is especially usefull for the user when creating complex programs.
+
 
 \section{Module}
 \subsection{Signature}
@@ -124,6 +137,7 @@ From the language creators perspective \verb|Module| creates a specific signatur
 For the user it looks more like a container or class, when coming from object-oriented programming.
 
 Because the user will be the one actually using the language, the name was changed to what it resembles to the user.
+It clarifies the syntax and makes it more predictable for the user.
 
 
 \subsection{Expanding}
@@ -166,14 +180,22 @@ expandModule M => Module{
 The expand syntax makes it look like modules are mutable, which they are not.
 This makes it inconsistent with the rest of MC and the expand-syntax was removed.
 
+By not using the expanding functionality the language becomes more coherent and in line with itself.
+This makes the language friendly to the user, because there is no two ways of doing things.
+It is clear how inherit works and there is no confusion possible.
 
-\section{priority}
-\textbf{DO THIS!!!!!!!!}
 
-why the \verb\#>\
-there was a need for priorities
-first only implemented without associativity
-then with right, left being the default
+% \section{priority}
+% \textbf{DO THIS!!!!!!!!}
+% During the development of the language priorities were needed.
+% They are necessary to implement the order of operators being executed.
+
+% For this the
+
+% why the \verb\#>\
+% there was a need for priorities
+% first only implemented without associativity
+% then with right, left being the default
 
 
 \section{.NET libraries}
@@ -214,6 +236,9 @@ The only problem was with the method calls.
 
 That is how we arrived at the current syntax used.
 The .NET order of elements is used and the \verb\^\ is used as seperator.
+
+The current syntax is the best compromise from a user perspective.
+It takes the most central elements of both syntaxes and combines them into a clear definite syntax.
 
 
 \section{Builtin}
@@ -261,8 +286,15 @@ This is possible because they act as aliases and need no computation to be check
 
 Conditionals requiring computation, a comparison of values, will be done in the premises.
 
+This is also syntactically predictable.
+Especially so because the \verb\Data\ and \verb\TypeAlias\ used in conditionals, are aliases.
+They could be replaced with that from which they are constructed.
+
 
 \subsection{Equals}
 When comparing values the \verb\==\ operator is used.
 This is done to keep the the single equals sign free to be used by the programmer.
 
+It is also immediately clear to the programmer a conditional is done.
+The single \verb\=\ could be mistaken for an alias creation of value assignment.
+With the double \verb\==\ there is no such confusion.

@@ -1,9 +1,7 @@
 \chapter{Standard library}\label{chap:standardlibrary}
-We will now look at the standard library and explain the evolution it went through during the assignment.
-For readability only the neccesary parts of the code is shown.
-The complete code samples can be found in~\cite{}.
+We will now look at the standard library and explain the evolution it went through during the project.
 
-Each item will be explained with the evolution after the explanation.
+Each item will first be explained with the evolution and improvements afterwards.
 When we have an idea of how it should work, the choices made during the development will be clearer.
 
 \section{Prelude}\label{sec:standardprelude}
@@ -101,11 +99,11 @@ For this we need to create a list that can work with types.
 The list is declared with a union.
 This is necessary because we need an end to the list.
 
-\textbf{fix code}
+\textbf{fix code?}
 \begin{lstlisting}
 TypeAlias "List" => Type => Unit | (Type * (List Type))
 List unit => Left unit
-List 'a => Right ('a * (List 'a))
+List ('a * 'b) => Right ('a * 'b)
 \end{lstlisting}
 
 The list is created with a tuple.
@@ -117,7 +115,7 @@ We also need the basic operators to create lists.
 This is done with \verb\::\, which takes a type and a list.
 And with \verb\empty\ an empty list is created.
 
-\textbf{fix code}
+\textbf{fix code?}
 \begin{lstlisting}
 TypeAlias Type => "::" => List => List
 'a :: 'b => List ('a * 'b)
@@ -182,7 +180,7 @@ Data "False" -> Boolean^System
 
 This might seem correct at first glance, but \verb\True\ and \verb\False\ have no meaning here.
 There is no way to check if a boolean value is true or false.
-That is why there had to come a new notation for the boolean literals.
+That is why a new notation had to be created for the boolean literals.
 
 It was turned into a module with the literals as \verb\Func\s.
 
@@ -221,7 +219,7 @@ The first iteration of the \verb\match\ module started with the import of \emph{
 \begin{lstlisting}
 import prelude
 
-TypeFunc "match" => #a => Module
+TypeFunc "match" => Type => Module
 \end{lstlisting}
 
 So far there are no problems yet with us a module for \verb\match\.
@@ -281,8 +279,16 @@ This would be quite inconvenient for the programmer.
 For that reason the recursive functionality was added.
 
 \subsubsection{List}
-\textbf{DO THIS!!!!!!!!!!}
-list was first put in the list monad but moved to prelude, because it is a generic list function not specific to the list monad.
+The first list was put together with the list monad.
+This seemed the logical choice at the time, because the list monad needed a list implementation to use inside the monad.
+
+Monads will be explained in section~\ref{sec:standardmonad} and the list monad in section~\ref{sec:standardmonadlist}.
+
+When coming back to the list it became apparent that \verb\List\ was not only useful for the list monad.
+It could be used without the monad as a regular list implementation.
+
+The choice was then made to move it to \emph{prelude}.
+
 
 \section{Number}
 \emph{Number} was created to give the user a generic interface to create numbers.
@@ -297,7 +303,7 @@ It starts with the \verb\MonoidAdd\ module.
 It declares the \verb\+\ operator for the custom number.
 
 \begin{lstlisting}
-TypeFunc "MonoidAdd" => #a => Module
+TypeFunc "MonoidAdd" => Type => Module
 MonoidAdd 'a => Module {
   Func 'a -> "+" -> 'a -> 'a #> 60
   Func "identityAdd" -> 'a
@@ -310,7 +316,7 @@ Next we have the \verb\GroupAdd\ module.
 This inherits everything from the module \verb\MonoidAdd\ and adds the \verb\-\ operator.
 
 \begin{lstlisting}
-TypeFunc "GroupAdd" => #a => Module
+TypeFunc "GroupAdd" => Type => Module
 GroupAdd 'a => Module {
   inherit MonoidAdd 'a
   Func 'a -> "-" -> 'a -> 'a #> 60
@@ -320,13 +326,13 @@ GroupAdd 'a => Module {
 We do the same for multiplication and dividing.
 
 \begin{lstlisting}
-TypeFunc "MonoidMul" => #a => Module
+TypeFunc "MonoidMul" => Type => Module
 MonoidMul 'a => Module {
   Func 'a -> "*" -> 'a -> 'a #> 70
   Func "identityMul" -> 'a
 }
 
-TypeFunc "GroupMul" => #a => Module
+TypeFunc "GroupMul" => Type => Module
 GroupMul 'a => Module {
   inherit MonoidMul 'a
   Func 'a -> "/" -> 'a -> 'a #> 70
@@ -480,7 +486,7 @@ The new module now contains everything of record \verb\r\.
 The we declare and define the update function.
 
 \begin{lstlisting}
-  TypeFunc "update" => Record => #a => Record
+  TypeFunc "update" => Record => Type => Record
   r == Empty
   --------------------
   update r dt => Empty
@@ -496,74 +502,84 @@ That is why we leave that definition of \verb\update\ up to the programmer.
 
 
 \subsection{Evolution of record}
-\textbf{FIX THIS !!!!!!!!!!!!!!!!!!!!!!}
 
 
-\subsubsection{Set and get}
-With the original version of \verb\set\ and \verb\get\ the field-argument was checked to be the same type offor the same type of the current value of the field
-for this fields was needed
-because of a fault, there needs to be no checking of the field, because field con be anything, fields became obsolete.
+% \subsubsection{Set and get}
+% \textbf{FIX THIS !!!!!!!!!!!!!!!!!!!!!!}
+% With the original version of \verb\set\ and \verb\get\ the field-argument was checked to be the same type of the current value of the field.
+% for this fields was needed
+% because of a fault, there needs to be no checking of the field, because field con be anything, fields became obsolete.
+
+% We also want this for the fields of the record, which is done with \verb\Fields\.
+
+% \begin{lstlisting}
+  % TypeFunc "Fields" => Type
+  % Fields => (Field,Fields^Rest)
+% \end{lstlisting}
 
 
+\subsubsection{Cons}
+During the development the idea occured that every \verb\Record\ had to have its own type signature.
+Because the field can be anything, it was thought to impact the type of the \verb\Record\.
 
-Now the record also has a its own type signature, because \verb\Field\ can be anything the type signature of every record is different.
-For this we created \verb\Cons\.
+This would be a problem when trying to declare the use of a specific \verb\Record\.
+
+This resulted in the creation of \verb\Cons\.
+\verb\Cons\ would be the type signature of that perticular \verb\Record\.
+
+It would consist of the types of the \verb\Label\, \verb\Field\ and \verb\Rest\.
 
 \begin{lstlisting}
-  TypeFunc "Cons" => #b
+  TypeFunc "Cons" => Type
   Cons => (Label,Field,Rest)
 \end{lstlisting}
 
-It acts as a getter of the type signature of the current record.
+The prime example of the need for \verb\Cons\ came when creating the \verb\updatableRecord\ function.
+It would check if the new \verb\Field\ was the same as the original \verb\Field\.
 
-We also want this for the fields of the record, which is done with \verb\Fields\.
+It became apparent that every record is of type \verb\Record\ and that the type of \verb\Field\ had no impact on the type of the record.
+\verb\Cons\ was then removed.
 
-\begin{lstlisting}
-  TypeFunc "Fields" => #c
-  Fields => (Field,Fields^Rest)
-\end{lstlisting}
-
-The reason we want to know both the type signature of the fields and the record itself, is so we can use the signatures in declarations of functions.
-Say we want to create a function that takes all the fields of a record and manipulate them.
-Then we need to specify what the type is of the argument which contains these fields.
-
-INSERT OLD SET AND GETTER AND EXPLAIN FURTHER
-
-
-OLD CONS FUNC IN STILL OBSOLETE AS THE TYPE OF A RECORD IS ALWAYS RECORD
-
-One which contains the current type of the record and one which updates the current record.
-The update function needs to be able to check if the newly created record has the same type of the original record.
-This ensures type safety.
-When the programmer would be able to change the type of the record, the new type could behave in a such a way that unpredicted things will happen.
-This problem could be left for the programmer to solve, but it is better to fix the problem before it happens.
-
-If the programmer still wants to create a updatable record without the type safety, a new update function can be created by hand to circumvent the ready made update function.
-
-The \verb\Cons\ function was created to hold the type information of the record and is added in \verb\r\.
-
-\begin{lstlisting}
-  TypeFunc "Cons" => #a
-  Cons => (Label,Field,Rest)
-\end{lstlisting}
-
-The types of \verb\Label\, \verb\Field\ and \verb\Rest\ make up the type of the entire
+This also reduced the complexity of the records for the user.
+Now the user can use the records without having to keep in mind which type belongs to which record.
 
 
 \subsection{Apply}
-When we have a record with alot of nested or complex datastructures that we want to update, we have to go through the entire structure to be able to call the update function.
-To fix this \verb\Rule\ was created.
+Here we will see how \verb\apply\ was thought to be needed and why it is not needed.
 
-\verb\Rule\ takes a record a record and calls the update function directly, without going through the datastructure of the record.
+When we have a record with alot of nested or complex datastructures that we want to update, we have to go through the entire structure to be able to call the update function.
+To fix this \verb\apply\ was created.
+
+\verb\apply\ takes a record a record and calls the update function directly, without going through the datastructure of the record.
 
 \begin{lstlisting}
-TypeFunc "apply" => Record => #a => Record
+TypeFunc "apply" => Record => Type => Record
 update^r dt => res
 ------------------
 apply r dt => res
 \end{lstlisting}
 
-Here we can see that all \verb\Rule\ does is call the update function directly.
-This way we only have to go through the structure of the record once, to get the record we will then pass to the rule.
+Here we can see that all that \verb\apply\ does, is call the update function.
+When calling \verb\apply\ we go through the record to get the record we need.
+This way we only have to go through the structure of the record once and not everytime the we need to call the update function of a specific record.
 
-We can now call the update function indirectly by executing the rule which is linked with it.
+We can now call \verb\apply\ to call the update function indirectly, without going to the entire record.
+
+When implementing this we discovered we needed more than one \verb\apply\ function.
+This can only be done by creating seperate functions which call the \verb\apply\.
+But this would negate \verb\apply\, as these functions could also directly call the specific \verb\update\.
+
+We then put \verb\apply\ inside a module called \verb\Rule\.
+\verb\Rule\ could then be called when declaring an \verb\apply\ for a record.
+
+This seemed like the wrong direction to go.
+There was only one function inside the module of \verb\Rule\, which makes having a module redundant.
+The complexity and performance was also impacted by the use of a module instead of directly calling the update function.
+
+It was decided that the \verb\Rule\ module would be disregarded.
+The problem of not being able to create multiple \verb\apply\ functions is fixed by removing \verb\apply\ all together.
+
+The programmer can create functions like \verb\apply\ fi he feels the need to.
+The programmer can then choose different names for the different \verb\update\ funtions that are being called.
+
+

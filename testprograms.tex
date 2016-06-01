@@ -51,14 +51,17 @@ UpdatableRecord (Record "Ball" unit Position) => Ball {
 
 We then need to define the \verb\update\ function.
 
-The \verb\Position\ and \verb\Velocit\ recordentry are put in a variable, so we can use them directly.
+The \verb\Position\ and \verb\Velocity\ RecordEntry are put in a identifiers, so we can use them directly.
+
 \begin{lstlisting}
   get^e "Position" Rest^e => position
   get^e "Velocity" Rest^e => velocity
 \end{lstlisting}
 
+Then the height of the ball is check and the according calculations executed.
+
 \begin{lstlisting}
-  (if ((Field^position).Y <= 500.0f) then
+  (if (Y^Field^position <= 500.0f) then
     ((set^e "Position"
            (Field^position +^Vector2 (Field^velocity *^Vector2 dt))
            Rest^position)
@@ -67,7 +70,7 @@ The \verb\Position\ and \verb\Velocit\ recordentry are put in a variable, so we 
             Rest^velocity))
   else
     (set^e "Position"
-           Vector2((Field^position).X, 500.0f)
+           Vector2(X^Field^position, 500.0f)
            -^Vector2(Field^velocity))) -> res
   --------------------------------------------
   update e dt -> res
@@ -366,103 +369,96 @@ We then come to \verb\updateBikes\.
 This goes through all the bikes and calls their update function.
 It then returns the updated bikes.
 
+But first we have to check if the bike record is \verb\Empty\.
+
 \begin{lstlisting}
   Func "updateBikes" -> Record -> Float -> Record
-  update^b b dt -> newBike
-  updateBikes Rest^b dt -> newRest
-  RecordEntry Label^newBike Field^newBike newRest -> res
+  (if (b == Empty) then
+    Empty
+  else
+    (update^b b dt -> newBike
+     updateBikes Rest^b dt -> newRest
+     RecordEntry Label^newBike Field^newBike newRest)) -> res
   ------------------------------------------------------
   updateBikes b dt -> res
-\begin{lstlisting}
-For this we need
-\begin{lstlisting}
-  updateBikes Empty dt -> Empty
-\begin{lstlisting}
+\end{lstlisting}
 
+In the update function we want to get the actual bikes.
+
+\begin{lstlisting}
   Field^bs -> bikeRecords
+\end{lstlisting}
+
+We also need the fieldsize and the delta time.
+These are given to the function as a tuple, because \verb\update\ can only take two parameters and we need three.
+
+The \verb\update\ functions first calls \verb\updateBikes\.
+And when the bikes are updated they are passed to \verb\updateIsAlive\.
+The new bike record is then returned.
+
+\begin{lstlisting}
   dtfs -> (dt,fs)
   updateBikes bikeRecords dt -> newBikeRecords
   updateIsAlive newBikeRecords fs -> aliveBikeRecords
   set^bs label^bs aliveBikeRecords bs -> res
   -----------------------------------------
-  update bs dt -> res
-}
-
-TypeFunc "Playfield" => String => Record => Vector2 => Record => Record
-RecordEntry "Winner" Unit Empty
-BikeRecordEntry (label + "bikes") bikes Winner
-RecordEntry "FieldSize" size BikeRecord
--> field
------------
-Playfield label bikes size rest => RecordEntry label field rest{
-
-  Func "checkBikeCollisions" -> Record -> Record -> Record
-
-  -> newBikes
-  ------
-  checkBikeCollisions b bs -> newBikes
-
-  Func "checkFieldCollisions" -> Playfield -> Record -> Record
-  get "Position" b -> bikePosition
-  get "FieldSize" p -> playfieldSize
-  (if ((X.bikePosition > X.playfieldSize) ||^System
-       (X.bikePosition < 0.0) ||^System
-       (Y.bikePosition > Y.playfieldSize) ||^System
-       (Y.bikePosition < 0.0))then
-    set^b "IsAlive" False^builtin b
-  else
-    b) -> newBike
-  --------
-  checkFieldCollisions p b -> newBike
-
-  Func "checkCollisions" -> Playfield -> Record -> Playfield
-  checkFieldCollisions p b -> newBike
-  (if (Rest^newBike = Empty) then
-    set^p
-  else
-    checkBikeCollisions b Rest^b -> newNewBike
-    checkCollisions p Rest^b
-    ) -> newPlayfield
-  ------
-  checkCollisions p b -> newPlayfield
-
-  Func "checkDeaths" -> Playfield -> Playfield
-
-  checkDeaths p -> newP
-
-
-
-  get^p (Label^p + "bikes") Field^p -> bikes
-  update^bikes bikes dt -> newBikes
-  set^p (Label^p + "bikes") newBikes Fields^p -> newPlayfield
-  checkDeaths newPlayfield ->
-  --------
-  update p dt -> res
+  update bs dtfs -> res
 }
 \end{lstlisting}
 
-\subsection{Main}
+When defining the actual playfield
 \begin{lstlisting}
-import playfield
-import bike
-import either
-import state
+TypeFunc "Playfield" => String => Record => Vector2 => Record
+RecordEntry "Winner" unit Empty
+BikeRecordEntry "Bikes" bikes Winner -> rest
+-----------
+Playfield label bikes size => updatableRecord (RecordEntry label size rest) {
+
+  Func "checkDeaths" -> bike -> amountAlive -> 'a
+  (if (amountAlive > 1) then
+    unit
+  else
+    ((if ((get^bike "IsAlive" Field^bike) == True^builtin) then
+      amountAlive + 1
+    else
+      amountAlive) -> newAmountAlive
+    checkDeaths Rest^bike newAmountAlive) -> res
+  ------------------------------------------------
+  checkDeaths bike amountAlive -> res
 
 
-game
-  playfield
-
-  bikeOne
-
-  bikeTwo
-
-Func "start" -> 'a
-
-playfield bikeOne bikeTwo -> gamefield
-play gamefield -> res
----------------------
-start -> res
+  get^p "Bikes" Rest^p -> bikes
+  update^bikes bikes (dt,Field^p) -> newBikes
+  checkDeaths Field^newBikes 0 -> winner
+  set^p "Winner" winner Rest^p -> updatedPlayfield
+  set^p "Bikes" newBikes Rest^p -> newPlayfield
+  --------------------------------------------
+  update p dt -> newPlayField
+}
 \end{lstlisting}
+
+% \subsection{Main}
+% \begin{lstlisting}
+% import playfield
+% import bike
+% import either
+% import state
+
+
+% game
+  % playfield
+
+  % bikeOne
+
+  % bikeTwo
+
+% Func "start" -> 'a
+
+% playfield bikeOne bikeTwo -> gamefield
+% play gamefield -> res
+% ---------------------
+% start -> res
+% \end{lstlisting}
 
 % \subsection{Powerups}
 % \begin{lstlisting}
