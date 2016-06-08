@@ -1,3 +1,30 @@
-\begin{thebibliography}{}
+\begin{thebibliography}{1}
+
+\bibitem{blow2004game}
+J.~Blow, ``Game development: Harder than you think,'' {\em Queue}, vol.~1,
+  no.~10, p.~28, 2004.
+
+\bibitem{maggiore2011designing}
+G.~Maggiore, A.~Span{\`o}, R.~Orsini, G.~Costantini, M.~Bugliesi, and
+  M.~Abbadi, ``Designing casanova: a language for games,'' in {\em Advances in
+  Computer Games}, pp.~320--332, Springer, 2011.
+
+\bibitem{giuseppe2015mc}
+F.~D. Giacomo, P.~Spronck, and G.~Maggiore, ``Building game scripting dsl's
+  with the metacasanova metacompiler,'' 2015.
+
+\bibitem{creating2016home}
+``Creating 010 - kenniscentrum creating 010.''
+  \url{http://creating010.com/en/}.
+\newblock Accessed: 18-03-2016.
+
+\bibitem{ries2011lean}
+E.~Ries, {\em The lean startup: How today's entrepreneurs use continuous
+  innovation to create radically successful businesses}.
+\newblock Crown Books, 2011.
+
+\bibitem{pierce2002types}
+B.~C. Pierce, {\em Types and programming languages}.
+\newblock MIT press, 2002.
 
 \end{thebibliography}

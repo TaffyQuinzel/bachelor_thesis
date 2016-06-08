@@ -2,47 +2,47 @@ This is BibTeX, Version 0.99d (TeX Live 2015/Arch Linux)
 Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
 The top-level auxiliary file: mandate.aux
 The style file: ieeetr.bst
-I found no \citation commands---while reading file mandate.aux
 Database file #1: biblio.bib
-You've used 0 entries,
+Warning--empty booktitle in giuseppe2015mc
+You've used 6 entries,
             1876 wiz_defined-function locations,
-            477 strings with 3470 characters,
-and the built_in function-call counts, 20 in all, are:
-= -- 0
-> -- 0
+            509 strings with 4257 characters,
+and the built_in function-call counts, 1204 in all, are:
+= -- 108
+> -- 44
 < -- 0
-+ -- 0
-- -- 0
-* -- 2
-:= -- 9
-add.period$ -- 0
-call.type$ -- 0
-change.case$ -- 0
++ -- 18
+- -- 12
+* -- 71
+:= -- 175
+add.period$ -- 9
+call.type$ -- 6
+change.case$ -- 4
 chr.to.int$ -- 0
-cite$ -- 0
-duplicate$ -- 0
-empty$ -- 1
-format.name$ -- 0
-if$ -- 1
+cite$ -- 7
+duplicate$ -- 67
+empty$ -- 140
+format.name$ -- 12
+if$ -- 299
 int.to.chr$ -- 0
-int.to.str$ -- 0
-missing$ -- 0
-newline$ -- 3
-num.names$ -- 0
-pop$ -- 0
+int.to.str$ -- 6
+missing$ -- 7
+newline$ -- 24
+num.names$ -- 5
+pop$ -- 36
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 1
+skip$ -- 28
 stack$ -- 0
-substring$ -- 0
-swap$ -- 0
+substring$ -- 36
+swap$ -- 16
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 0
-warning$ -- 0
-while$ -- 0
-width$ -- 0
-write$ -- 2
-(There was 1 error message)
+warning$ -- 1
+while$ -- 9
+width$ -- 7
+write$ -- 56
+(There was 1 warning)

@@ -1,5 +1,5 @@
 % \documentclass[a4paper,twoside,openright]{report}
-\documentclass[a4paper]{report}
+\documentclass[a4paper]{article}
 % \documentclass[landscape,a4paper]{report}
 \usepackage[driver=xetex,a4paper]{geometry} % propper margins on a4 paper
 % \usepackage[driver=xetex,a4paper,margin=25mm]{geometry} % propper margins on a4 paper
@@ -66,9 +66,10 @@
 \pagestyle{fancy}
 \fancyhf{}
 \fancyhead[LE,RO]{\nouppercase\leftmark}
-\fancyhead[RE,LO]{\partname\ \thepart}
-\fancyfoot[CE,CO]{\writer}
-\fancyfoot[LE,RO]{\thepage}
+% \fancyhead[RE,LO]{\partname\ \thepart}
+\fancyhead[RE,LO]{\writer}
+\fancyfoot[CE,CO]{\thepage}
+% \fancyfoot[LE,RO]{\thepage}
 
 %title page stuff
 \fancypagestyle{plain}{%
