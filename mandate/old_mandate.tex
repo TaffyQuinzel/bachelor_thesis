@@ -1,0 +1,209 @@
+\begin{abstract}
+   Testing the Meta-Compiler language from a practical perspective.
+
+   The programming language Meta-Compiler (from now on abbreviated as MC) has as purpose simplifying the creation of compilers.
+   However the latest implementation of the language has not been tested in the field yet. And we want to know how it fares in the real world.
+
+   Or simply put: "How good is the programming language MC from a practical perspective?"
+
+   We will set up testing criteria and put MC against these criteria.
+   The testing will take place in two stages:
+   First we will see how MC holds up in theory;
+   Then we will test MC by writing a test program with a certain complexity.
+
+   The main research field is compilers and the assignment is executed within Kenniscentrum Creating
+   010.
+   There will be made use of describing and evaluating MC and the test program.
+
+   The end result will consist of a report and a test program.
+\end{abstract}
+
+\chapter{Introduction}
+\section{Working title}
+   Testing the Meta-Compiler language from a practical perspective.
+
+\section{Motive}\label{sec:motivemandate}
+Making compilers for programming languages is a difficult task, as every language is different and needs different features.
+From this problem MC came into existence.
+The language is made to build compilers.
+The process of making compilers is hard, MC strives to make it less hard.
+MC also gives the complex code of compilers a clear structure.
+
+However MC has not yet been tested in the field yet, which brings us to the goal of the assignment.
+
+\section{Importance}
+The result of this paper will give some insight of the practicality of MC and how far it is from its end goal.
+This will be used in the further development and improvement of MC.
+
+\section{Goal}\label{sec:goalsmandate}
+The main goal is to test MC with a practical application.
+This is done by creating a test application which has the following steps of progressing difficulty:
+
+\begin{enumerate}
+   \item For a minimum passing grade of 6: \newline
+      A small interactive and graphical application.
+   \item For an 8: \newline
+      Within the application for a 6, add traversable and changeable data structures.
+   \item And for a 10: \newline
+      Within the application for an 8, add coroutines.
+\end{enumerate}
+
+After which the result is reflected upon.
+
+\section{Problem statement}
+Currently there are several working versions of MC available, but none of these implement the entire language.
+We want to have a full version of MC which works as desired.
+That is to say, it matches the design specifications.
+However the last documented version is implemented in the latest working version of MC.
+These versions are already proven to be adequate\cite{giuseppe2015mc}.
+
+The newest development version is the one that will be used for this assignment.
+This version has no working compiler yet and is therefor easily adapted to bugs found during testing.
+The new version also implements new features not present in the previous versions.
+Because this newer version is still in development we want to detect any flaws and mishaps in the design during this phase.
+This makes otherwise fatal flaws fixable.
+
+The usability of the new version is also not tested yet and we want to see how MC compares to other programming languages.
+For this reason we will be testing the current development version of MC.
+
+\section{Research question and sub-questions}
+From this problem statement follows the following research question:
+
+\textit{How good is the programming language MC in comparison to other languages?} \newline
+Which is divided into these subquestions:
+\begin{enumerate}
+   \item What constitutes a good programming language?
+   \item What is MC?
+   \item How does MC work?
+   \item How does MC differ with other languages?
+   \item Which purpose does MC have?
+   \item How practical is MC in its use?
+\end{enumerate}
+
+This will also translate to the actual assignments and goals as described in section \ref{sec:goalsmandate}.
+
+\section{The client}\label{sec:clientmandate}
+The graduation assignment will be carried out at Kenniscentrum Creating 010.
+The company is located in Rotterdam.
+\textit{Kenniscentrum Creating 010 is a transdisciplinary design-inclusive Research Center enabling citizens, students and creative industry making the future of Rotterdam}\cite{creating2016home}.
+
+\section{Working environment and tasks}\label{sec:workenvmandate}
+During the internship the student will work as a part of the existing research team, whom do research in the Casanova and MC languages.
+The student will be doing research and programming and will be supported and helped by the entire research team.
+Every two weeks the student will present his progress and receive feedback.
+
+
+\chapter{Method}\label{ch:methodmandate}
+\section{Research methods}
+During the internship there will be made use of different research methods.
+This stems from the wide scope of the project and the fact that there are multiple research questions which require different approaches.
+
+At the start there will be a preliminary research concerning MC.
+This will consist of describing and comparing MC and the ways it works.
+
+After this there will be a basic definition of the test program which will we written to further test MC.
+
+When this is done there will be a evaluation of the test program and MC.
+
+\section{Gathering information}
+The information needed will be gathered from the research team involved, via personal interviews, and via published papers concerning the material.
+
+\section{Validation of results}
+The validity of the results will be secured by regularly discussing with the client and the supervisor.
+Further more there will be programs will be double-checked by the supervisor and the other members of the research team.
+
+\section{Validity and trustworthiness of sources}
+The sources used will be published papers only and relative to the subject matter.
+Other sources, such as personal communications will be with people who are approved by the supervisor.
+
+\section{Project methods}
+During the internship the LEAN-software development method will be used\cite{ries2011lean}.
+Using this method gives the ability to quickly iterate through versions and gather knowledge more easily through these iterations.
+
+\section{Risk analyses}
+\begin{center}
+   \begin{tabular}
+      {| p{0.2\textwidth} | p{0.25\textwidth} | l | p{0.3\textwidth} |}
+      \hline
+      \textbf{Risk} & \textbf{Effect} & \textbf{Possibility} & \textbf{Counter measure}
+      \\ \hline
+      Quick development of the language. & Because the language becomes bigger as time progresses, the assignment could become too large to do in the set time. & 70\% & The analyses of MC goes on for a set period, which prevents the analyses going an for too long.
+      \\ \hline
+      The compiler is not finished at the time the programs need to be written. & The programs can not be tested in practice. & 80\% & The programs will be manually checked for errors by the student and the research team.
+      \\ \hline
+      The company goes bankrupt during the internship & The assignment will not be finished and the student will not be able to graduate. & 1\% & There is nothing the student can do to prevent this.
+      \\ \hline
+   \end{tabular}
+\end{center}
+
+\section{Quality expectations}
+MC makes use of type theory and the programs written in it will therefor need to be in line with the type theory, as described in \cite{pierce2002types}.
+Because the version of MC used in this internship has no compiler yet, the student will need to manually make sure that the program has no bugs and/or errors in them.
+
+\chapter{Results}
+\section{Intended result}
+The end result should be an insight into MC, with a focus on how practical the language is in it's current development stage.
+This will be done by explaining the language and writing a test program in MC.
+
+% \chapter{Definition of graduation assignment}
+% \section{The client}
+% See section \ref{sec:clientmandate}.
+
+% \section{Motive}
+% See section \ref{sec:motivemandate}.
+
+% \section{Goal}
+% See section \ref{sec:goalsmandate}.
+
+% \section{Scope}
+
+% \section{Conditions \& restrictions}
+
+% \section{How is the supervision organized within the company}
+% See section \ref{sec:workenvmandate} and chapter \ref{ch:methodmandate}.
+
+% \section{Correlation with other projects}
+% During the internship the research team keeps developing MC.
+% There are also a two other student doing an internship on MC.
+% One is building the compiler for MC and the other is optimizing the code generator.
+% The student will have to cooperate with the research team and with both these students.
+
+\chapter{Stakeholders}
+   \begin{tabular}
+      { l l }
+      \textbf{The graduate} & \\
+      Name & Louis van der Burg \\
+      Student number & 0806963 \\
+      E-mail address & louis.burg@hotmail.com \\
+      Telephone number & +31 6 14 85 55 79 \\
+      & \\
+      \textbf{Company supervisor} & \\
+      Name company & Kennis Centrum Creating 010 \\
+      Name company supervisor & Sunil Choenni \\
+      E-mail address & h.choenni@hr.nl \\
+      Telephone number & +31 6 48 10 03 01  \\
+      Function & Lector \\
+      Visitors address & Wijnhaven 103 verdieping 6 \\
+      Website company & www.creating010.com \\
+      & \\
+      \textbf{Client} & \\
+      Name company & Kennis Centrum Creating 010 \\
+      Name company supervisor & Sunil Choenni \\
+      E-mail address & h.choenni@hr.nl \\
+      Telephone number & +31 6 48 10 03 01  \\
+      Function & Lector \\
+      Visitors address & Wijnhaven 103 verdieping 6 \\
+      Website company & www.creating010.com \\
+      & \\
+      Name graduate coördinator INF/TI & Aad van Raamt \\
+      Telephone number & 010 7944993 \\
+      E-mail address & A.van.Raamt@HRO.NL \\
+      & \\
+      Name examinator (first teacher) & Giuseppe Magiorre \\
+      E-mail address & +31 6 41 78 12 23 \\
+      Telephone number & g.maggiore@hr.nl \\
+      & \\
+      Name assessor (second teacher) & Hans Manni \\
+      E-mail address & j.p.manni@hr.nl \\
+      Telephone number & \\
+   \end{tabular}
