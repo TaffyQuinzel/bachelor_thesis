@@ -1,6 +1,7 @@
 \section{Monad}\label{sec:standardmonad}
+\textbf{EXPLAIN WHY MONADS ARE IMPLEMENTED}
 Now we come to the module \verb\Monad\.
-This module takes a mathematical concept and makes into practical programming construct.
+This module takes a mathematical concept and makes it into a practical programming construct.
 
 Monads are the main reason MC has type manipulation.
 
@@ -9,7 +10,7 @@ Then we will see how they are implemented within MC.
 
 \subsection{Monads}
 Monads are a container-like generic interface.
-They contain atleast two functions, \emph{return} and \emph{bind}.
+They contain at least two functions, \emph{return} and \emph{bind}.
 
 These two functions are the basic way we can use monads.
 
@@ -34,8 +35,8 @@ This is where the bind comes in.
 Having a monad is good, but what if you want to manipulate the value of the monad?
 The \verb\>>=\ (pronounced \emph{bind}) function supplies this functionality.
 
-When we want to apply the function \verb\(+3)\ to the monad containing \verb\2\, we call the bind.
-The bind unpacks the monad, as visualised in figure~\ref{fig:monadbind1}.
+When we want to apply the function \verb\(+3)\ to the monad containing \verb\2\, we call bind.
+Bind unpacks the monad, as visualised in figure~\ref{fig:monadbind1}.
 
 {
    \centering
@@ -46,7 +47,7 @@ The bind unpacks the monad, as visualised in figure~\ref{fig:monadbind1}.
 }
 
 It then applies the function to the value.
-And the the new value gets packed inside the monad by the function, as visualised in figure~\ref{fig:monadbind2}.
+Finally the new value gets packed inside the monad by the function, as visualised in figure~\ref{fig:monadbind2}.
 
 {
    \centering
@@ -62,6 +63,7 @@ To use the monads further we will need a few more functions.
 These functions are generic for all the monads and will be given an implementation.
 
 \subsubsection{Returnfrom}
+\textbf{PUT THIS AFTER MONAD IMPLEMENTATION}
 Sometimes we want to directly pass the value inside the monad instead of wrapping it.
 This is done with \verb\returnFrom\.
 
@@ -124,10 +126,6 @@ For this we have to use the bind and return of the wrapped monad.
 
 It works the same as the other lift functions, with the specification of using the bind and return of the wrapped monad, \verb\'M\, instead of the bind and return of the current monad.
 
-\bigskip
-
-The monad can now be used with a wider aspect within programming.
-
 
 \subsubsection{More than a wrapper}
 But just a monad offers very little besides being a wrapper for values.
@@ -136,22 +134,6 @@ This means a lot of different functionalities can be mapped to monads.
 
 We will discuss two of these for now.
 More will be explained when looking at the implemented monads in MC in section~\ref{sec:standardimplementedmonads}.
-
-\paragraph{The state monad}
-gives monads the ability to behave like mutables.
-It takes a \emph{state} and returns a new state and a return value.
-
-Say we want a random number generator.
-The state monad will simulate the \emph{state} of the number being generated.
-The state monad is given a \emph{state} in the form of a number and from this it will compute the new state of the number and the random number generated.
-
-In MC the functionality might look like this:
-
-\begin{lstlisting}
-Func "state" -> 's -> ('a,'s)
-state number -> (randomGeneratedNumber,newNumber)
-\end{lstlisting}
-
 
 \paragraph{The maybe monad}
 offers the ability of the value to be either a value or nothing.
@@ -174,9 +156,26 @@ In the example the term a is checked for a being a value, the \verb\Left\, or be
 This is a very basic example of how the maybe works.
 It acts like a pipe and can contain either a value, \verb\Left\, or nothing, \verb\Right\.
 
+
+\paragraph{The state monad}
+gives monads the ability to behave like mutables.
+It takes a \emph{state} and returns a new state and a return value.
+
+Say we want a random number generator.
+The state monad will simulate the \emph{state} of the number being generated.
+The state monad is given a \emph{state} in the form of a number and from this it will compute the new state of the number and the random number generated.
+
+In MC the functionality might look like this:
+
+\begin{lstlisting}
+Func "state" -> 's -> ('a,'s)
+state number -> (randomGeneratedNumber,newNumber)
+\end{lstlisting}
+
 \bigskip
 
 The implementations of these monads are far from complete, these examples simply show the functionality of the monad.
+\textbf{CHECK}
 The actual implementation will be given in section~\ref{sec:basicmonadsimplementation}.
 
 
@@ -204,16 +203,18 @@ The state monad will be used for the scanning functionality and the maybe monad 
 The state monad returns the maybe monad as its result.
 When the maybe monad has a value as result the parser monad stops.
 
-Like the normal monads they have to be build manually.
+Like normal monads, transformers have to be built manually.
 This is a very error prone process when combining more than two monads or when using more complex monads.
 
 What we actually want is to write the monads once and combine them automatically.
 This is where monad transformers come in.
+\textbf{PUT IMPLEMENTATION OF FUNCTIONS HERE}
 
 
 \subsection{Monad transformers}
 Monad transformers are a way to automatically combine monads.
 Instead of simply having a monad which takes the arguments it needs, it also takes another monad transformer as one of its arguments.
+\textbf{check}
 This monad transformer is then used to given the actual value.
 
 MC has an implementation of the basic monad transformer with which all monad transformers and monads can be created.
@@ -230,11 +231,11 @@ The identifier \verb\'M\ is the monad given to the monad transformer.
 
 
 \subsection{Implementation}\label{sec:basicmonadsimplementation}
-Now we will look at how the monad transformer is implemented.
+Now we will look at how the monad is implemented.
 
-Because monad transformers need to be able to manipulate type information, it is a good example of what MC is useful for.
+Because monads need to be able to manipulate type information, it is a good example of what MC is useful for.
 
-With this monad transformer we will be able to create actual monads, this can be seen as the base module for monads.
+With this monad we will be able to create actual monads, this can be seen as the base module for monads.
 First we take a look at the declaration:
 
 \begin{lstlisting}
@@ -245,7 +246,7 @@ Monads are implemented as modules.
 This way we can put the return and bind functions inside a monad.
 
 The first argument is a function on type level.
-It represents the monad transformer it uses to wrap the result in.
+It represents the monad it uses to wrap the result in.
 
 When looking at the implementation we see that a module is created with the return and the bind:
 
@@ -263,19 +264,19 @@ The function creates the new monad which is then returned.
 
 The return takes a value, \verb\'a\, and wraps it inside the monad, \verb\'M\.
 
-Both the bind and the return are only declared and not defined, because they are different for every monad created.
-When creating a new monad the bind and return will need to be defined.
+Both bind and return are only declared and not defined, because they are different for every monad created.
+When creating a new monad bind and return will need to be defined.
 
-The functions explained and implemented in section~\ref{} will be added to this aswell.
+The functions explained and implemented in section~\ref{something} will be added to this as well.
 
-With those we have the complete interface of the monad transformer.
-With this we can combine and built monads automatically.
+With those we have the complete interface of monad.
+With this we can build monads.
 
 \subsection{Evolution of monad}
-The monad was first implemented with just the \verb\MCons\, \verb\>>=\, \verb\return\ and \verb\returnFrom\ functions.
+Monad was first implemented with just \verb\MCons\, \verb\>>=\, \verb\return\ and \verb\returnFrom\ functions.
 This enabled basic use of the monad.
 
-The \verb\lift\, \verb\lift2\ and \verb\liftM\ were then added to extend the usecases of monads.
+\verb\lift\, \verb\lift2\ and \verb\liftM\ were then added to extend the usecases of monads.
 
 
 \section{Tryable monad}\label{sec:standardtryablemonad}
@@ -322,7 +323,7 @@ And if it contains a value the value is passed to the function.
       (\y -> k y)) -> z
 \end{lstlisting}
 
-The result of the \verb\match\ is then wrapped in monad \verb\'M\ and returned.
+The result of \verb\match\ is then wrapped in monad \verb\'M\ and returned.
 
 \begin{lstlisting}
     return^'M z} -> res
@@ -340,29 +341,30 @@ We also want to be able to get the original monad out of the tryable monad.
 This is done with \verb\getMonad\.
 
 \begin{lstlisting}
-  Func "getMonad" -> MCons^'M
-  getMonad -> 'M
+  TypeFunc "getMonad" => Type
+  getMonad => MCons^'M
 }
 \end{lstlisting}
 
-Now we can create a \verb\Monad\ which has two options when calling the bind.
+Now we can create a \verb\Monad\ which has two options when calling bind.
 This can be used for error handling or for creating complex dataflows within monads.
 
 
 \subsection{Evolution of tryable monad}
 \textbf{DO THIS !!!!!!!!!!!!!!!!!!!}
 The \verb\TryableMonad\ startet out as the \verb\either\ monad.
-The \verb\either\ used the available options to create error handling.
+\verb\either\ used the available options to create error handling.
 
 It occured then that we could also create more complex dataflows, when creating a generic tryable monad.
 This was then implemented as the \verb\TryableMonad\.
 
 
 \section{Implemented monads}\label{sec:standardimplementedmonads}
+\textbf{PUT TEXT HERE}
 
 \subsection{Id}\label{sec:basicmonadsimplementedid}
 If monad transformers always take another monad, there has to be atleast one to end the chain.
-That is where the \emph{id} monad transformer comes in.
+That is where the \emph{id} monad comes in.
 
 It takes no monad as argument and simply returns all values as the are.
 
@@ -376,7 +378,7 @@ Id 'a => 'a
 Here we can see what the id monad should do, simply pass the type on as it was given.
 
 Now we will declare and define the id monad.
-The type signature is created with \verb\Id\ and the bind and return are defined.
+The type signature is created with \verb\Id\ and bind and return are defined.
 
 \begin{lstlisting}
 TypeFunc "id" => Monad
@@ -388,32 +390,32 @@ id => Monad(Id) {
 
 \verb\Id\ also takes an \verb\'a\, but this is never used as the id monad does not need an extra type to say which type it really uses.
 While the \verb\'a\ is not used, it necessary to have them in the type signature.
-Else \verb\Id\ cannot be used to instantiate \verb\Monad\, as evident from section~\ref{sec:basicmonadsimplementation}.
+Otherwise \verb\Id\ cannot be used to instantiate \verb\Monad\, as evident from section~\ref{sec:basicmonadsimplementation}.
 
 Other monad transformers which do actually use the \verb\'a\ also do not instantiate them immediatly.
 The programmer can decide for which type the monads will be created, therefor it is left open.
 This effectively creates an interface for the defined monad to be instantiated with a type later specified.
 
-The \verb\return\ simply returns the exact same value and \verb\bind\ executes the function \verb\k\ with \verb\x\ as its argument.
+\verb\return\ simply returns the exact same value and \verb\bind\ executes the function \verb\k\ with \verb\x\ as its argument.
 It is the monad which \emph{passes through} the values.
 
 When using the \verb\id\ monad transformer with another transformer, it becomes that monad.
 
-As an example we pass the \verb\id\ monad to the maybe monad transformer.
-When the return of the created maybe monad is called, it first calls the return of the inner monad.
+As an example we pass the \verb\id\ monad to the \verb\maybe\ monad transformer.
+When the return of the created \verb\maybe\ monad is called, it first calls the return of the inner monad.
 In this case is the \verb\id\ monad.
 
 The return of the \verb\id\ monad returns the value directly as a result.
-This result is then passed back to the maybe monad, where it gets wrapped inside the maybe monad and returned.
+This result is then passed back to the \verb\maybe\ monad, where it gets wrapped inside the maybe monad and returned.
 
 In this way the \verb\id\ monad will always end the cycle.
 
 
 \subsection{List}\label{sec:standardmonadlist}
 
-The list monad uses a list to store the values.
+The \verb\list\ monad uses a list to store the values.
 
-The list monad transformer uses \verb\List\ from \emph{prelude} to create the transformer.
+The \verb\list\ monad transformer uses \verb\List\ from \emph{prelude} to create the transformer.
 
 First we have to declare and define the signature.
 
@@ -430,7 +432,7 @@ list 'M => Monad(ListT MCons^'M) {
 \end{lstlisting}
 
 \verb\ListT\ also takes a \verb\'a\, which is the type for the list created.
-As stated in section~\ref{sec:basicmonadsimplementedid} the programmer has to decide which type the list monad uses.
+As stated in section~\ref{sec:basicmonadsimplementedid} the programmer has to decide which type the \verb\list\ monad uses.
 
 The \verb\return\ simply puts the value in a one-element list wrapped inside a monad.
 
@@ -438,7 +440,7 @@ The \verb\return\ simply puts the value in a one-element list wrapped inside a m
   return x -> return^'M(x :: empty)
 \end{lstlisting}
 
-The bind looks a bit more complicated.
+\verb\bind\ looks a bit more complicated.
 It uses the \verb\ArrowFunc\ syntax together with a match.
 
 \begin{lstlisting}
@@ -474,18 +476,18 @@ The results of processing \verb\x\ and \verb\xs\ are then concatenated into a si
 
 All the nested functions are closed with the proper brackets and the resulting list is returned as the result of the bind.
 
-If the use of the different syntaxes of the \verb\ArrowFunc\ seems confusing, take extra look at section~\ref{sec:basicmcarrowfunc}.
+If the use of the different syntaxes of the \verb\ArrowFunc\ seems confusing, take an extra look at section~\ref{sec:basicmcarrowfunc}.
 
 
 \subsubsection{Evolution of list}
-The list that the is used within the list monad, was first implemented within the list monad.
+The list that is used within the list monad, was first implemented within the list monad.
 But the list could be used outside of the monad as well.
 
 It was then moved to \emph{prelude}.
 
 
 \subsection{Either}\label{sec:basicmonadseither}
-The either monad is an implementation of the \verb\TryableMonad\ module.
+The \verb\either\ monad is an implementation of the \verb\TryableMonad\ module.
 
 It creates a monad which can be either a value or a list of error messages.
 The type signature is as follows:
@@ -536,17 +538,17 @@ The \verb\return\ passes the value to \verb\'M\.
   return x -> return^'M(Left x)
 \end{lstlisting}
 
-\textbf{maybe put a sort of conclusion here}
+\textbf{PUT A SORT OF CONCLUSION HERE}
 The \verb\either\ can now be
 
 
 \subsubsection{Evolution of either}
-The \verb\either\ was first implemented without the use of \verb\TyableMonad\.
+\verb\either\ was first implemented without the use of \verb\TryableMonad\.
 It had the same functionality.
 All the functions of the \verb\TryableMonad\ were implemented directly within \verb\either\.
 
 When the idea occured of using a generic tryable monad, these were ported to the \verb\TryableMonad\.
-The \verb\either\ was then implemented by using the \verb\TryableMonad\.
+\verb\either\ was then implemented by using the \verb\TryableMonad\.
 
 
 % \subsection{Option}
@@ -573,7 +575,7 @@ The \verb\either\ was then implemented by using the \verb\TryableMonad\.
 
 
 \subsection{Result}
-The result monad is complete implementation of the either monad from section~\ref{sec:basicmonadseither}.
+The result monad is a complete implementation of the either monad from section~\ref{sec:basicmonadseither}.
 
 The \verb\either\ monad still needs an error type and a type for the values it takes.
 The result monad specifies the error type, leaving the type of the value for the programmer to specify.
@@ -581,8 +583,8 @@ The result monad specifies the error type, leaving the type of the value for the
 Because all the functions in \verb\either\ are defined, result can directly call \verb\either\ with an error type.
 No further function declarations or definitions are needed.
 
-In the declaration we specify it returns a \verb\TryableMonad\, which \verb\either\ is.
-And in the definition we specify the error type to be \verb\String\.
+In the declaration we specify it returns a \verb\TryableMonad\, which \verb\either\ actually is.
+In the definition we specify the error type to be \verb\String\.
 
 \begin{lstlisting}
 TypeFunc "result" => Monad => TryableMonad
@@ -593,13 +595,14 @@ This creates an \verb\either\ with \verb\String\ as error type.
 
 
 \subsubsection{Evolution of result}
-The original idea of the \verb\result\ monad was a maybe monad with error handling in the form of a \verb\string\.
+The original idea of the \verb\result\ monad was a \verb\maybe\ monad with error handling in the form of a \verb\string\.
 
 The \verb\result\ monad was first implemented in much the same way as the \verb\either\ monad, but with explicit use of \verb\String\ as the error handler.
 When this was noticed, the \verb\result\ monad was implemented by using \verb\either\.
 
 
 \subsection{State}
+\textbf{EXPLAIN THAT BOX IS NOT A CONTAINER THIS TIME}
 We have had a basic explanation of the state monad in section~\ref{sec:standardmonad}.
 
 Now we will see how it is implemented.
@@ -610,7 +613,7 @@ TypeAlias "StateT" => (Type => Type) => Type => Type => Type
 StateT 'M 's 'a => ('s -> 'M('a * 's))
 \end{lstlisting}
 
-It takes a state and returns a monad containing a tuple af the resulting value and the new state.
+It takes a state and returns a monad containing a tuple of the resulting value and the new state.
 
 We use \verb\StateT\ in the call to \verb\Monad\ so it knows what the type signature will be.
 
@@ -619,14 +622,14 @@ TypeFunc "state" => Monad => Type => Monad
 state 'M 's => Monad(StateT MCons^'M 's) {
 \end{lstlisting}
 
-When looking at the return we see something new.
+When looking at return we see something new.
 A lambda is created to match the type signature of the state monad.
 
 \begin{lstlisting}
   return x -> (\ s -> return^'M(x,s))
 \end{lstlisting}
 
-The x is set as the result of the state.
+\verb\x\ is set as the result of the state.
 
 We see this happening also in the bind.
 A lambda is created and in the function body of the lambda the computation happens.
@@ -640,7 +643,7 @@ A lambda is created and in the function body of the lambda the computation happe
   sm >>= k -> res
 \end{lstlisting}
 
-The bind of \verb\'M\ is called and the result is then deconstructed to get to the tuple which it contains.
+Bind of \verb\'M\ is called and the result is then deconstructed to get to the tuple which it contains.
 We know \verb\x\ is a tuple because it lives inside a state monad.
 As is evident by the type signature of the state monad.
 
@@ -655,7 +658,7 @@ To get the state we call \verb\getState\.
 \end{lstlisting}
 
 It sets the state as the result in the return lambda.
-By which you will get the state back when it is entered into the lambda.
+By defining return this way, you will get the state back when it is entered into the lambda.
 
 To set the state we call \verb\setState\.
 
@@ -677,7 +680,7 @@ And these are the direct implementations, not using monad transformers.
 There are only few attempts made when it comes to monad transformers.
 The main reason for this is the need for higher order types.
 
-Haskell has a few implementations of monad transformers~\cite{monadshaskell}, but these are far longer than the MC implemntation.\footnote{See appendix~\ref{app:monadshaskell} for the source code of a few of these monadic transformers}
+Haskell has a few implementations of monad transformers~\cite{monadshaskell}, but these are far longer than the MC implementation.\footnote{See appendix~\ref{app:monadshaskell} for the source code of a few of these monadic transformers}
 
 This shows what MC is capable of compared to most other languages.
 With the use of higher order types the high abstractions used for monad transformers can be implemented with very little code.

@@ -1,6 +1,6 @@
 \chapter{Introduction}
-\subsection{Company}
-The graduation assignment is be carried out at Kenniscentrum Creating 010.
+\section{Company}
+The graduation assignment is carried out at Kenniscentrum Creating 010.
 The company is located in Rotterdam.
 \textit{Kenniscentrum Creating 010 is a transdisciplinary design-inclusive Research Center enabling citizens, students and creative industry making the future of Rotterdam}\cite{creating2016home}.
 
@@ -9,39 +9,43 @@ The new programming language is called \emph{Casanova}.
 
 
 \section{The assignment}
-\subsection{Motive}
-MetaCasanova (from now on called \emph{MC}) comes forth from the language Casanova, hence the name.
+We will now describe the assignment.
+What the motive is and how it will be executed.
 
-Casanova is a language made for building games.
-It uses higher order types to make the programming of complex constructs easier.
-These constucts are often used in game development.
+\subsection{Motive}
+Video game development is difficult~\cite{blow2004game}.
+To make game development easier \emph{Casanova} was created~\cite{maggiore2011designing}.
+
+Casanova uses higher order types to make the programming of complex constructs easier.
+These constructs are often used in game development.
 A few of these constructs will be explained in detail from chapter~\ref{chap:standardlibrary} onward.
 
 Because of the higher order types the compiler for Casanova became complex.
 The compiler for Casanova worked, but was still in development.
-So when a bug was found in the compiler, fixing it was becoming more and more time consuming.
-This frustrated the developers so much a new language was created.
+So when a bug was found in the compiler, fixing it became more and more time consuming.
+This frustrated the developers so much a new language was created~\cite{giuseppe2015mc}.
 
-MC was this new language.
-MC serves as the language in which the compiler for Casanova will be written.
+Meta-Casanova (from now on called \emph{MC}) is this new language.
+MC serves as the language in which Casanova will be written as a library
 
 At the beginning of the assignment MC was still in development.
 The syntax was nearly complete, but untested, and the standard library of MC was just beginning to take shape.
-The assignment was created to debug and expand the language.
+The assignment was created to debug and expand the language and further refine the standard library.
 
 
 \subsection{Research question}
-As stated the main goal of the assignment is to debug and expand the language.
-Which translates to the following research question:
+As stated above the main goal of the assignment is to debug and expand the language and the standard library.
+This translates to the following research question:
 
-\emph{How can the programming language MetaCasanova be improved for the user within the timeframe of the internship?}
+\emph{How can the programming language Meta-Casanova be improved for the user within the timeframe of the internship?}
 
-Where the user is a programmer using the language to create applications.
+Here the user is a programmer using the language to create applications.
 
-This research question is quite broad and I have created a few subquestions to define a scope for the assignment.
+This research question is quite broad and several sub-questions have been created to define a clearer scope for the assignment.
 
 \begin{enumerate}[noitemsep]
-   \item What to the user is a good programming language?
+   \item What is a good programming language to the user?
+   \item What is MC and how does it work?
    \item How can the current syntax be improved to serve the user?
    \item How can the standard library be improved to serve the user?
 \end{enumerate}
@@ -49,7 +53,21 @@ This research question is quite broad and I have created a few subquestions to d
 After we have a clear image of what a good programming language is, we can look at MC.
 MC can then be checked and improved where necessary.
 
-The definitions and scope of the improvments will become clear after the preliminary research.
+To further test MC from a users perspective a few test programs will be written in the language.
+
+The definitions and scope of the improvements are defined by the preliminary research.
+
+
+\subsection{Correlation with other projects}
+During the internship the research group keeps developing MC.
+There are also two other students doing an internship on MC.
+These students are both working on the compiler, one is developing the back-end of the compiler and the other the front-end.
+
+The students will form a research team as part of the research group.
+The student will work closely with the research team and cooperate with the research group.
+
+
+
 % \section{Supervision \& work methods}
 
 % \subsection{Working environment and tasks}\label{subsec:workenvmandate}
@@ -157,13 +175,6 @@ The definitions and scope of the improvments will become clear after the prelimi
 
 % I have chosen to create game or game-like test prog
 
-
-
-\section{Correlation with other projects}
-During the internship the research team keeps developing MC.
-There are also two other students doing an internship on MC.
-They are both working on the compiler, one is developing the back-end of the compiler and the other the front-end.
-The student will cooperate with the research team and both these students.
 
 
 % \section{Execution}

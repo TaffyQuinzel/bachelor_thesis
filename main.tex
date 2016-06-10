@@ -14,7 +14,8 @@
 \end{titlepage}
 
 % \maketitle
-\begin{multicols}{3}
+% \begin{multicols}{3}
+% \begin{multicols}{2}
    % state the problem
    % say why it's an interesting problem
    % say what your solution is
@@ -26,12 +27,11 @@
       % standard library has been expanded
       % test programs have been created
       % conclusion has been made
-      This document describes the new programming language MetaCasanova and its improvements.
+      This document describes the new programming language Meta-Casanova and its development.
 
 The author was part of the research group which was developping MetaCasanova.
 
-This document is the thesis that was issued by the Rotterdam University of Applied Sciences, as a test of skill and knowledge gained after four years of education at their Computer Science department.
-The goal of this document is to demonstrate the skill of the student, the author of this document.
+This document is the thesis that was issued by the Rotterdam University of Applied Sciences, as a test of skill and knowledge gained after four years of education at their Computer Engineering department.
    \end{abstract}
    % \input{summary}
    \newpage
@@ -46,27 +46,28 @@ The goal of this document is to demonstrate the skill of the student, the author
    \cleardoublepage
    \pagenumbering{arabic}
    \addtocounter{page}{4}
-\end{multicols}
+% \end{multicols}
 
 
 \part{Preface}
 % \input{stakeholders}
-\begin{multicols}{3}
+% \begin{multicols}{2}
    \input{introduction}
-
-   % perhaps leave out entirely
-   % \input{assignment}
-\end{multicols}
+% \end{multicols}
 
 \part{Preliminary research}
-\begin{multicols}{3}
+% \begin{multicols}{2}
    \input{goodlanguage}
+
+   %---------------------------------------------------------------------------------------------------------%
+   %----------------------------------------------- finished ------------------------------------------------%
+   %---------------------------------------------------------------------------------------------------------%
    \input{basicmc}
 
 \newpage
-\end{multicols}
+% \end{multicols}
 \part{MC expanded}\label{part:mcexpanded}
-\begin{multicols}{3}
+% \begin{multicols}{2}
    \input{syntaxevolution}
 
    \input{standardlibrary}
@@ -75,18 +76,19 @@ The goal of this document is to demonstrate the skill of the student, the author
    \input{testprograms}
 
 
-\end{multicols}
+% \end{multicols}
 \part{Results}
-\begin{multicols}{3}
+% \begin{multicols}{2}
    \input{results}
 
    \bibliographystyle{ieeetr}
    \bibliography{biblio}
 
-\end{multicols}
+% \end{multicols}
 
 \begin{appendices}
    \part{Appendices}
+   \input{stakeholders} % maybe???
    \input{typeproofs}
    \input{monadiclibraries}
 \end{appendices}

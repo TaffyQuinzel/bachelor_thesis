@@ -1,7 +1,9 @@
 \chapter{Conclusion}
-To summerize the main research question was:
+\textbf{EXPAND!!!!!!}
+To summarize the main research question was:
 \emph{How can the programming language MetaCasanova be improved for the user within the timeframe of the internship?}
 
+To answer the main question we will first answer the subquestions.
 The answer to this research question is:
 \emph{MetaCasanova can be improved by creating a clear definition of what a good programming language is and using that as a basis for further development.}
 
@@ -12,7 +14,7 @@ The answer to this research question is:
 
 Other conclusions that were found during the project were:
 \begin{enumerate}
-\item Complex datastructures can be improved in performance when doing most of the work in compile time.
+\item Complex datastructures can be improved in performance when doing most of the computation in compile time.
 \item Higher order types enable the writing of complex concepts in fewer lines of code with more clarity.
 \end{enumerate}
 
@@ -34,10 +36,19 @@ When developing MC further I would recommend to expand the standard library even
 Especially when the focus of the language is put more on monads.
 
 \subsection{Monads}
-First we would need a proper IO monad for interacting with the unpure functions and get real output.
+Because Monads are a very strong example of where MC thrives, it is a logical next step to move most functionality to monads.
+By doing this MC can be
+
+The first step in moving to monads would be the IO monad~\cite{iomonad}.
+The IO monad would be the only interface with the outside world and unpure functions, making MC a completely pure language.
+Being pure the language becomes more strict, but also less bug and error prone~\cite{purelanguage}.
+
+
+The creation of the record monad would come next.
 
 Coroutines would be next.
 Both as a separate entity and as a monad.
+This gives the user a
 They would give the ability of multi threading directly in the language.
 This would improve performance.
 
@@ -52,8 +63,15 @@ This creates less work for the compiler developers as they do not have to change
 
 
 \chapter{Evaluation}
-Here I will provide proof of having the competentions which are associated with computer science according to the university of Rotterdam~\cite{}.
+Here I will provide proof of having the competentions which are associated with computer science according to the Rotterdam University of applied science~\cite{citeershit}.
 
+The competency \emph{admministering} will be attained by further developing MC according to the specifications of the research group.
+
+The competency \emph{Analysing} will be attained by refining the standard library of MC in accordance with what is needed for the user and the research group.
+
+The competency \emph{Advising} will be attained when putting forth improvements for MC.
+
+The competency \emph{Designing} will be attained when debugging MC and refining the standard library to further improve the language.
 \section{Multi-discipliniar}
 By working in a research team there are many different people to deal and communicate with.
 This
@@ -64,11 +82,11 @@ kunnen werken in ... team en zelfstandig hun taken uitvoeren.
 \section{able to reflect and adapt on their beroepsmatig handelen}
 
 
-Here I will provide proof of having mastered the dublin descriptors and the extra competentions as set in the graduation module guidelines~\cite{}.
+Here I will provide proof of having mastered the dublin descriptors and the extra competentions as set in the graduation module guidelines~\cite{stuff}.
 
 \section{Dublin descriptors}
 \subsection{Knowledge and understanding}
-During the project I have used type-theory as described in~\cite{} to check the programs I was writing.
+During the project I have used type-theory as described in~\cite{stuff} to check the programs I was writing.
 This can be explicitly seen in section~\ref{sec:standardtryablemonad} and appendix~\ref{app:typeproofs}.
 
 Further more I have learned the monadic theory to be able to implement them in the standard library.

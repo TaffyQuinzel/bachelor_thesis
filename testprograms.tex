@@ -1,21 +1,24 @@
 \chapter{Test programs}
+\textbf{WHY GAMES??????}
+\textbf{FIX CODE WITH NEW SET!!!!!!!!!!!!!!!!!!!!!}
 There have been two test programs written to test the language.
+The test programs are both games
 
 The first of these is a simple bouncing ball.
 
 
 \section{Bouncing ball}
-Bouncing ball is used as a preliminary test of the updatable records.
-It will show how the updatable recordentry are used in practice.
+Bouncing ball is used as a preliminary test of updatable records.
+It will show how the updatable \verb\RecordEntry\ are used in practice.
 
 This program bounces a ball up and down.
 
 The ball will have two properties, velocity and position, which will implemented as records.
-Both of these will then be put inside the updatable recordentry of the ball.
+Both of these will then be put inside the updatable \verb\RecordEntry\ of the ball.
 
-The update function will then add implement how the ball bounces.
+The \verb\update\ function will then add implement how the ball bounces.
 
-First we import prelude, recordentry and the XNA framework
+First we import prelude, record and the XNA framework.
 The Microsoft XNA library will be used for the \verb\Vector2\ it has and the Thread library will be used to call the \verb\Sleep\ function.
 
 \begin{lstlisting}
@@ -51,14 +54,14 @@ UpdatableRecord (Record "Ball" unit Position) => Ball {
 
 We then need to define the \verb\update\ function.
 
-The \verb\Position\ and \verb\Velocity\ RecordEntry are put in a identifiers, so we can use them directly.
+The \verb\Position\ and \verb\Velocity\ RecordEntry are put in identifiers, so we can use them directly.
 
 \begin{lstlisting}
   get^e "Position" Rest^e => position
   get^e "Velocity" Rest^e => velocity
 \end{lstlisting}
 
-Then the height of the ball is check and the according calculations executed.
+Then the height of the ball is checked and the according calculations executed.
 
 \begin{lstlisting}
   (if (Y^Field^position <= 500.0f) then
@@ -91,38 +94,35 @@ run ball time -> res
 \end{lstlisting}
 
 This creates an infinite loop, so the ball will keep on bouncing.
-The return will never be set as it will keep calling itself until the program stops.
+A return value will never be set as it will keep calling itself until the program stops.
 
 % Finally we start the program by calling
 % \textbf{ask guys if the last function will be automatically executed}
 
 \section{Tron}
-Tron is a more advanced program which will utilise user input.
+Tron is a more advanced program which utilises user input.
 
 The game tron is played with two or more players.
 Each controlling a bike which leaves a trail.
-The bikes can move freely within the playingfield, but cannot stop, slow down or speed up.
+The bikes can move freely within the playing field, but cannot stop, slow down or speed up.
 The trails the bikes leave behind become walls.
 
 A bike may not hit a wall or trail, when it does it is destroyed.
 The player who remains driving is the winner.
 
-The game tron~\cite{} has been chosen because of the minimalistic graphics.
+The game tron~\cite{troncitation} has been chosen because of the minimalistic graphics.
 This allows us to focus on the internal workings of the game.
 
 Tron has been split up in two three parts, bike, playfield and main.
-% Tron has been split up in two four parts, bike, playfield, powerups and main.
-The main file will calls all the needed parts and starts the game.
-The playfield will contain all the bikes.
+The main file calls all the needed parts and starts the game.
+The playfield contains all the bikes.
 
-% The playfield will contain all the bikes and powerups.
-
-This will keep all the parts clear and specific to their function.
+Splitting the code will keep all the parts clean and specific to their function.
 
 The bikes and playfield will be records.
-Some of the recordentry will be made updatable recordentry when necessary.
+Some of the records will be made updatable records when necessary.
 
-We will start by looking at the bike.
+We start by looking at the bike.
 
 
 \subsection{Bike}
@@ -138,13 +138,13 @@ import record
 import prelude
 \end{lstlisting}
 
-The bike will need to have several things to work in the game.
+The bike needs several things to work in the game.
 
-A bike will need to have a recordentry which will keep track of its current position.
-The position will need to be updated so we will use an updatable record.
-The position recordentry will be created seperately and included in the bike later.
+A bike needs a record which keeps track of its current position.
+The position needs to be updated so we use an updatable record.
+The position record is created seperately and included in the bike later.
 
-This is done make the definition of the bike smaller.
+This is done to make the definition of the bike smaller.
 
 The \verb\RecordEntry\ is created in the premise and then passed to \verb\UpdatableRecord\.
 
@@ -159,19 +159,21 @@ The created record \verb\r\ will not be explicitly inherited as that happens wit
 We only need to define the update function.
 
 The update function takes a record and a tuple.
-The tulpe conists of the delta time and the speed.
+The tuple consists of delta time and speed.
 This is then used to calculate the new position.
 
 A new record containing the new position is then created and returned as the result.
 
 \begin{lstlisting}
   dts -> (dt,speed)
-  Field^p +^Vector2 dt *^Vector2 speed -> newPos
-  RecordEntry label^p newPos Rest^p -> res
+  Field^p + (dt * speed) -> newPos
+  set^p label^p newPos Rest^p -> res
   -----------------------------------
   update p dts -> res
 }
 \end{lstlisting}
+
+Note that the \verb\+\ and \verb\*\ operators are inferenced to be the \verb\Vector2\ operators.
 
 Now that we have an updatable position we also need an updatable trail.
 This trail changes when the bike moves.
@@ -188,8 +190,9 @@ TrailRecord label field rest => UpdatableRecord r => Module{
 The update function only needs to create a new trail record with the original record as its \verb\Rest\.
 This way the trail is a record of points.
 
+\textbf{CHECK THIS}
 \begin{lstlisting}
-  RecordEntry label^t pos fields^t => res
+  RecordEntry Label^t pos fields^t => res
   ----------------------------------
   update t pos => res
 }
@@ -212,13 +215,13 @@ Then we come to the bike itself.
 It will use the \verb\Keys\, \verb\TrailRecord\ and \verb\PositionRecord\.
 And with those it also uses records to store the colour, speed and a boolean to check if it has not crashed.
 
-The bike will also be given a name to give it a unique identifier.
+The bike will also be given a unique identifier, its name.
 
-In the definition we will see how the bike is build with multiple records.
+In the definition we will see how the bike is built with multiple records.
 
 \begin{lstlisting}
 TypeFunc "Bike" => String => Int => Keys => Vector2 => TrailRecordEntry => Record => Record
-RecordEntry "Colour" rgb Empty
+RecordEntry "Colour" color Empty
 RecordEntry "IsAlive" True^builtin Colour
 RecordEntry "Controls" keys IsAlive
 RecordEntry "Speed" speed Controls
@@ -226,13 +229,13 @@ PositionRecord "Position" position Speed
 RecordEntry "Trail" trail Position => field
 RecordEntry label field rest => e
 --------------------------------------
-Bike label rgb keys speed position trail rest => UpdatableRecord e{
+Bike label color keys speed position trail rest => UpdatableRecord e{
 \end{lstlisting}
 
-All the records are ordered according to how often it is needed.
+The record entries are ordered according to how often they are needed, this speeds up compile time.
 
-The update function will take a bike and the delta time as argument.
-It first checks if the bike is still active and returns the bike if it is dead.
+The update function takes a bike and the delta time as argument.
+It first checks if the bike is still active.
 
 \begin{lstlisting}
   (if Field^IsAlive then
@@ -258,6 +261,11 @@ A new trail record is created and lastly a new bike record is created and return
 \begin{lstlisting}
     RecordEntry label^trail newTrailRecord newPos => newTrail
     RecordEntry Label^b newTrail Rest^b
+\end{lstlisting}
+
+The bike is returned if it is dead.
+
+\begin{lstlisting}
   else
     b) -> res
   -------------------------------------
@@ -269,8 +277,9 @@ We now have a complete bike that can be updated.
 
 
 \subsubsection{Evolution}
-During the development of tron the \verb\apply\ function was used to call all the update functions.
-After its removal the update functions are directly called.
+\textbf{ADD STUFF}
+% During development of tron the \verb\apply\ function was used to call all the update functions.
+% After its removal the update functions are directly called.
 
 
 \subsection{Playfield}
@@ -298,7 +307,7 @@ These functions are necessary because they do recursive operations.
 This would be impossible without a separate function.
 
 The first function is \verb\checkTrails\.
-It goes over through the trail of a bike and check for any collisions.
+It goes through the trail of a bike and check for any collisions.
 It takes a position and trail and returns a boolean.
 If any collisions are detected the boolean returns false, otherwise it returns true.
 
@@ -369,7 +378,7 @@ We then come to \verb\updateBikes\.
 This goes through all the bikes and calls their update function.
 It then returns the updated bikes.
 
-But first we have to check if the bike record is \verb\Empty\.
+First we have to check if the bike record is \verb\Empty\.
 
 \begin{lstlisting}
   Func "updateBikes" -> Record -> Float -> Record
@@ -389,10 +398,10 @@ In the update function we want to get the actual bikes.
   Field^bs -> bikeRecords
 \end{lstlisting}
 
-We also need the fieldsize and the delta time.
+We also need \verb\fieldsize\ and \verb\dt\.
 These are given to the function as a tuple, because \verb\update\ can only take two parameters and we need three.
 
-The \verb\update\ functions first calls \verb\updateBikes\.
+The \verb\update\ function first calls \verb\updateBikes\.
 And when the bikes are updated they are passed to \verb\updateIsAlive\.
 The new bike record is then returned.
 
@@ -406,59 +415,120 @@ The new bike record is then returned.
 }
 \end{lstlisting}
 
-When defining the actual playfield
+\textbf{DO THIS!!!!!!!!!}
+When defining the actual playfield we create a \verb\BikeRecordEntry\ and a record containing the winner.
+Both these records are passed to \verb\Rest\ of the playfield.
+The size of the playfield is put in the \verb\Field\ of the playfield record.
+The playfield record is also made updatable.
+
 \begin{lstlisting}
 TypeFunc "Playfield" => String => Record => Vector2 => Record
 RecordEntry "Winner" unit Empty
 BikeRecordEntry "Bikes" bikes Winner -> rest
------------
+--------------------------------------------
 Playfield label bikes size => updatableRecord (RecordEntry label size rest) {
+\end{lstlisting}
 
+\verb\Winner\ is emty until there is only one player left in the game.
+
+Next we create the \verb\checkDeaths\ function.
+This function is needed as an intermediate function to \verb\update\.
+\verb\checkDeaths\ calls itself recursively to check the state of all the bikes in the game.
+
+It then keeps a counter of the amount of bikes that are still alive.
+When the counter is higher than one \verb\unit\ is returned.
+
+\textbf{FIX THE CODE AND FINISH TEXT}
+\begin{lstlisting}
   Func "checkDeaths" -> bike -> amountAlive -> 'a
-  (if (amountAlive > 1) then
-    unit
-  else
-    ((if ((get^bike "IsAlive" Field^bike) == True^builtin) then
-      amountAlive + 1
+    (if (amountAlive > 1) then
+      unit
     else
-      amountAlive) -> newAmountAlive
-    checkDeaths Rest^bike newAmountAlive) -> res
+      ((if ((get^bike "IsAlive" Field^bike) == True^builtin) then
+        amountAlive + 1
+      else
+        amountAlive) -> newAmountAlive
+  (if (amountAlive == 1) then
+    bike
+  else
+      checkDeaths Rest^bike newAmountAlive))) -> res
   ------------------------------------------------
   checkDeaths bike amountAlive -> res
+\end{lstlisting}
 
+Now that we can check that there is a winner we can define \verb\update\ of \verb\Playfield\.
+First \verb\update\ updates \verb\Bikes\.
 
+\begin{lstlisting}
   get^p "Bikes" Rest^p -> bikes
   update^bikes bikes (dt,Field^p) -> newBikes
+\end{lstlisting}
+
+Then \verb\checkDeaths\ is called and the winner is set.
+The new playfield is then updated with the updated bikes and this playfield is returned as result.
+
+\begin{lstlisting}
   checkDeaths Field^newBikes 0 -> winner
   set^p "Winner" winner Rest^p -> updatedPlayfield
-  set^p "Bikes" newBikes Rest^p -> newPlayfield
+  set^updatedPlayfield "Bikes" newBikes Rest^updatedPlayfield -> newPlayfield
   --------------------------------------------
   update p dt -> newPlayField
 }
 \end{lstlisting}
 
-% \subsection{Main}
-% \begin{lstlisting}
-% import playfield
-% import bike
-% import either
-% import state
+This makes the playfield complete.
+All that is left to do is create the main function which starts the game.
 
+\subsection{Main}
+\textbf{DO THIS!!!!!!!!!!}
+The main combines the bikes and the playfield to start the actual game.
 
-% game
-  % playfield
+First \verb\bike\, \verb\playfield\ and the XNA framework is imported.
+\begin{lstlisting}
+import playfield
+import bike
+import xna stuff
+\end{lstlisting}
 
-  % bikeOne
+Then we create a \verb\play\ function which runs the actual game until there is a winner.
+When there is no winner it increments the delta time and updates the playfield.
 
-  % bikeTwo
+\begin{lstlisting}
+Func "play" -> Playfield -> Record
+get^p "Winner" Rest^p -> winner
+(if (winner == unit)
+  (update^p dt -> p'
+   play p' (dt+1))
+else
+  Winner) -> realWinner
+-------------------------------
+play p dt -> realWinner
+\end{lstlisting}
 
-% Func "start" -> 'a
+When a winner has emerged, this winning bike is returned.
 
-% playfield bikeOne bikeTwo -> gamefield
-% play gamefield -> res
-% ---------------------
-% start -> res
-% \end{lstlisting}
+Then we declare and define \verb\start\ which creates all the bikes and the playfield and calls \verb\play\ to start the game.
+
+\begin{lstlisting}
+Func "start" -> 'a
+Bike ........ -> bikeOne
+Bike ........ -> bikeTwo
+RecordEntry "gamebikes" BikeOne BikeTwo -> bikeRecord
+Vector2(500,500) -> fieldsize
+playfield "gamefield" bikeRecord fieldsize  -> gamefield
+play gamefield 0 -> res
+---------------------
+start -> res
+\end{lstlisting}
+
+When a winner is present the game stops.
+
+\subsection{Discoveries}
+During the programming of the game several things became clear about MC.
+
+\subsubsection{Record}
+The \verb\set\ function of \verb\Record\ was not returning the original record, just the updatable record.\footnote{See section~\ref{sec:recordevolutionsetget}}
+\textbf{ADD MORE STUFF}
 
 % \subsection{Powerups}
 % \begin{lstlisting}
