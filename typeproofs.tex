@@ -1,6 +1,7 @@
 \chapter{Typeproofs}\label{app:typeproofs}
 This contains the type proof of the \verb\try\ function of the \verb\TryableMonad\, as described in section~\ref{sec:standardtryablemonad}.
 
+   \begin{landscape}
 \begin{flalign*}
 &Mcons_\alpha       &&: M\alpha &&&&& \\
 &Mcons^{st}_\alpha  &&: (\sigma\rightarrow\alpha\sigma) &&&&& \\
@@ -120,3 +121,4 @@ $try^{prs}\:k\:err\:pm = lift^{st}(lift^{st\_ctxt}(try^{res} k (\lambda e_1 . tr
          Mcons^{res}_\beta$ }
 \end{prooftree}
 
+   \end{landscape}

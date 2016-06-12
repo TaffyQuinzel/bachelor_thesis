@@ -5,7 +5,6 @@ The first is a physics simulation to test the updatable records.
 Because the final goal of the language is to make creating games easier, the second test program is a game.
 
 Neither of the programs are implemented with the monads, because of time constraints.
-\textbf{FIX CODE WITH NEW SET!!!!!!!!!!!!!!!!!!!!!}
 
 Both of the programs do not have their graphical parts implemented, because it would remove the focus from MC
 The graphical parts of the programs would utilise the XNA framework and the focus would then be on how XNA is implemented within MC.
@@ -105,9 +104,9 @@ A return value will never be set as it will keep calling itself until the progra
 % \textbf{ask guys if the last function will be automatically executed}
 
 \section{Tron}
-Tron is the game and which utilises user input.
+Tron is the game and utilises user input.
 
-Tron is played with two or more players.
+Tron~\cite{troncitation} is played with two or more players.
 Each controlling a bike which leaves a trail.
 The bikes can move freely within the playing field, but cannot stop, slow down or speed up.
 The trails the bikes leave behind become walls.
@@ -115,7 +114,7 @@ The trails the bikes leave behind become walls.
 A bike may not hit a wall or trail, when it does it is destroyed.
 The player who remains driving is the winner.
 
-The game tron~\cite{troncitation} has been chosen because of the minimalistic graphics.
+The game tron has been chosen because of the minimalistic graphics.
 
 Tron has been split up in two three parts, bike, playfield and main.
 The main file calls all the needed parts and starts the game.
@@ -281,8 +280,8 @@ The bike is returned if it is dead.
 We now have a complete bike that can be updated.
 
 
-\subsubsection{Evolution}
-\textbf{ADD STUFF}
+% \subsubsection{Evolution}
+% \textbf{ADD STUFF}
 % During development of tron the \verb\apply\ function was used to call all the update functions.
 % After its removal the update functions are directly called.
 
@@ -533,11 +532,50 @@ During the programming of the game several things became clear about MC.
 
 \subsubsection{Record}
 The \verb\set\ function of \verb\Record\ was not returning the original record, just the updatable record.\footnote{See section~\ref{sec:recordevolutionsetget}}
-\textbf{ADD MORE STUFF}
 
-% \subsection{Powerups}
-% \begin{lstlisting}
-% Func "dottedLine" -> Bike -> Bike
-% Func "ghostMode" -> Bike -> Bike
-% Func "thickerLine" -> Bike -> Bike
-% \end{lstlisting}
+\subsubsection{Good language}
+The points described in chapter~\cite{chap:criteria} also had there conclusions found during the creation of the test programs.
+
+% It was discovered that MC has a steep learning curve because of the higher order types and the monadic part of the standard library.
+
+The read- and writability of the MC syntax takes some getting used to, as with most languages, but overall it is very compact and readable.
+
+The simplicity of MC is a mixed bag.
+While the syntax is simple, the concepts used by the language can become anything but simple.
+These concepts will have the user do some studying to understand these concepts.
+
+The goal and idea behind of MC is quite clear.\footnote{As described in section~\ref{sec:}.}
+And because MC has a clear idea of what it wants to do, the user can easily use the language as it was intended.
+
+By being a declarative language MC has de advantage of making itself predictable.
+The declarations always state what a function does and the definition then tells how this is achieved.
+Even when using monads MC keeps its predictability, because of how the monads work.\footnote{As is shown in section~\ref{sec:}.}
+
+The higher order types handle abstractions very well, as is evident by the short implementation of monad transformers.\footnote{As is shown in section~\cite{sec:}.}
+The high abstractions MC is capable of increase the expressiveness of MC.
+
+Because all these high abstractions are computed at compile time the efficiency does not suffer.
+The efficiency can even be increased when moving computations normally done at runtime to compile time.
+
+The custom libraries have made quite a leap during its development and the standard library has a stable base.
+This stable base increases easy expansion in the future, which will help MC to thrive.
+
+The hackability of MC has two sides.
+On the one hand it forces the user to be very secure by using declarations and definitions.
+On the other hand the user can implement the definitions in numerous ways.
+Especially the latter enables the user to bend MC to be the language they need.
+
+The higher order types and the high abstractions they enable allow MC to be very succinct.
+The user does need to have both declarations and definitions which makes MC more work, but they do not outweigh the power given to the user with the higher order types.
+
+The part MC might be troublesome for user is redesigning existing code.
+Especially when editing what functions do, the user needs to change both the declaration and definition of a function.
+This double editing is not something programmers are fond of and might ruin the flow of programming is an evolutionary way.
+However when the user thinks about the code before it is written, MC works like a charm.
+
+By implementing a direct link to the .NET libraries MC has an enormous amount of functionality added at very little cost.
+This does mean MC has to compete with C\# and F\#, both of which are strong languages using the .NET library.
+One advantage MC has over both C\# and F\# is the higher order types and the high abstractions it can implement.
+Adding to that the ability to compute anything you want at compile time instead of runtime, brings in major advantages over C\# and F\#.
+
+

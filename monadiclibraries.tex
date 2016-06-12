@@ -1,5 +1,5 @@
 \chapter{Monads in Python}\label{app:monadspython}
-These are found in the \emph{PyMonad} library~\cite{https://bitbucket.org/jason_delaat/pymonad/src/cbecd6796cd1488237d2a0f057cefd2a50df753a/pymonad/State.py?at=master&fileviewer=file-view-default}.
+These are found in the \emph{PyMonad} library~\cite{pymonadlibrary}.
 
 \section{State}
 \begin{lstlisting}
@@ -87,11 +87,10 @@ class State(Monad):
 \end{lstlisting}
 
 
-\chapter{Monads transformers in haskell}\label{app:monadshaskell}
-These are found in the \emph{transformers} package~\cite{http://hackage.haskell.org/package/transformers}.
+\chapter{Monad transformers in haskell}\label{app:monadshaskell}
+These are found in the \emph{transformers} package~\cite{haskelllibrary}.
 
 \section{State}
-\begin{multicols}{2}
 \begin{lstlisting}
 {-# LANGUAGE CPP #-}
 #if __GLASGOW_HASKELL__ >= 702
@@ -519,5 +518,4 @@ numTree applies numberTree with an initial state:
     darcs get url
     Packs built at 2015-11-20 14:15:46 UTC
 \end{lstlisting}
-\end{multicols}
 \newpage

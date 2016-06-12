@@ -1,14 +1,14 @@
 \chapter{Syntax evolution}\label{chap:mcevolution}
-Here we will look into the overal syntax changes of the language.
+Here we will look into the overall syntax changes of the language.
 
 \section{Generic type identifiers}
 Generic type identifiers are indicated by \verb\'\ together with a name, \verb\'a\.\footnote{As described in section~\ref{sec:basictypeidentifiers}}
 The \verb\'\ notation is derived from \emph{ML language}.
 
-In \emph{ML language} the \verb\'\ notation is used to indicate a letter from the greek alphabet~\cite{harper1986standard}.
-\verb\'a\ stands for \emph{alhpa}, \verb\'b\ for \emph{beta} and so on.
+In \emph{ML language} the \verb\'\ notation is used to indicate a letter from the Greek alphabet~\cite{harper1986standard}.
+\verb\'a\ stands for \emph{alpha}, \verb\'b\ for \emph{beta} and so on.
 
-By using this notation the readability of the language is improved .
+By using this notation the readability of the language is improved.
 It is now clear to the user when generic types are the same or different from each other.
 
 
@@ -21,7 +21,7 @@ That was why they were indicated by an \emph{asteriks}, \verb\*\.
 When \verb\TypeAlias\ was created it became apparent that the type would be the same in some cases.
 This resulted in generic kind identifiers.
 
-The notation devised was similiar to the generic type identifiers.
+The notation devised was similar to the generic type identifiers.
 Instead of the \emph{prime} the \emph{hash} was used.
 
 \begin{lstlisting}
@@ -36,77 +36,13 @@ The fact that they are kinds means that they can be any type.
 The official notation used for kinds is either \verb\Type\ or \verb\*\.
 
 The syntax of kinds was changed to \verb\Type\.
-This way the the \verb\*\ was free to be used for other things, like the tuple in section~\ref{sec:basictypefunc}.
+This way the \verb\*\ was free to be used for other things, like the tuple in section~\ref{sec:basictypefunc}.
 
 This also improved the readability of the language.
 It is now clear when a kind is used.
 
-Because of the use of \verb\Type\ it is also instanly clear what a kind is.
+Because of the use of \verb\Type\ it is also instantly clear what a kind is.
 This reduces the complexity of the language.
-
-
-% \section{Type annotations}\label{sec:syntaxtypeannotations}
-% Generic type annotations were created during development to lower the complexity of the parser.
-
-% We use a data declaration which creates an array.
-% It takes a generic type and a Integer.
-
-% Using the notation without type annotations it looks like this:
-
-% \begin{lstlisting}
-% Data "array" -> 'a -> Int -> Array
-% \end{lstlisting}
-
-% The Integer sets the lenght and the generic type will be the type the array consists of.
-
-% When this is called we can use parentheses to indicate which arguments are grouped together.
-
-% \begin{lstlisting}
-% array(Int 12) -> arrayOfInts
-% \end{lstlisting}
-
-% The Integer array is created with twelve elements.
-
-% But when we use a variable which contains the type, there is confusion what really happens.
-
-% \begin{lstlisting}
-% array(var 12) -> arrayOfInts
-% \end{lstlisting}
-
-% This could imply that \verb\var\ is a function which uses \verb\12\ as its argument and returns a type.
-% \verb\arrayOfInts\ is then a closure which still needs an argument which tells the lenght of the array.
-
-% We can only be sure what happens if we look at the declaration of \verb\var\.
-
-% To avoid this and clarify what happens the type annotations were created.
-% They are used in the data declaration, to specify the types used.
-
-% \begin{lstlisting}
-% Data "array" -> 'a -> Int -> Array<'a Int>
-% \end{lstlisting}
-
-% Types using the type annotations cannot be partial applied, because they need to know the types they contain to be declared correctly.
-
-% When this is not done a compile time error is generated.
-
-% So now when we call \verb\array\ we know that \verb\var\ must be a type.
-% When \verb\var\ is declared as a function which returns a type, we will have to call \verb\array\ like this:
-
-% \begin{lstlisting}
-% TypeFunc "var" => Int => Type
-
-% nr == 12
-% ------------
-% var nr -> Int
-
-% array (var 12) 9 -> arrayOfInts
-% \end{lstlisting}
-
-% This also lowers the complexity of the parser.
-% With the use of type annotations, the parser does not have to look at \verb\var\ and what it is.
-
-% The use of the type annotations provides greater predictability to the language.
-% It is now always clear what happens when working with generic types.
 
 
 % \section{TypeAlias}
@@ -126,7 +62,7 @@ This reduces the complexity of the language.
 
 
 \section{Modules}
-Modules have had two major changes, both will now be described.
+Modules have had two major changes, both will be described here.
 
 \subsection{Signature}
 Earlier in development \verb|Module| was called \verb|Signature|.
@@ -141,7 +77,7 @@ It clarifies the syntax and makes it more predictable for the user.
 
 \subsection{Expanding}
 During development there were two ways of inheriting a module, via \verb\inherit\ and via expanding an existing module.
-Expanding modules is removed from MC, because of inconsistency issues.
+Expanding a module is removed from MC, because of inconsistency issues.
 
 A \verb\Module\ could be expanded via a function.
 The function takes a module as argument and expands this module by adding declarations and, optionally, definitions.
@@ -176,7 +112,7 @@ expandModule M => Module{
 }
 \end{lstlisting}
 
-The expand syntax makes it look like modules are mutable, which they are not.
+The expand-syntax makes it look like modules are mutable, which they are not.
 This makes it inconsistent with the rest of MC and the expand-syntax was removed.
 
 By not using the expanding functionality the language becomes more coherent and in line with itself.
@@ -227,7 +163,7 @@ That is why the \verb\^\ was changed back to the \verb\.\.
 That is how we arrived at the current syntax used.
 The current syntax shows the user explicitly when a .NET call is used.
 
-Using these different syntaxes for .NET and MC creates a clear destinction between the two.
+Using these different syntaxes for .NET and MC creates a clear distinction between the two.
 
 
 \section{Builtin}
@@ -238,7 +174,7 @@ For developers this was a good choice, as they indicate the primitives that need
 For the user however this seemed confusing.
 The user sees the \verb\primitives\ as types that are built into the language.
 
-The name was changed to \verb\builtin\, to better reflect the way how the user sees them.
+The name was changed to \verb\builtin\, to better reflect the way how the user sees this functionality.
 
 
 % \section{Data}
@@ -246,7 +182,8 @@ The name was changed to \verb\builtin\, to better reflect the way how the user s
 
 
 \section{Conditionals}
-\textbf{ADD TEXT HERE}
+Two sorts of conditionals exist in MC and here we will describe why they are this way.
+
 \subsection{Inside the conclusion}
 During development we tried implementing conditionals inside the conclusion of a rule.
 This could make the code more compact.
@@ -283,9 +220,7 @@ They could be replaced with that from which they are constructed.
 
 \subsection{Equals}
 When comparing values the \verb\==\ operator is used.
-This is done to keep the the single equals sign free to be used by the programmer.
+This is done to keep the single equals sign free to be used by the programmer.
 
-\textbf{IS IT REALLY CLEAR??????}
-It is also immediately clear to the programmer a conditional is done.
-The single \verb\=\ could be mistaken for an alias creation or value assignment.
+The single \verb\=\ could be mistaken for an alias creation or value assignment, when first learning MC.
 With the double \verb\==\ there is no such confusion.

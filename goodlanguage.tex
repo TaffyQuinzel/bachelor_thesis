@@ -1,25 +1,24 @@
 \chapter{A good programming language}\label{chap:criteria}
-
-For a programming language to be practically usable it needs to be tested on the following criteria\cite{khedker1997makes,graham2004hackers}:
+For a programming language to be practically usable it needs to be tested on the following criteria~\cite{khedker1997makes,graham2004hackers}:
 
 \begin{multicols}{2}
-\begin{enumerate}[noitemsep]
-   \item Read- \& Writability
-   \item Simplicity
-   \item Definiteness
-   \item Predictability
-   \item Expressiveness
-   \item Implementability
-   \item Efficiency
-   \item Libraries
-   \item Time
-   \item Hackability
-   \item Succintness
-   \item Redesign
-   \item External Factors
-\end{enumerate}
+   \begin{enumerate}[noitemsep]
+      \item Read- \& Writability
+      \item Simplicity
+      \item Definiteness
+      \item Predictability
+      \item Expressiveness
+      \item Implementability
+      \item Efficiency
+      \item Custom Libraries
+      \item Time
+      \item Hackability
+      \item Succinctness
+      \item Redesign
+      \item External Factors
+   \end{enumerate}
 \end{multicols}
-Let's touch on each of these briefly, before we connect them to MC.
+Let us touch on each of these briefly, before we connect them to MC.
 
 \section{Read- \& Writability }
 The read- and writability of a programming language determines how good the connection between man and machine is.
@@ -71,13 +70,14 @@ The user should be able to write code in a way that matches the structure in his
 
 Machine language is hard to understand and use for a human, it has nearly no abstraction and the programmer has to keep track of the registers by hand.
 This can however be remedied by the language the user is using.
+
 It is the link between what the user has in his mind and what the machine will execute.
 Therefore the language should be similar to the way the user thinks.
 This makes it easier for the user to express his thoughts in code.
 
 \section{Efficiency}
 Efficiency is something most users want out of their computer.
-Programmers like to write fast programs.
+Programmers like to write fast programs~\cite{graham2004hackers,blow2004game}.
 The language should facilitate this.
 Even if the language is very abstract, which usually means it is less efficient~\cite{graham2004hackers}, it should be able to generate fast code, or making visible to the user where the bottlenecks are.
 
@@ -103,11 +103,11 @@ When you have to say less to make the computer do precisely what you want, that 
 It also makes the programs shorter and clearer to read.
 
 \section{Redesign}
-This enables the evolution of a program written in the language.
+Redesign enables the evolution of a program written in the language.
 When source code can be reformatted and restructured easily without a lot of refactoring, it is easier to go from a rough prototype to a fully featured program.
 
-\section{External Factors and Implementability}
-These play a big role in the adaptation of a language.
+\section{External factors and implementability}
+The external factors and implementability play a big role in the adaptation of a language.
 Without some use for the language, it might as well not exist.
 Having a platform for the language plays a major part in the way it will be adopted as a standard.
 This does not have to be a physical platform, like UNIX or Windows.
@@ -117,4 +117,4 @@ The only problem with the latter is, that the new language has to compete with o
 \bigskip
 
 Do keep in mind that most of these criteria can be subjective to the user of the language and are not 100\% verifiable.
-Thus we will try to discuss the most objective parts for sake of the verifiability.
+We will try to discuss the most objective parts for sake of the verifiability.

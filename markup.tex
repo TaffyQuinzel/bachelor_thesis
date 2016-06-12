@@ -5,6 +5,10 @@
 % \usepackage[driver=xetex,a4paper,margin=25mm]{geometry} % propper margins on a4 paper
 % \usepackage[landscape,driver=xetex,a4paper,margin=25mm]{geometry} % propper margins on a4 paper
 
+\usepackage{pdfpages}
+\usepackage{lscape}
+
+
 \usepackage[hidelinks]{hyperref} % make contents and references clickable in pdf
 \usepackage[english]{babel}
 \usepackage{fancyhdr}
@@ -15,6 +19,11 @@
 \usepackage{pstricks-add}
 %% \usepackage[official]{eurosym}
 \usepackage[nottoc,numbib]{tocbibind}
+
+% \DeclareLabelname[movie]{
+   % \field{director}
+   % \field{producer}
+% }
 
 \usepackage{appendix}
 
@@ -56,8 +65,12 @@
    keepspaces=true
 }
 
+\makeatletter
+\newcommand\footnoteref[1]{\protected@xdef\@thefnmark{\ref{#1}}\@footnotemark}
+\makeatother
+
 % draft marker
-\usepackage{draftwatermark}
+% \usepackage{draftwatermark}
 
 \newcommand*\writer{Louis van der Burg}
 % \renewcommand{\chaptermark}[1]{%

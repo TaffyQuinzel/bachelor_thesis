@@ -2,7 +2,7 @@
 \section{Company}
 The graduation assignment is carried out at Kenniscentrum Creating 010.
 The company is located in Rotterdam.
-\textit{Kenniscentrum Creating 010 is a transdisciplinary design-inclusive Research Center enabling citizens, students and creative industry making the future of Rotterdam}\cite{creating2016home}.
+\textit{Kenniscentrum Creating 010 is a transdisciplinary design-inclusive Research Center enabling citizens, students and creative industry making the future of Rotterdam}~\cite{creating2016home}.
 
 The assignment is carried out within a research group, who is building a new programming language.
 The new programming language is called \emph{Casanova}.
@@ -32,7 +32,7 @@ The compiler for Casanova worked, but was still in development.
 So when a bug was found in the compiler, fixing it became more and more time consuming.
 This frustrated the developers so much a new language was created~\cite{giuseppe2015mc}.
 
-Meta-Casanova (from now on called \emph{MC}) is this new language.
+Meta Casanova (from now on called \emph{MC}) is this new language.
 MC serves as the language in which Casanova will be written as a library
 
 At the beginning of the assignment MC was still in development.
@@ -41,10 +41,10 @@ The assignment was created to debug and expand MC and further refine the standar
 
 
 \subsection{Research question}
-As stated above the main goal of the assignment is to debug and expand the language and the standard library.
+As stated above the main goal of the assignment is to debug and expand MC and refine the standard library of MC.
 This translates to the following research question:
 
-\emph{How can the programming language Meta-Casanova be improved for the user within the timeframe of the internship?}
+\emph{How can the programming language Meta Casanova be improved for the user within the timeframe of the internship?}
 
 Here the user is a programmer using the language to create applications.
 
@@ -66,145 +66,15 @@ The definitions and scope of the improvements are defined by the preliminary res
 
 
 \subsection{Correlation with other projects}
-During the internship the research group keeps developing MC.
-There are also two other students doing an internship on MC.
-These students are both working on the compiler, one is developing the back-end of the compiler and the other the front-end.
+During the internship the research group keeps developing Casanova.
+The research group consists of
+  Francesco di Giacomo\footnote{\label{venice}Universita' Ca' Foscari, Venezia},
+  Mohamed Abbadi\footnoteref{venice},
+  Agostino Cortesi\footnoteref{venice},
+  Giuseppe Maggiore\footnote{Hogeschool Rotterdam} and
+  Pieter Spronck\footnote{Tilburg University}.
 
-The students will form a research team as part of the research group.
-The student will work closely with the research team and cooperate with the research group.
-
-
-\subsection{Research group \& team}
-The research group developing Casanova consists of Francesco di Giacomo, Mohamed Abbadi, Agostino  Cortesi,  Giuseppe  Maggiore and Pieter Spronck.
-
-Within the research group the research team developing MC consists of Douwe van Gijn, responsible for developing the back-end of the MC compiler, Jarno Holstein, responsible for developing the front-end of the MC compiler, and Louis van der Burg, responsible for developing the MC language.
+Within the research group the research team developing MC consists of Douwe van Gijn, responsible for developing the back-end of the bootstrap MC compiler, Jarno Holstein, responsible for developing the front-end of the bootstrap MC compiler, and Louis van der Burg, responsible for developing the MC language.
 The research team are all students and are supervised by Giuseppe Maggiore.
 
-% \section{Supervision \& work methods}
-
-% \subsection{Working environment and tasks}\label{subsec:workenvmandate}
-% During the internship the student will work as a part of the existing research team, whom do research in the Casanova and MC languages.
-% The student will be doing research and programming and will be supported and helped by the entire research team.
-% Every two weeks the student will present his progress and receive feedback.
-
-% \subsection{Research methods}
-% During the internship there will be made use of different research methods.
-% This stems from the wide scope of the project and the fact that there are multiple research questions which require different approaches.
-
-% At the start there will be a preliminary research concerning MC.
-% This will consist of describing MC and the ways it works.
-
-% After this there will be a basic definition of the test program which will we written to further test MC.
-
-% When this is done there will be a evaluation of the test program and MC.
-
-% \subsection{Gathering information}
-% The information needed will be gathered from the research team involved, via personal interviews, and via published papers concerning the material.
-
-% \subsection{Validation of results}
-% The validity of the results will be secured by regularly discussing with the client and the supervisor.
-% Further more there will be programs will be double-checked by the supervisor and the other members of the research team.
-
-% \subsection{Validity and trustworthiness of sources}
-% The sources used will be published papers only and relative to the subject matter.
-% Other sources, such as personal communications will be with people who are approved by the supervisor.
-
-% \subsection{Project methods}
-% During the internship the LEAN-software development method will be used\cite{ries2011lean}.
-% Using this method gives the ability to quickly iterate through versions and gather knowledge more easily through these iterations.
-
-% \subsection{Risk analyses}
-% \begin{center}
-   % \begin{tabular}
-      % {| p{0.2\textwidth} | p{0.25\textwidth} | l | p{0.3\textwidth} |}
-      % \hline
-      % \textbf{Risk} & \textbf{Effect} & \textbf{Possibility} & \textbf{Counter measure}
-      % \\ \hline
-      % Quick development of the language. & Because the language becomes bigger as time progresses, the assignment could become too large to do in the set time. & 70\% & The analyses of MC goes on for a set period, which prevents the analyses going an for too long.
-      % \\ \hline
-      % The compiler is not finished at the time the programs need to be written. & The programs can not be tested in practice. & 80\% & The programs will be manually checked for errors by the student and the research team.
-      % \\ \hline
-      % The company goes bankrupt during the internship & The assignment will not be finished and the student will not be able to graduate. & 1\% & There is nothing the student can do to prevent this.
-      % \\ \hline
-   % \end{tabular}
-% \end{center}
-
-% \subsection{Quality expectations}
-% MC makes use of type theory and the programs written in it will therefor need to be in line with the type theory, as described in \cite{pierce2002types}.
-
-% Because the version of MC used in this internship has no compiler yet, the student will need to manually make sure that the program has no bugs and/or errors in them.
-% This will happen with the help of the compiler developers.
-
-
-% \begin{enumerate}[noitemsep]
-   % \item Double checking the existing design of the language.
-   % \item Participating in the design of the language.
-   % \item Extending the standard library.
-   % \item Creating test programs.
-% \end{enumerate}
-
-% I will now explain the subgoals in greater detail.
-
-% \subsection{Double checking the existing design of the language}
-% At the start of the assignment MC will have to be checked for any existing faults.
-% This way we can ensure that the language has a safe base point from which it can be developed further.
-
-% The checking of MC will consist of the existing syntax and the ideas for which the syntax was created.
-% This will be done by exploring the current syntax and understanding the reasons why it is this way.
-
-% \subsection{Participating in the design of the language}
-% As MC is still in development and my assignment consists of debugging and expanding, I will propose design changes and new designs.
-% These designs will be discussed and reviewed with the rest of the team.
-
-% This will be done in an exploratory way as the language grows and changes.
-
-% \subsection{Extending the standard library}
-% The standard library of every language is an extention of the functionality of the language.
-% It contains often used constructs and functions which makes the language more productive for the programmer.
-
-% MC has but a small standard library and this needs to be expanded in order to be of any practical use.
-% This also could help make MC a success~\cite{khedker1997makes}.
-
-% The standard library of MC will be completely written in MC itself.
-% This will show how powerfull the simple and effective syntax of MC is.
-
-% Extending the library also gives me the position of a user of MC.
-% For now the only people that have used MC are the developers themselves.
-% Now that I will join the research team they will get a fresh and new look at the language through me.
-
-% \subsection{Creating test programs}
-% Writing the standard library is one aspect of a language.
-% Another are actual applications.
-
-% The standard library can be seen as an application, but it is different in the sense that they create standard functions to be used by programmers.
-% Applications are not part of the code base and also serve users outside of the programming community.
-
-% Because the only users so far have been the developers, there have only been small test programs written.
-% They often test a specific function of the compiler.
-% The test applications will test the entire language.
-
-% Because of the timelimit I will not be able to create a huge application, but I will be able to create bigger ones than those currently used for testing.
-
-% I have chosen to create game or game-like test prog
-
-
-
-% \section{Execution}
-% The assignment will consist of three stages:
-
-% \begin{enumerate}
-   % \item Research on MC
-   % \item Expanding the standard library
-   % \item Creating test programs
-% \end{enumerate}
-
-% \subsection{Research on MC}
-% This will describe MC and the way it works.
-
-   % \subsection{Expanding the standard library}
-   % \subsection{Creating test programs}
-% This will consist of describing MC and the ways it works.
-
-% After this there will be a basic definition of the test program which will we written to further test MC.
-
-% When this is done there will be a evaluation of the test program and MC.
+The student will work closely with the research team and cooperate with the research group.
