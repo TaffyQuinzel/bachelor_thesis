@@ -1,9 +1,10 @@
-\chapter{MC in detail}
+\chapter{MC in detail}\label{chap:basicmc}
 We will now look at MC.
 %... in the state after the project.
 After we have a basic understanding of MC, we will look at the improvements made.
 
-Because the current version of MC is not documented, the following information comes from interviews with the research team~\cite{researchteaminterview}.
+Because mark III of MC is not documented, the following information comes from interviews with the research team~\cite{researchteaminterview}.
+This chapter also serves as the documentation of mark III.
 
 This chapter can serve as a basis for anyone interested in learning about MC.
 
@@ -654,6 +655,13 @@ addThree 7 -> bar
 \end{lstlisting}
 
 The identifier \verb\foo\ has a value of \verb\9\ and \verb\bar\ has a value of \verb\10\.
+
+
+\subsection{The main function}
+While MC has no specific main function it does specify which function acts the main function.
+The final function in the file compiled acts as the main function and is executed when the program is run.
+
+
 
 % \textbf{MAYBE REMOVE THIS???? CHECK WITH REST OF DOCUMENT}
 % \subsection{Type annotations}\label{sec:basictypeannotations}

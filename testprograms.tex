@@ -1,14 +1,20 @@
-\chapter{Test programs}
-\textbf{WHY GAMES??????}
-\textbf{FIX CODE WITH NEW SET!!!!!!!!!!!!!!!!!!!!!}
+\chapter{Test programs}\label{chap:testprograms}
 There have been two test programs written to test the language.
-The test programs are both games
+The first is a physics simulation to test the updatable records.
 
-The first of these is a simple bouncing ball.
+Because the final goal of the language is to make creating games easier, the second test program is a game.
+
+Neither of the programs are implemented with the monads, because of time constraints.
+\textbf{FIX CODE WITH NEW SET!!!!!!!!!!!!!!!!!!!!!}
+
+Both of the programs do not have their graphical parts implemented, because it would remove the focus from MC
+The graphical parts of the programs would utilise the XNA framework and the focus would then be on how XNA is implemented within MC.
+We want to test how MC works and not how it handles a specific library.
+For this reason the graphical parts of the programs are left out.
 
 
 \section{Bouncing ball}
-Bouncing ball is used as a preliminary test of updatable records.
+Bouncing ball is the physics simulation used as a preliminary test of updatable records.
 It will show how the updatable \verb\RecordEntry\ are used in practice.
 
 This program bounces a ball up and down.
@@ -66,15 +72,14 @@ Then the height of the ball is checked and the according calculations executed.
 \begin{lstlisting}
   (if (Y^Field^position <= 500.0f) then
     ((set^e "Position"
-           (Field^position +^Vector2 (Field^velocity *^Vector2 dt))
+           (Field^position Vector2.+ (Field^velocity Vector2.* dt))
            Rest^position)
      (set^e "Velocity"
-            (Field^velocity +^Vector2 (Vector2(0.0f, 98.1f) *^Vector2 dt))
+            (Field^velocity Vector2.+ (Vector2(0.0f, 98.1f) Vector2.* dt))
             Rest^velocity))
   else
     (set^e "Position"
-           Vector2(X^Field^position, 500.0f)
-           -^Vector2(Field^velocity))) -> res
+           Vector2(X^Field^position, 500.0f) Vector2.- Field^velocity)) -> res
   --------------------------------------------
   update e dt -> res
 }
@@ -100,9 +105,9 @@ A return value will never be set as it will keep calling itself until the progra
 % \textbf{ask guys if the last function will be automatically executed}
 
 \section{Tron}
-Tron is a more advanced program which utilises user input.
+Tron is the game and which utilises user input.
 
-The game tron is played with two or more players.
+Tron is played with two or more players.
 Each controlling a bike which leaves a trail.
 The bikes can move freely within the playing field, but cannot stop, slow down or speed up.
 The trails the bikes leave behind become walls.
@@ -111,7 +116,6 @@ A bike may not hit a wall or trail, when it does it is destroyed.
 The player who remains driving is the winner.
 
 The game tron~\cite{troncitation} has been chosen because of the minimalistic graphics.
-This allows us to focus on the internal workings of the game.
 
 Tron has been split up in two three parts, bike, playfield and main.
 The main file calls all the needed parts and starts the game.
@@ -190,9 +194,8 @@ TrailRecord label field rest => UpdatableRecord r => Module{
 The update function only needs to create a new trail record with the original record as its \verb\Rest\.
 This way the trail is a record of points.
 
-\textbf{CHECK THIS}
 \begin{lstlisting}
-  RecordEntry Label^t pos fields^t => res
+  RecordEntry Label^t pos t => res
   ----------------------------------
   update t pos => res
 }
@@ -220,7 +223,7 @@ The bike will also be given a unique identifier, its name.
 In the definition we will see how the bike is built with multiple records.
 
 \begin{lstlisting}
-TypeFunc "Bike" => String => Int => Keys => Vector2 => TrailRecordEntry => Record => Record
+TypeFunc "Bike" => String => Int => Int => Keys => Vector2 => TrailRecordEntry => Record => Record
 RecordEntry "Colour" color Empty
 RecordEntry "IsAlive" True^builtin Colour
 RecordEntry "Controls" keys IsAlive
@@ -228,11 +231,13 @@ RecordEntry "Speed" speed Controls
 PositionRecord "Position" position Speed
 RecordEntry "Trail" trail Position => field
 RecordEntry label field rest => e
---------------------------------------
+---------------------------------------------------------------------
 Bike label color keys speed position trail rest => UpdatableRecord e{
 \end{lstlisting}
 
 The record entries are ordered according to how often they are needed, this speeds up compile time.
+
+\verb\color\ is an \emph{ARGB} value and \verb\speed\ is the amount of pixels per second.
 
 The update function takes a bike and the delta time as argument.
 It first checks if the bike is still active.
@@ -259,8 +264,8 @@ Then the trail and position get updated.
 A new trail record is created and lastly a new bike record is created and returned.
 
 \begin{lstlisting}
-    RecordEntry label^trail newTrailRecord newPos => newTrail
-    RecordEntry Label^b newTrail Rest^b
+    set^b label^trail newTrailRecord newPos => newTrail
+    set^b Label^b newTrail Rest^b
 \end{lstlisting}
 
 The bike is returned if it is dead.
@@ -415,7 +420,6 @@ The new bike record is then returned.
 }
 \end{lstlisting}
 
-\textbf{DO THIS!!!!!!!!!}
 When defining the actual playfield we create a \verb\BikeRecordEntry\ and a record containing the winner.
 Both these records are passed to \verb\Rest\ of the playfield.
 The size of the playfield is put in the \verb\Field\ of the playfield record.
@@ -509,10 +513,11 @@ When a winner has emerged, this winning bike is returned.
 
 Then we declare and define \verb\start\ which creates all the bikes and the playfield and calls \verb\play\ to start the game.
 
+\textbf{FIX CODE!!!!!!!!!!!!!!!!}
 \begin{lstlisting}
 Func "start" -> 'a
-Bike ........ -> bikeOne
-Bike ........ -> bikeTwo
+Bike "playerOne" -16776961 5 -> bikeOne
+Bike "playerTwo" -16711681 5 keys Vector2(0.0,0.0) trail unit -> bikeTwo
 RecordEntry "gamebikes" BikeOne BikeTwo -> bikeRecord
 Vector2(500,500) -> fieldsize
 playfield "gamefield" bikeRecord fieldsize  -> gamefield

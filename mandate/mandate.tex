@@ -12,15 +12,15 @@
 \begin{abstract}
    \emph{Debugging and expanding Meta-Casanova.}
    The internship will consist of checking the current state of Meta-Casanova and improving the syntax and standard library for the user.
-The goal of the assignment is to debug and expand MC and further refine the standard library within the time limit of the internship.
-The current version of Meta-Casanova is still in development and needs to be checked for bugs and faults.
-The usability also needs testing because we want to know how good of a programming language Meta-Casanova is.
-The central research question is: \emph{How can the programming language Meta-Casanova be improved for the user within the timeframe of the internship?}
-This internship will be executed within the language design field of computer science.
-The internship will be carried out at \emph{Kenniscentrum Creating 010}.
-The research will be qualitative and will make use of the describing and testing research methods.
-The end result will consist of a correct and coherent syntax of Meta-Casanova together with an implementation of basic programming constructs and higher order type constructs within the standard library.
-The end result will consist of these implementations together with the documentation in the form of a bachelor thesis.
+   The goal of the assignment is to improve and expand MC.
+   The current version of Meta-Casanova is still in development and needs to be checked for bugs and faults.
+   The usability also needs testing because we want to know how good of a programming language Meta-Casanova is.
+   The central research question is: \emph{How can the programming language Meta-Casanova be improved for the user within the timeframe of the internship?}
+   This internship will be executed within the language design field of computer science.
+   The internship will be carried out at \emph{Kenniscentrum Creating 010}.
+   The research will be qualitative and will make use of descriptive and testing research methods.
+   The intended result will consist of a correct and coherent syntax of Meta-Casanova together with an implementation of basic programming constructs and higher order type constructs within the standard library.
+   The end result will consist of these implementations together with the documentation in the form of a bachelor thesis.
 \end{abstract}
 
 \section{Introduction}
@@ -49,26 +49,23 @@ The assignment was created to debug and expand the language and further refine t
 
 
 \subsection{Importance}
-The result of this thesis will contribute to the development of MC and the research.
+The result of this thesis will contribute to the development of MC.
 The thesis will also serve as documentation for future developers of MC.
 
 \subsection{Goal}\label{sec:goalsmandate}
 The goal of the assignment is to debug and expand MC and further refine the standard library within the time limit of the internship.
 
 \subsection{Problem statement}
-Currently there are several working versions of MC available, but none of these implement the entire language.
-We want to have a full version of MC which works as desired.
-That is to say, it matches the design specifications.
-However the last documented version is implemented in the latest working version of MC.
-These versions are already proven to be adequate\cite{giuseppe2015mc}.
+Currently there are several working versions of MC available, mark I and II, but none of these implement the higher order types.
+We want to have a version of MC which contains higher order types.
 
 The newest development version is the one that will be used for this assignment.
-This version has no working compiler yet and is therefor easily adapted to bugs found during testing.
-The new version also implements new features not present in the previous versions.
-Because this newer version is still in development we want to detect any flaws and mishaps in the design during this phase.
+The newest version of MC has no working compiler yet and is therefor easily adapted to bugs found during testing.
+The newest version of MC also implements new features not present in the previous versions.
+Because the newest version of MC is still in development we want to detect any flaws and mishaps in the design during this phase.
 This makes otherwise fatal flaws fixable.
 
-The usability of the new version is also not tested yet and we want to see how good of a programming language MC is.
+The usability of the newest version is also not tested yet and we want to see how good of a programming language MC is for the user.
 
 \subsection{Central research question and sub-questions}
 From this problem statement follows the following research question:
@@ -97,16 +94,16 @@ The research group is active within the language design area of computer science
 
 
 \subsection{Working environment and tasks}\label{sec:workenvmandate}
-During the internship the student will work as a part of the existing research team, whom do research in the Casanova and MC languages.
-The student will be doing research into programming languages and MC and program in MC.
+During the internship the student will work as a part of the existing research team, who do research in the Casanova and MC languages.
+The student will be doing research into programming languages and MC and will program in MC.
 
-The competency \emph{admministering} will be attained by further developing MC according to the specifications of the research group.
+The competence \emph{admministering} will be attained by further developing MC according to the specifications of the research group.
 
-The competency \emph{Analysing} will be attained by refining the standard library of MC in accordance with what is needed for the user and the research group.
+The competence \emph{Analysing} will be attained by refining the standard library of MC in accordance with what is needed for the user and the research group.
 
-The competency \emph{Advising} will be attained when putting forth improvements for MC.
+The competence \emph{Advising} will be attained when putting forth improvements for MC.
 
-The competency \emph{Designing} will be attained when debugging MC and refining the standard library to further improve the language.
+The competence \emph{Designing} will be attained when debugging MC and refining the standard library to further improve the language.
 
 The student will be supported and helped by the entire research team.
 Every two weeks the student will present his progress and receive feedback from the research group.
@@ -116,6 +113,9 @@ Every two weeks the student will present his progress and receive feedback from 
 \subsection{Research methods}
 During the internship there will be made use of different research methods.
 This stems from the wide scope of the project and the fact that there are multiple research questions which require different approaches.
+
+We will now describe what the research methods per sub-question are.
+
 
 \subsubsection{What is a good programming language to the user?}
 This question will be answered by describing what a good programming language is to the user.
@@ -129,11 +129,13 @@ To further grasp what MC is, the syntax will be described and the standard libra
 This question will be answered by comparing the existing syntax to the ideas and philosophies of MC.
 The syntax will also be tested for correctness and coherence.
 
+\textbf{MC will be futher tested by creating test programs.... DO THIS MAYBE?????}
+test programs are written to test the syntax of the language.
+
 \subsubsection{How can the standard library be improved and refined to serve the user?}
 This question will be answered by describing the standard library and implementing constructs often used in programming.
 Constructs using higher order types will also be implemented after describing what they are and what they do.
 
-\textbf{MC will be futher tested by creating test programs.... DO THIS MAYBE?????}
 
 
 \subsection{Gathering information}
@@ -141,7 +143,8 @@ The information that is needed to answer the research questions are stated in th
 
 
 \subsubsection{What is a good programming language to the user?}
-The information for this question will be gathered from research papers, specifically those who are based on interviews with experienced users or are written by experienced users.
+There is no quality standard predefined for what a good programming language is.
+Therefor the information for this question will be gathered from research papers, specifically those who are based on interviews with experienced users or are written by experienced users.
 
 \subsubsection{What is MC and how does it work?}
 The information for this question will be gathered from the research group and the papers written by them.
@@ -149,11 +152,11 @@ This will be done by interviewing the research group.
 
 \subsubsection{How can the current syntax be improved to serve the user?}
 The information for this question will be gathered by having a description of both MC and what makes a programming language good to the user.
-The descriptions will be gathered by answering the previous two research questions.
+These descriptions will be gathered by answering the previous two research questions.
 
 \subsubsection{How can the standard library be improved and refined to serve the user?}
 The information for this question will be gathered by describing the standard library and holding interviews with the research group.
-The interviews will ask what is absolutely needed in the standard library.
+The interviews will result what is absolutely needed in the standard library.
 
 
 \subsection{Validation of results}
@@ -163,9 +166,9 @@ All the improvements and expansions added to MC and the standard library will be
 
 \subsection{Validity and trustworthiness of sources}
 The sources used will be published papers and personal interviews with the research group.
-The papers are relative to the subject matter.
+The papers must be relative to the subject matter.
 
-All the sources used will be approved by the research group and the supervisor.
+All the sources used need to be approved by the research group and the supervisor.
 
 
 \subsection{Project methods}
@@ -183,11 +186,11 @@ These results can be used to catch faults early on and adjust the project accord
       \hline
       \textbf{Risk} & \textbf{Effect} & \textbf{Possibility} & \textbf{Counter measure}
       \\ \hline
-      Quick development of the language. & Because the language becomes bigger as time progresses, the assignment could become too large to do in the set time. & 70\% & The analyses and development of MC goes on for a set period, which prevents the project going on for too long.
+      Quick development of the language. & Because the language becomes bigger as time progresses, the assignment could become too large to do in the set time. & 70\% & The analyses and development of MC will take place for a limited period of time, which prevents the project going on for too long.
       \\ \hline
-      The compiler is not finished at the time. & MC can not be tested in practice. & 80\% & The programs will be manually checked for errors by the student and the research group.
+      The compiler is not finished at the time. & MC can not be tested in practice. & 80\% & The code will be manually checked for errors by the student and the research group.
       \\ \hline
-      The supervisor falls ill for a prolonged period. & The student has no direct contact point for questions and might get stuck. & 15\% & The student is introduced to the entire research group so he can ask contact them as well for questions.
+      The supervisor falls ill for a prolonged period. & The student has no direct contact point for questions and might get stuck. & 15\% & The student is introduced to the entire research group so he can ask or contact them as well for questions.
       \\ \hline
       The company goes bankrupt during the internship. & The assignment will not be finished and the student will not be able to graduate. & 1\% & There is nothing the student can do to prevent this.
       \\ \hline
@@ -195,7 +198,7 @@ These results can be used to catch faults early on and adjust the project accord
 \end{center}
 
 \subsection{Quality expectations}
-MC makes use of type theory and the programs written in it will therefor need to be in line with the type theory, as described in \cite{pierce2002types}.
+MC makes use of type theory and the programs written in it will therefor need to be in line with the type theory, as described in \emph{Types and programming languages}~\cite{pierce2002types}.
 Because the version of MC used in this internship has no compiler yet, the student will need to manually make sure that the syntax and standard library have no bugs and/or errors in them.
 
 \section{Results}

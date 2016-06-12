@@ -1,12 +1,16 @@
 \section{Monad}\label{sec:standardmonad}
-\textbf{EXPLAIN WHY MONADS ARE IMPLEMENTED}
 Now we come to the module \verb\Monad\.
 This module takes a mathematical concept and makes it into a practical programming construct.
 
+% Monads are another good example for the use the higher order types.
 Monads are the main reason MC has type manipulation.
+
+Monads enable purity of code with the power of mutables.
+The structure of monads also enables a customizable flow of control.
 
 First we are going to look at what monads exactly are within programming.
 Then we will see how they are implemented within MC.
+
 
 \subsection{Monads}
 Monads are a container-like generic interface.
@@ -18,6 +22,7 @@ These two functions are the basic way we can use monads.
 The return function takes a value and wraps it inside a monad.
 
 {
+   \bigskip
    \centering
    \includegraphics[width=\columnwidth]{return}\\
    \captionof{figure}{The return}
@@ -39,6 +44,7 @@ When we want to apply the function \verb\(+3)\ to the monad containing \verb\2\,
 Bind unpacks the monad, as visualised in figure~\ref{fig:monadbind1}.
 
 {
+   \bigskip
    \centering
    \includegraphics[width=\columnwidth]{bind1}\\
    \captionof{figure}{A function and a monad}
@@ -50,6 +56,7 @@ It then applies the function to the value.
 Finally the new value gets packed inside the monad by the function, as visualised in figure~\ref{fig:monadbind2}.
 
 {
+   \bigskip
    \centering
    \includegraphics[width=\columnwidth]{bind2}\\
    \captionof{figure}{The return}
@@ -62,74 +69,10 @@ Using these two basic functions, we can always work with monads and the values t
 To use the monads further we will need a few more functions.
 These functions are generic for all the monads and will be given an implementation.
 
-\subsubsection{Returnfrom}
-\textbf{PUT THIS AFTER MONAD IMPLEMENTATION}
-Sometimes we want to directly pass the value inside the monad instead of wrapping it.
-This is done with \verb\returnFrom\.
-
-\begin{lstlisting}
-Func "returnFrom" -> 'a -> 'a
-returnFrom a -> a
-\end{lstlisting}
-
-As we can see the identifier \verb\a\ is directly passed on.
-
-
-\subsubsection{Lift}
-Lift is used when a regular function, it takes a value and returns a value, needs to be executed over a monad.
-Lift unwraps the monad, executes the function with the value of the monad and then wraps the new value inside the monad.
-
-An important difference with the bind, is that the function given to the lift does not pack the value in a monad.
-The function passed to the bind does pack the value inside the monad.
-
-\begin{lstlisting}
-  Func "lift" -> ('a -> 'b ) -> 'M 'a -> 'M 'b
-  {a >>= a'
-     return f a'} -> res
-  ----------------------
-  lift f a -> res
-\end{lstlisting}
-
-Here we can see clearly that the lift repacks the value with \verb\return\.
-
-The \verb\Lift\ can also be declared with functions which take two arguments.
-It is then called \verb\Lift2\.
-
-\verb\Lift2\ has to bind twice, once for each monad.
-
-\begin{lstlisting}
-  Func "lift2" -> ('a -> 'b -> 'c) -> 'M 'a -> 'M 'b -> 'M 'c
-  {a >>= a'
-     b >>= b'
-       return f a' b'} -> res
-  ---------------------------
-  lift2 f a b -> res
-\end{lstlisting}
-
-This can be expanded to functions which take any number of arguments.
-
-
-\subsubsection{LiftM}
-There are of course functions which work with the wrapped monad.
-For this \verb\liftM\ is created.
-
-For this we have to use the bind and return of the wrapped monad.
-\begin{lstlisting}
-  Func "liftM" -> (MCons^'M 'a -> MCons^M' 'b) -> 'M (MCons^'M 'a) -> 'M (Mcons^'M 'b)
-  {M >>=^'M a
-    f a -> b
-    return^'M b} -> res
-  ---------------------
-  liftM f M -> res
-}
-\end{lstlisting}
-
-It works the same as the other lift functions, with the specification of using the bind and return of the wrapped monad, \verb\'M\, instead of the bind and return of the current monad.
-
 
 \subsubsection{More than a wrapper}
 But just a monad offers very little besides being a wrapper for values.
-That is why there have been created a few different sorts of monads.
+That is why there have been created different sorts of monads.
 This means a lot of different functionalities can be mapped to monads.
 
 We will discuss two of these for now.
@@ -174,65 +117,12 @@ state number -> (randomGeneratedNumber,newNumber)
 
 \bigskip
 
-The implementations of these monads are far from complete, these examples simply show the functionality of the monad.
-\textbf{CHECK}
-The actual implementation will be given in section~\ref{sec:basicmonadsimplementation}.
+The implementations of these monads are far from complete, these examples simply show the functionality of these monads.
 
-
-\subsubsection{Combining monads}
-Monads can also be combined.
-Since they have the same generic interface they can be combined into another generic inteface.
-These new monads can utilise the functionality of the all combined monads.
-
-In this way the functionality of a monad can be extended.
-Combining monads can be seen as putting one monad inside another monad.
-% Combining monads can be seen as putting one monad inside another monad, as illustrated in figure~\ref{fig:monadcombinig}.
-
-% {
-   % \centering
-   % \includegraphics{transformers}\\
-   % \captionof{figure}{Combining monads}
-   % \label{fig:monadcombining}
-   % \bigskip
-% }
-
-We will take the state and maybe monad and combine these into a parser monad.
-A parser monad can parse through a piece of text and scan for certain elements.
-
-The state monad will be used for the scanning functionality and the maybe monad will be used to determine of the element has been found.
-The state monad returns the maybe monad as its result.
-When the maybe monad has a value as result the parser monad stops.
-
-Like normal monads, transformers have to be built manually.
-This is a very error prone process when combining more than two monads or when using more complex monads.
-
-What we actually want is to write the monads once and combine them automatically.
-This is where monad transformers come in.
-\textbf{PUT IMPLEMENTATION OF FUNCTIONS HERE}
-
-
-\subsection{Monad transformers}
-Monad transformers are a way to automatically combine monads.
-Instead of simply having a monad which takes the arguments it needs, it also takes another monad transformer as one of its arguments.
-\textbf{check}
-This monad transformer is then used to given the actual value.
-
-MC has an implementation of the basic monad transformer with which all monad transformers and monads can be created.
-
-For monad transformers to work a generic function is added which contains the signature of the monad wrapped inside the transformer.
-
-\begin{lstlisting}
-TypeFunc "MCons" -> Type
-MCons -> 'M
-\end{lstlisting}
-
-The identifier \verb\'M\ is the monad given to the monad transformer.
-\verb\MCons\ can be called when this monad is needed directly.
+We will naw look at how the monad is really implemented within MC.
 
 
 \subsection{Implementation}\label{sec:basicmonadsimplementation}
-Now we will look at how the monad is implemented.
-
 Because monads need to be able to manipulate type information, it is a good example of what MC is useful for.
 
 With this monad we will be able to create actual monads, this can be seen as the base module for monads.
@@ -256,7 +146,6 @@ Monad 'M => Module {
   Func "return" -> 'a -> 'M 'a
 \end{lstlisting}
 
-% \textbf{PUT >>= EARLIER}
 The bind is declared with \verb\ArrowFunc\ and is called \verb\>>=\.
 It takes a monad as its first argument and a function as its second argument.
 
@@ -267,10 +156,116 @@ The return takes a value, \verb\'a\, and wraps it inside the monad, \verb\'M\.
 Both bind and return are only declared and not defined, because they are different for every monad created.
 When creating a new monad bind and return will need to be defined.
 
-The functions explained and implemented in section~\ref{something} will be added to this as well.
+Now we will add functionality to make the monads more practical for the user when programming.
 
-With those we have the complete interface of monad.
-With this we can build monads.
+
+\subsubsection{Returnfrom}
+Sometimes we want to directly pass the value inside the monad instead of wrapping it.
+This is done with \verb\returnFrom\.
+
+\begin{lstlisting}
+Func "returnFrom" -> 'a -> 'a
+returnFrom a -> a
+\end{lstlisting}
+
+As we can see the identifier \verb\a\ is directly passed on.
+
+
+\subsubsection{Lift}
+Lift is used when a regular function, it takes a value and returns a value, needs to be executed over a monad.
+Lift unwraps the monad, executes the function with the value of the monad and then wraps the new value inside the monad.
+
+An important difference with the bind, is that the function given to the lift does not pack the value in a monad.
+The function passed to the bind does pack the value inside the monad.
+
+\begin{lstlisting}
+  Func "lift" -> ('a -> 'b ) -> 'M 'a -> 'M 'b
+  {a >>= a'
+     return f a'} -> res
+  ----------------------
+  lift f a -> res
+\end{lstlisting}
+
+Here we can see clearly that the lift repacks the value with \verb\return\.
+
+The \verb\Lift\ can also be declared with functions which take two arguments.
+It is then called \verb\Lift2\.
+
+\verb\Lift2\ has to bind twice, once for each monad.
+
+\begin{lstlisting}
+  Func "lift2" -> ('a -> 'b -> 'c) -> 'M 'a -> 'M 'b -> 'M 'c
+  {a >>= a'
+     b >>= b'
+       return f a' b'} -> res
+  ---------------------------
+  lift2 f a b -> res
+\end{lstlisting}
+
+This can be expanded to functions which take any number of arguments.
+
+With these functions we have the complete interface of a monad.
+Now we can use the module \verb\Monad\ to implement them.
+
+
+\subsubsection{Combining monads}
+Monads can also be combined.
+Since they have the same generic interface they can be combined into another generic inteface.
+These new monads can utilise the functionality of the all combined monads.
+
+In this way the functionality of a monad can be extended.
+Combining monads can be seen as putting one monad inside another monad.
+
+We will take the state and maybe monad and combine these into a parser monad.
+A parser monad can parse through a piece of text and scan for certain elements.
+
+The state monad will be used for the scanning functionality and the maybe monad will be used to determine of the element has been found.
+The state monad returns the maybe monad as its result.
+When the maybe monad has a value as result the parser monad stops.
+
+Like normal monads, transformers have to be built manually.
+This is a very error prone process when combining more than two monads or when using more complex monads.
+
+What we actually want is to write the monads once and combine them automatically.
+This is where monad transformers come in.
+
+
+\subsection{Monad transformers}
+Monad transformers are a way to automatically combine monads.
+Instead of simply having a monad which takes the arguments it needs, it also takes another monad as one of its arguments.
+\textbf{check}
+The monad given as argument is then used to process the other arguments given to the monad transformer.
+
+MC has an implementation of the basic monad transformer with which all monad transformers and monads can be created.
+
+For monad transformers to work a generic function is added which contains the signature of the monad wrapped inside the transformer.
+
+\begin{lstlisting}
+TypeFunc "MCons" -> Type
+MCons -> 'M
+\end{lstlisting}
+
+The identifier \verb\'M\ is the monad given to the monad transformer.
+\verb\MCons\ can be called when this monad is needed directly.
+
+
+\subsubsection{LiftM}
+There are of course functions that work specifically with the wrapped monad in a monad transformer.
+For this \verb\liftM\ is created.
+
+For this we have to use the bind and return of the wrapped monad.
+\begin{lstlisting}
+  Func "liftM" -> (MCons^'M 'a -> MCons^M' 'b) -> 'M (MCons^'M 'a) -> 'M (Mcons^'M 'b)
+  {M >>=^'M a
+    f a -> b
+    return^'M b} -> res
+  ---------------------
+  liftM f M -> res
+}
+\end{lstlisting}
+
+It works the same as the other lift functions, with the specification of using the bind and return of the wrapped monad, \verb\'M\, instead of the bind and return of the current monad.
+
 
 \subsection{Evolution of monad}
 Monad was first implemented with just \verb\MCons\, \verb\>>=\, \verb\return\ and \verb\returnFrom\ functions.
@@ -351,7 +346,6 @@ This can be used for error handling or for creating complex dataflows within mon
 
 
 \subsection{Evolution of tryable monad}
-\textbf{DO THIS !!!!!!!!!!!!!!!!!!!}
 The \verb\TryableMonad\ startet out as the \verb\either\ monad.
 \verb\either\ used the available options to create error handling.
 
@@ -360,13 +354,13 @@ This was then implemented as the \verb\TryableMonad\.
 
 
 \section{Implemented monads}\label{sec:standardimplementedmonads}
-\textbf{PUT TEXT HERE}
+We will now look at the monads that are implemented in MC.
 
 \subsection{Id}\label{sec:basicmonadsimplementedid}
-If monad transformers always take another monad, there has to be atleast one to end the chain.
+If monad transformers always take another monad, there has to be atleast one monad to end the chain.
 That is where the \emph{id} monad comes in.
 
-It takes no monad as argument and simply returns all values as the are.
+It does not take a monad as part of its arguments and simply returns all values as they are.
 
 First we need a type signature to tell the monad interface which monad we are creating.
 
@@ -412,7 +406,6 @@ In this way the \verb\id\ monad will always end the cycle.
 
 
 \subsection{List}\label{sec:standardmonadlist}
-
 The \verb\list\ monad uses a list to store the values.
 
 The \verb\list\ monad transformer uses \verb\List\ from \emph{prelude} to create the transformer.
@@ -532,14 +525,12 @@ That is why the bind calls \verb\try\.
 The monad and the function is passed on to \verb\try\ together with the function \verb\fail\.
 
 The \verb\return\ passes the value to \verb\'M\.
-\verb\Left\ is used because \verb\x\ is a value.
 
 \begin{lstlisting}
   return x -> return^'M(Left x)
 \end{lstlisting}
 
-\textbf{PUT A SORT OF CONCLUSION HERE}
-The \verb\either\ can now be
+\verb\Left\ is used because we know \verb\x\ is a value.
 
 
 \subsubsection{Evolution of either}
@@ -602,8 +593,8 @@ When this was noticed, the \verb\result\ monad was implemented by using \verb\ei
 
 
 \subsection{State}
-\textbf{EXPLAIN THAT BOX IS NOT A CONTAINER THIS TIME}
-We have had a basic explanation of the state monad in section~\ref{sec:standardmonad}.
+We have had a basic explanation of the state monad in section~\ref{sec:standardmonad} where we have seen that it is different from most monads.
+The state monad does not acts like a lambda in monadic form.
 
 Now we will see how it is implemented.
 The type signature of the state monad shows that it is a function.
@@ -644,8 +635,8 @@ A lambda is created and in the function body of the lambda the computation happe
 \end{lstlisting}
 
 Bind of \verb\'M\ is called and the result is then deconstructed to get to the tuple which it contains.
-We know \verb\x\ is a tuple because it lives inside a state monad.
-As is evident by the type signature of the state monad.
+We know \verb\x\ is a tuple because it is the result from state monad \verb\sm\.
+That \verb\x\ is a tuple, is evident by the type signature of the state monad.
 
 The state monad also contains two extra functions.
 They make it possible to get and set the state.
@@ -684,6 +675,33 @@ Haskell has a few implementations of monad transformers~\cite{monadshaskell}, bu
 
 This shows what MC is capable of compared to most other languages.
 With the use of higher order types the high abstractions used for monad transformers can be implemented with very little code.
+
+
+\section{Advantages}
+Now that we know what monads are and that MC has a clear implementation of them, we can look at the practical advantages.
+
+We will focus on the game industry, but the concepts are useful in other industries as well.
+
+When programming with monads and monad transformers we can create a monad which does one function and combine it with other monads.
+When combining monads more complex functionalities are created, but the way they are used does not change.
+
+When the way of using monads does not change there is no need to comprehend how a specific monad does things.
+We only need to know how to use it.
+
+Monads then become very powerfull black boxes.
+
+For example we can create a networking monad which takes care of all the network communication.
+We also create a graphical monad which takes care of filling the screen.
+And as a final touch we create an input monad which takes care of all the user input.
+
+When we combine these monads for video game development the only thing left to create is the game itself.
+
+The video game developer can now focus on the video game itself, saving time on networking, user input and graphics.
+When combining monads with the typesafety of MC, the video game developer has a significant advantage over his competitors.
+
+Not only is the video game developer able to develop faster, the video game is also less prone to bugs.
+
+
 
 
 

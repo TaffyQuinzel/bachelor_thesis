@@ -1,43 +1,44 @@
 \chapter{Conclusion}
 \textbf{EXPAND!!!!!!}
 To summarize the main research question was:
-\emph{How can the programming language MetaCasanova be improved for the user within the timeframe of the internship?}
+\emph{How can the programming language Meta-Casanova be improved for the user within the timeframe of the internship?}
 
-To answer the main question we will first answer the subquestions.
-The answer to this research question is:
-\emph{MetaCasanova can be improved by creating a clear definition of what a good programming language is and using that as a basis for further development.}
+To answer the main question we first had to answer the subquestions.
 
-\emph{It can also be improved by changing the viewpoint from developer to user of the language.}
-\emph{This provides new insights in to how the language works and how it is expected to work.}
+\emph{What is a good programming language to the user?}
+We have seen that a good programming language to the user needs to have the qualities described in chapter~\ref{chap:criteria}.
 
-\emph{Extending the standard library also has an impact on the usability of the language.}
+\emph{What is MC and how does it work?}
+MC is a declaritive functional language and works as is described in chapter~\ref{chap:basicmc}.
 
-Other conclusions that were found during the project were:
-\begin{enumerate}
-\item Complex datastructures can be improved in performance when doing most of the computation in compile time.
-\item Higher order types enable the writing of complex concepts in fewer lines of code with more clarity.
-\end{enumerate}
+\emph{How can the current syntax be improved to serve the user?}
+The syntax has been improved in a manner of ways as is described in chapters~\ref{chap:mcevolution} through~\ref{chap:testprograms}.
+
+\emph{How can the standard library be improved to serve the user?}
+The standard library has been improved by implenting basic programming constructs, a generic number interface, updatable records and monads, as is described in chapter~\ref{chap:standardlibrary}.
+
+From the subquestions we have seen that MC can be improved for the user by focussing the syntax on the user and by expanding the standard library with programming constructs that are useful to the user.
+
+\section{Other conclusions}
+Complex datastructures can have increased performance at runtime when doing most of the computation at compile time.
+
+Higher order types enable clear and compact writing of complex programming constructs.
+
+Monads enable programmers to have a safe and clear way of building complex programs with more ease.
 
 
 
 \chapter{Recommendations}
-These recommendations are for the people continueing with the project.
-
-\section{Improving a programming language}
-When first learning about a language, keep on asking until you have specifics.
-Most of the developers have general ideas of a language.
-These ideas have very little specifics, but will come to the surface when really digging.
-
-By having these ideas before hand, bugs will become apparent when first looking at the actual language.
-
+These recommendations are for the people continuing with the project.
 
 \section{Further development}
-When developing MC further I would recommend to expand the standard library even more.
+When developing MC further I would recommend expanding the standard library even more.
 Especially when the focus of the language is put more on monads.
 
 \subsection{Monads}
 Because Monads are a very strong example of where MC thrives, it is a logical next step to move most functionality to monads.
-By doing this MC can be
+
+By doing this MC can be used better for quick and safe developement of applications, for example video games.
 
 The first step in moving to monads would be the IO monad~\cite{iomonad}.
 The IO monad would be the only interface with the outside world and unpure functions, making MC a completely pure language.
@@ -52,74 +53,88 @@ This gives the user a
 They would give the ability of multi threading directly in the language.
 This would improve performance.
 
+
 \subsection{The compiler}
 I would also recommend to keep syntax changes to a minimum.
-This will give the compiler developers a fighting chance.
-During the development the compiler developers have thrown away alot of work, because the syntax became too different.
-
-When creating a new itteration of the language, first get a clear picture of the language before starting work on the compiler.
-This creates less work for the compiler developers as they do not have to change the compiler mid build.
+This will give the compiler developers a chance to finish the compiler.
+During the development the compiler developers have thrown away alot of work, because the syntax changed too much.
 
 
 
 \chapter{Evaluation}
-Here I will provide proof of having the competentions which are associated with computer science according to the Rotterdam University of applied science~\cite{citeershit}.
+Here I will show that I have the competences which are associated with computer science according to the Rotterdam University of applied science~\cite{citeershit}.
 
-The competency \emph{admministering} will be attained by further developing MC according to the specifications of the research group.
+\section{admministering}
+I have learned to use type theory and applied it to MC in accordance to the specifications given to me by the research group.
 
-The competency \emph{Analysing} will be attained by refining the standard library of MC in accordance with what is needed for the user and the research group.
+will be attained by further developing MC according to the specifications of the research group.
 
-The competency \emph{Advising} will be attained when putting forth improvements for MC.
+\section{Analysing}
+I have researched what a good programming language is to the user and applied it to the standard library of MC and the syntax of MC.
 
-The competency \emph{Designing} will be attained when debugging MC and refining the standard library to further improve the language.
-\section{Multi-discipliniar}
-By working in a research team there are many different people to deal and communicate with.
-This
-kunnen werken in ... team en zelfstandig hun taken uitvoeren.
-\section{klant en probleem gericht opereren}
-\section{methodical}
-\section{openstaan voor technologische ontwikkelingen in die eigen kunnen maken}
-\section{able to reflect and adapt on their beroepsmatig handelen}
+will be attained by refining the standard library of MC in accordance with what is needed for the user and the research group.
 
+\section{Advising}
+During the assignment I have put forth improvements for MC to the research group.
+I had to explain and justify these improvements to the entire research group.
 
-Here I will provide proof of having mastered the dublin descriptors and the extra competentions as set in the graduation module guidelines~\cite{stuff}.
+will be attained when putting forth improvements for MC.
 
-\section{Dublin descriptors}
-\subsection{Knowledge and understanding}
-During the project I have used type-theory as described in~\cite{stuff} to check the programs I was writing.
-This can be explicitly seen in section~\ref{sec:standardtryablemonad} and appendix~\ref{app:typeproofs}.
+\section{Designing}
+I have designed several syntax changes to improve MC while keeping the core of MC.
+I have also refined and expanded the standard library to show what MC is capable of.
 
-Further more I have learned the monadic theory to be able to implement them in the standard library.
-
-Both of these build on the knowledge gained during my four years of studying at the University of Rotterdam.
-Here I have learned the basis which was needed during this project.
-
-The programming skills learned were needed to expand these skills with the type theory.
-The mathematical skills gained were needed when learning about the monadic constructs.
+will be attained when debugging MC and refining the standard library to further improve the language.
 
 
-\subsection{Applying knowledge and understanding}
-The knowledge gained in the research phase of this project combined with the knowledge gained in my study years, have been put into practical use.
-When building upon MC I had to use all the type theory knowledge gained to be certain no function failed.
-
-When implementing the monadic part of the standard library, I have combined the programming- with the mathematical skills to translate mathematical ideas into a practical code base.
-
-
-\subsection{Making judgements}
-At the start of this project I have done research into a new language, MC, type theory and monadic mathematical concepts.
-These were all needed to build upon the existing codebase of MC.
-
-\textbf{DO CITATIONS}
-I have made descisions while keeping both the practical aspects and goals in mind, as seen in sections~\ref{},\ref{} and \ref{}.
+% \section{Multi-discipliniar}
+% By working in a research team there are many different people to deal and communicate with.
+% This
+% kunnen werken in ... team en zelfstandig hun taken uitvoeren.
+% \section{klant en probleem gericht opereren}
+% \section{methodical}
+% \section{openstaan voor technologische ontwikkelingen in die eigen kunnen maken}
+% \section{able to reflect and adapt on their beroepsmatig handelen}
 
 
-\subsection{Communication}
-During this project I have worked in a research team where I have had to explain myself to fellow team members and supervisors.
+% Here I will provide proof of having mastered the dublin descriptors and the extra competentions as set in the graduation module guidelines~\cite{stuff}.
 
-This was done in the form of presentations, discussions and meetings.
-I also had to understand their ideas about concepts.
+% \section{Dublin descriptors}
+% \subsection{Knowledge and understanding}
+% During the project I have used type-theory as described in~\cite{stuff} to check the programs I was writing.
+% This can be explicitly seen in section~\ref{sec:standardtryablemonad} and appendix~\ref{app:typeproofs}.
+
+% Further more I have learned the monadic theory to be able to implement them in the standard library.
+
+% Both of these build on the knowledge gained during my four years of studying at the University of Rotterdam.
+% Here I have learned the basis which was needed during this project.
+
+% The programming skills learned were needed to expand these skills with the type theory.
+% The mathematical skills gained were needed when learning about the monadic constructs.
 
 
-\subsection{Lifelong learning skills}
+% \subsection{Applying knowledge and understanding}
+% The knowledge gained in the research phase of this project combined with the knowledge gained in my study years, have been put into practical use.
+% When building upon MC I had to use all the type theory knowledge gained to be certain no function failed.
+
+% When implementing the monadic part of the standard library, I have combined the programming- with the mathematical skills to translate mathematical ideas into a practical code base.
+
+
+% \subsection{Making judgements}
+% At the start of this project I have done research into a new language, MC, type theory and monadic mathematical concepts.
+% These were all needed to build upon the existing codebase of MC.
+
+% \textbf{DO CITATIONS}
+% I have made descisions while keeping both the practical aspects and goals in mind, as seen in sections~\ref{},\ref{} and \ref{}.
+
+
+% \subsection{Communication}
+% During this project I have worked in a research team where I have had to explain myself to fellow team members and supervisors.
+
+% This was done in the form of presentations, discussions and meetings.
+% I also had to understand their ideas about concepts.
+
+
+% \subsection{Lifelong learning skills}
 
 
