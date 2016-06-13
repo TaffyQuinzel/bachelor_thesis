@@ -441,20 +441,19 @@ This function is needed as an intermediate function to \verb\update\.
 It then keeps a counter of the amount of bikes that are still alive.
 When the counter is higher than one \verb\unit\ is returned.
 
-\textbf{FIX THE CODE AND FINISH TEXT}
 \begin{lstlisting}
   Func "checkDeaths" -> bike -> amountAlive -> 'a
-    (if (amountAlive > 1) then
-      unit
-    else
-      ((if ((get^bike "IsAlive" Field^bike) == True^builtin) then
-        amountAlive + 1
-      else
-        amountAlive) -> newAmountAlive
-  (if (amountAlive == 1) then
-    bike
+  (if ((amountAlive > 1) || (amountAlive == 1)) then
+    unit
   else
-      checkDeaths Rest^bike newAmountAlive))) -> res
+    ((if ((get^bike "IsAlive" Field^bike) == True^builtin) then
+      amountAlive + 1
+    else
+      amountAlive) -> newAmountAlive
+      (if (newAmountAlive == 1) then
+        bike
+      else
+        checkDeaths Rest^bike newAmountAlive))) -> res
   ------------------------------------------------
   checkDeaths bike amountAlive -> res
 \end{lstlisting}
@@ -483,7 +482,6 @@ This makes the playfield complete.
 All that is left to do is create the main function which starts the game.
 
 \subsection{Main}
-\textbf{DO THIS!!!!!!!!!!}
 The main combines the bikes and the playfield to start the actual game.
 
 First \verb\bike\, \verb\playfield\ and the XNA framework is imported.
@@ -512,13 +510,16 @@ When a winner has emerged, this winning bike is returned.
 
 Then we declare and define \verb\start\ which creates all the bikes and the playfield and calls \verb\play\ to start the game.
 
-\textbf{FIX CODE!!!!!!!!!!!!!!!!}
 \begin{lstlisting}
 Func "start" -> 'a
-Bike "playerOne" -16776961 5 -> bikeOne
-Bike "playerTwo" -16711681 5 keys Vector2(0.0,0.0) trail unit -> bikeTwo
+Keys^bike System.Windows.Forms.Keys.P System.Windows.Forms.Keys.L -> controlRecordOne
+TrailRecord "trailBikeOne" Vector2(500.0,250.0) Empty -> trailBikeOne
+Bike "playerOne" -16776961 5 controlRecordOne Vector2(500.0,250.0) trailBikeOne Empty-> bikeOne
+Keys^bike System.Windows.Forms.Keys.Q System.Windows.Forms.Keys.A -> controlRecordTwo
+TrailRecord "trailBikeTwo" Vector2(0.0,250.0) Empty -> trailBikeTwo
+Bike "playerTwo" -16711681 5 controlRecordTwo Vector2(0.0,250.0) trailBikeTwo Empty -> bikeTwo
 RecordEntry "gamebikes" BikeOne BikeTwo -> bikeRecord
-Vector2(500,500) -> fieldsize
+Vector2(500.0,500.0) -> fieldsize
 playfield "gamefield" bikeRecord fieldsize  -> gamefield
 play gamefield 0 -> res
 ---------------------
@@ -534,7 +535,7 @@ During the programming of the game several things became clear about MC.
 The \verb\set\ function of \verb\Record\ was not returning the original record, just the updatable record.\footnote{See section~\ref{sec:recordevolutionsetget}}
 
 \subsubsection{Good language}
-The points described in chapter~\cite{chap:criteria} also had there conclusions found during the creation of the test programs.
+The points described in chapter~\ref{chap:criteria} also had there conclusions found during the creation of the test programs.
 
 % It was discovered that MC has a steep learning curve because of the higher order types and the monadic part of the standard library.
 
@@ -544,14 +545,14 @@ The simplicity of MC is a mixed bag.
 While the syntax is simple, the concepts used by the language can become anything but simple.
 These concepts will have the user do some studying to understand these concepts.
 
-The goal and idea behind of MC is quite clear.\footnote{As described in section~\ref{sec:}.}
+The goal and idea behind of MC is quite clear.\footnote{As described in sections~\ref{sec:whatismc} and~\ref{sec:goalofmc}.}
 And because MC has a clear idea of what it wants to do, the user can easily use the language as it was intended.
 
 By being a declarative language MC has de advantage of making itself predictable.
 The declarations always state what a function does and the definition then tells how this is achieved.
-Even when using monads MC keeps its predictability, because of how the monads work.\footnote{As is shown in section~\ref{sec:}.}
+Even when using monads MC keeps its predictability, because of how the monads work.\footnote{As is shown in section~\ref{sec:basicmonadexplanation}.}
 
-The higher order types handle abstractions very well, as is evident by the short implementation of monad transformers.\footnote{As is shown in section~\cite{sec:}.}
+The higher order types handle abstractions very well, as is evident by the short implementation of monad transformers.\footnote{As is shown in section~\ref{sec:standardimplementedmonads}.}
 The high abstractions MC is capable of increase the expressiveness of MC.
 
 Because all these high abstractions are computed at compile time the efficiency does not suffer.

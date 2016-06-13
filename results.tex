@@ -1,5 +1,4 @@
 \chapter{Conclusion}
-\textbf{EXPAND!!!!!!}
 To summarize the main research question was:
 \emph{How can the programming language Meta Casanova be improved for the user within the timeframe of the internship?}
 
@@ -18,6 +17,13 @@ The syntax has been improved in a manner of ways as is described in chapters~\re
 The standard library has been improved by implementing basic programming constructs, a generic number interface, updatable records and monads, as is described in chapter~\ref{chap:standardlibrary}.
 
 From the subquestions we have seen that MC can be improved for the user by focussing the syntax on the user and by expanding the standard library with programming constructs that are useful to the user.
+
+The improvements made to MC during this internship will add to the development of the MC and Casanova programming languages.
+With Casanova video games become easier to develop.
+The video game developers will be able to develop their video games faster with Casanova.
+And by being able to develop faster they will gain an advantage over their competitors in the video game market.
+
+
 
 \section{Other conclusions}
 Complex datastructures can have increased performance at runtime when doing most of the computation at compile time.
@@ -40,35 +46,34 @@ Because Monads are a very strong example of where MC thrives, it is a logical ne
 
 By doing this MC can be used better for quick and safe development of applications, for example video games.
 
-The first step in moving to monads would be the IO monad~\cite{iomonad}.
+The first step in moving to monads would be the IO monad~\cite{hancock1999io}.
 The IO monad would be the only interface with the outside world and unpure functions, making MC a completely pure language.
-Being pure the language becomes more strict, but also less bug and error prone~\cite{purelanguage}.
+Being pure MC becomes more strict, but also less prone to bugs and errors~\cite{wadler1995monads}.
 
+The implementation of the coroutine monad would come next.
+With coroutines comes the possibility of multithreading~\cite{haynes1984continuations}.
+Multithreading gives an even bigger performance boost to MC.
 
-The creation of the record monad would come next.
-
-Coroutines would be next.
-Both as a separate entity and as a monad.
-This gives the user a
-They would give the ability of multi threading directly in the language.
-This would improve performance.
+With the IO- and coroutine monads MC has an effective base for complex programming and the other monads can be implemented as needed by the users.
 
 
 \subsection{The compiler}
 I would also recommend to keep syntax changes to a minimum.
 This will give the compiler developers a chance to finish the compiler.
-During the development the compiler developers have thrown away a lot of work, because the syntax changed too much.
+
+An other option would be to define the language before hand and build the compiler after the language has a finished specification.
 
 
 
 \chapter{Evaluation}
-Here I will show that I have the competences which are associated with computer science according to the Rotterdam University of applied science~\cite{citeershit}.
+Here I will show that I have the competences which are associated with computer science according to the Rotterdam University of applied science.
 
 
 \section{Administering}
 I have learned to use type theory and applied it to MC in accordance to the specifications given to me by the research group.
-I have also learned to use MC and program the standard library of MC with it.
+I have learned to use MC and program the standard library of MC with it.
 
+I have made clear goals before starting the actual assignment with minimal requirements.
 
 
 \section{Analysing}
@@ -77,20 +82,16 @@ I have combined these researches to improve the syntax of MC.
 I have also combined the research about good programming languages with the standard library of MC to refine and expand the standard library of MC.
 
 
-
 \section{Advising}
 During the assignment I have put forth improvements for MC to the research group.
 I had to explain and justify these improvements to the entire research group.
 
 During the second half of the internship members of the research group also came to me with questions concerning MC, because I have become the central resource for MC.
-This thesis also serves as the documentation of MC and contains a \emph{recommendations} chapter\footnote{see chapter~\ref{chap:resultsrecommendations}.} with recommendations for future improvements.
-
+This thesis also serves as the documentation of MC and contains a \emph{recommendations} chapter\footnote{See chapter~\ref{chap:resultsrecommendations}.} with recommendations for future improvements.
 
 
 \section{Designing}
 I have designed several syntax changes to improve MC while keeping the core of MC the same.
 I have also refined and expanded the standard library to show what MC is capable of.
-
-will be attained when debugging MC and refining the standard library to further improve the language.
 
 
