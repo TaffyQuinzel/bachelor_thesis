@@ -13,96 +13,95 @@
    \input{voorpagina}
 \end{titlepage}
 
+% \cleardoublepage
 % \maketitle
-% \begin{multicols}{3}
-% \begin{multicols}{2}
-   % state the problem
-   % say why it's an interesting problem
-   % say what your solution is
-   % say what follows from your solution
 
-   \begin{abstract}
-      % \textbf{Write shit here as very short summary}
-      % mc needs testing and expanding
-      % standard library has been expanded
-      % test programs have been created
-      % conclusion has been made
-      This document describes the new programming language Meta Casanova and its development.
+\cleardoublepage
+\begin{abstract}
+   This document describes the new programming language Meta Casanova and its development.
 
-The author was part of the research group which was developping MetaCasanova.
+   The author was part of the research group which was developping MetaCasanova.
 
-This document is the thesis that was issued by the Rotterdam University of Applied Sciences, as a test of skill and knowledge gained after four years of education at their Computer Engineering department.
-   \end{abstract}
-   % \input{summary}
-   \newpage
+   This document is the thesis that was issued by the Rotterdam University of Applied Sciences, as a test of skill and knowledge gained after four years of education at their Computer Engineering department.
+\end{abstract}
+\cleardoublepage
+% \newpage
 
-   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-   %%%%%%%%%%%%%%% real paper %%%%%%%%%%%%%%%%
-   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%% real paper %%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-   \pagenumbering{gobble}
-   \setcounter{tocdepth}{1}
-   \tableofcontents
-   \cleardoublepage
-   \pagenumbering{arabic}
-   \addtocounter{page}{4}
-% \end{multicols}
+\pagenumbering{Roman}
+\setcounter{tocdepth}{1}
+\pagestyle{contents}
+\tableofcontents
+\cleardoublepage
 
+\pagestyle{mine}
+\pagenumbering{arabic}
 
 \part{Preface}
-% \input{stakeholders}
-% \begin{multicols}{2}
-   \input{introduction}
-% \end{multicols}
+\cleardoublepage
+\input{introduction}
+\cleardoublepage
 
 \part{Preliminary research}
-% \begin{multicols}{2}
-   \input{goodlanguage}
+\cleardoublepage
 
-   %---------------------------------------------------------------------------------------------------------%
-   %----------------------------------------------- finished ------------------------------------------------%
-   %---------------------------------------------------------------------------------------------------------%
-   \input{basicmc}
+\input{goodlanguage}
+\cleardoublepage
 
-\newpage
+%---------------------------------------------------------------------------------------------------------%
+%----------------------------------------------- finished ------------------------------------------------%
+%---------------------------------------------------------------------------------------------------------%
+\input{basicmc}
+\cleardoublepage
+
 % \end{multicols}
 \part{MC expanded}\label{part:mcexpanded}
+\cleardoublepage
 % \begin{multicols}{2}
-   \input{syntaxevolution}
+\input{syntaxevolution}
+\cleardoublepage
 
-   \input{standardlibrary}
-   \input{basicmonads}
+\input{standardlibrary}
+\input{basicmonads}
+\cleardoublepage
 
-   \input{testprograms}
+\input{testprograms}
 
 
 % \end{multicols}
+\cleardoublepage
 \part{Results}
+\cleardoublepage
 % \begin{multicols}{2}
-   \input{results}
+\input{results}
+\cleardoublepage
 
-   \bibliographystyle{ieeetr}
-   \bibliography{biblio}
+\bibliographystyle{ieeetr}
+\bibliography{biblio}
+\cleardoublepage
 
 % \end{multicols}
 
 \begin{appendices}
    \part{Appendices}
-   \input{stakeholders} % maybe???
-   % \input{typeproofs}
+   \cleardoublepage
+   % \input{stakeholders} % maybe???
 
    \chapter{Type proof of try}
    See the next two page.
    \includepdf[pages=-,angle=90]{typecheck.pdf}
    \input{monadiclibraries}
 
-   \chapter{Testimony client}
-   See next page.
-	\includepdf[pages=1]{contract1.pdf}
+   % \chapter{Testimony client}
+   % See next page.
+   % \includepdf[pages=1]{contract1.pdf}
 
-   \chapter{Testimony company supervisor}
-   See next page.
-	\includepdf[pages=-]{contract2.pdf}
+   % \chapter{Testimony company supervisor}
+   % See next page.
+   % \includepdf[pages=-]{contract2.pdf}
 \end{appendices}
 
 % \chapter{Glossery}

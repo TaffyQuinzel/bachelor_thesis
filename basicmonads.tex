@@ -267,7 +267,7 @@ It works the same as the other lift functions, with the specification of using t
 
 
 \subsection{Evolution of monad}
-Monad was first implemented with just \verb\MCons\, \verb\>>=\, \verb\return\ and \verb\returnFrom\ functions.
+Monad was first implemented with just \verb\MCons\, \verb\>>=\, \verb\return\ and \texttt{returnFrom} functions.
 This enabled basic use of the monad.
 
 \verb\lift\, \verb\lift2\ and \verb\liftM\ were then added to extend the usecases of monads.
@@ -349,7 +349,7 @@ The \verb\TryableMonad\ started out as the \verb\either\ monad.
 \verb\either\ used the available options to create error handling.
 
 It occured then that we could also create more complex dataflows, when creating a generic tryable monad.
-This was then implemented as the \verb\TryableMonad\.
+This was then implemented as the \texttt{TryableMonad}.
 
 
 \section{Implemented monads}\label{sec:standardimplementedmonads}

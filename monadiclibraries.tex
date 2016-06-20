@@ -99,7 +99,7 @@ More can be found in the \emph{transformers} package~\cite{haskelllibrary}.
 #if __GLASGOW_HASKELL__ >= 710
 {-# LANGUAGE AutoDeriveTypeable #-}
 #endif
------------------------------------------------------------------------------
+----------------------------------------------------------------------
 -- |
 -- Module      :  Control.Monad.Trans.State.Lazy
 -- Copyright   :  (c) Andy Gill 2001,
@@ -127,7 +127,7 @@ More can be found in the \emph{transformers} package~\cite{haskelllibrary}.
 --
 -- For a strict version with the same interface, see
 -- "Control.Monad.Trans.State.Strict".
------------------------------------------------------------------------------
+----------------------------------------------------------------------
 
 module Control.Monad.Trans.State.Lazy (
     -- * The State monad
@@ -179,7 +179,7 @@ import qualified Control.Monad.Fail as Fail
 #endif
 import Control.Monad.Fix
 
--- ---------------------------------------------------------------------------
+-- -------------------------------------------------------------------
 -- | A state monad parameterized by the type @s@ of the state to carry.
 --
 -- The 'return' function leaves the state unchanged, while @>>=@ uses
@@ -239,7 +239,7 @@ withState :: (s -> s) -> State s a -> State s a
 withState = withStateT
 {-# INLINE withState #-}
 
--- ---------------------------------------------------------------------------
+-- -----------------------------------------
 -- | A state transformer monad parameterized by:
 --
 --   * @s@ - The state.

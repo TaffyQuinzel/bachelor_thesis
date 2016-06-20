@@ -7,7 +7,7 @@ When we have an idea of how it should work, the choices made during the developm
 \emph{Prelude} is the first item in the standard library and contains a few definitions making basic programming easier.
 \emph{Prelude} contains the definitions which are not large enough to grant there own item within the standard library.
 
-The .NET \emph{System} namespace is imported and the type \verb\Unit\ is created.
+The .NET \emph{System} namespace is imported and the type \texttt{Unit} is created.
 
 \begin{lstlisting}
 import System
@@ -15,10 +15,10 @@ import System
 Data "unit" -> Unit
 \end{lstlisting}
 
-The \verb\Unit\ is used as an empty or null value.
+The \texttt{Unit} is used as an empty or null value.
 
 Next we have the declaration and definition of a generic tuple and union.
-Because they are generic \verb\TypeAlias\ is needed for the type manipulation.
+Because they are generic \texttt{TypeAlias} is needed for the type manipulation.
 
 \begin{lstlisting}
 TypeAlias Type => "*" => Type => Type
@@ -42,21 +42,21 @@ if True^builtin then f else g -> f
 if False^builtin then f else g -> g
 \end{lstlisting}
 
-The \verb\then\ and \verb\else\ \verb\Data\s are syntactic sugar and could be left out.
+The \texttt{then} and \texttt{else} \texttt{Data}s are syntactic sugar and could be left out.
 We have left them in to enhance the clarity of the if-else construct.
 
 Now that we have the if-else construct we can do basic boolean math.
 It also makes the use of multiple rules an option and not a necessity, which in turn creates more freedom for the programmer.
 
 Here we see how \emph{System} of .NET is used.
-The boolean of .NET can be imported as shown, however the values \verb\True\ and \verb\False\ cannot be imported.
+The boolean of .NET can be imported as shown, however the values \texttt{True} and \texttt{False} cannot be imported.
 They are built in .NET itself.
-This is why the boolean literals are built into MC as well and need to be called using \verb\builtin\.
+This is why the boolean literals are built into MC as well and need to be called using \texttt{builtin}.
 
 
 \subsection{Match}
-Next we have the \verb\match\ function.
-\verb\match\ is used to check the constructor of the \emph{pipe} operator and makes computations with the \emph{pipe} easier.
+Next we have the \texttt{match} function.
+\texttt{match} is used to check the constructor of the \emph{pipe} operator and makes computations with the \emph{pipe} easier.
 
 It takes a variable, matches it on either \verb|Left| or \verb|Right| and executes the function specified.
 
@@ -67,26 +67,27 @@ Data "with" -> With
 Func "match" -> ('a | 'b) -> With -> ('a -> 'c) -> ('b -> 'c) -> 'c
 \end{lstlisting}
 
-There is some syntactic sugar created to make it clearer how \verb\match\ works.
+There is some syntactic sugar created to make it clearer how \texttt{match} works.
 The first argument is the union which needs to get matched.
-The arguments \verb\('a -> 'c)\ and \verb\('b -> 'c)\ are the functions to be executed on each branch of the match.
+The arguments \texttt{('a -> 'c)} and \texttt{('b -> 'c)} are the functions to be executed on each
+\newline branch of the match.
 
-In this case the two functions both take an argument from the union, the \verb\'a\ and the \verb\'b\, and both return \verb\'c\.
+In this case the two functions both take an argument from the union, the \texttt{'a} and the \texttt{'b}, and both return \texttt{'c}.
 
-Next we have the definition of \verb\match\.
-\verb\match\ needs a definition for both cases of the match, namely the \verb\Right\ and the \verb\Left\.
+Next we have the definition of \texttt{match}.
+\texttt{match} needs a definition for both cases of the match, namely the \texttt{Right} and the \texttt{Left}.
 
 \begin{lstlisting}
 match (Left x) with f g -> f x
 match (Right y) with f g -> g y
 \end{lstlisting}
 
-When it matches the \verb\Left\ it executes function \verb\f\ with \verb\x\ as its argument.
-And when it matches the \verb\Right\ it executes function \verb\g\ with \verb\y\ as its argument.
+When it matches the \texttt{Left} it executes function \texttt{f} with \texttt{x} as its argument.
+And when it matches the \texttt{Right} it executes function \texttt{g} with \texttt{y} as its argument.
 
 % \textbf{THIS IS PROBABLY NOT POSSIBLE}
 % However this does not take into account the possibility of nested pipes.
-% For this we have written a third definition of \verb\match\:
+% For this we have written a third definition of \texttt{match\:
 
 % \begin{lstlisting}
 % match y with g h -> res
@@ -94,7 +95,7 @@ And when it matches the \verb\Right\ it executes function \verb\g\ with \verb\y\
 % match (Right y) with f (g h) -> res
 % \end{lstlisting}
 
-% This definition is placed above the previous defined \verb\match\ which matches on \verb\Right\.
+% This definition is placed above the previous defined \texttt{match} which matches on \texttt{Right}.
 % Then there is first checked on nested pipes and when there are none the actual value is checked.
 
 % In this manner there is no possibility of skipping any nested pipes.
@@ -114,21 +115,21 @@ TypeAlias "List" => Unit | (Type * (List Type))
 % List ('a * 'b) => Right ('a * 'b)
 
 The list is created with a tuple.
-An end to the list is created with a union of the list tuple and \verb\Unit\.
+An end to the list is created with a union of the list tuple and \texttt{Unit}.
 
 We also need the basic operators to create lists.
-This is done with \verb\::\, which takes a type and a list of that same type.
-And with \verb\empty\ an empty list is created.
+This is done with \texttt{::}, which takes a type and a list of that same type.
+And with \texttt{empty} an empty list is created.
 
 \begin{lstlisting}
 Data 'a -> "::" -> 'b -> List (Right ('a * 'b))
 Data "empty" -> List (Left unit)
 \end{lstlisting}
 
-With \verb\::\ we can specify the head and tail of a list.
+With \texttt{::} we can specify the head and tail of a list.
 
 But we would also like to concat lists together.
-Concatenation is done with the \verb\@\ operator.
+Concatenation is done with the \texttt{@} operator.
 
 \begin{lstlisting}
 Func List 'a -> "@" -> List 'a -> List 'a  #> 200
@@ -136,8 +137,8 @@ empty @ l -> l
 (x :: xs) @ l -> x :: (xs @ l)
 \end{lstlisting}
 
-And when we want to apply a function to the entire list we call \verb\map\.
-\verb\map\ executes a function and creates a new list, which it then returns.
+And when we want to apply a function to the entire list we call \texttt{map}.
+\texttt{map} executes a function and creates a new list, which it then returns.
 
 \begin{lstlisting}
 Func "map" -> List 'a -> ('a -> 'b) -> List 'b
@@ -145,7 +146,7 @@ map empty f -> empty
 map (x :: xs) f -> (f x) :: (map xs)
 \end{lstlisting}
 
-When we want to find one or more elements in the list we can call \verb\filter\.
+When we want to find one or more elements in the list we can call \texttt{filter}.
 It checks the entire list using a predicate function and returns the matching elements.
 
 \begin{lstlisting}
@@ -160,7 +161,7 @@ filter empty p -> empty
 filter (x :: xs) p -> res
 \end{lstlisting}
 
-The programmer can specify the predicate function \verb\p\.
+The programmer can specify the predicate function \texttt{p}.
 
 
 \subsection{Evolution of prelude}
@@ -180,9 +181,9 @@ Data "True" -> Boolean^System
 Data "False" -> Boolean^System
 \end{lstlisting}
 
-This might seem correct at first glance, but \verb\True\ and \verb\False\ have no meaning here.
+This might seem correct at first glance, but \texttt{True} and \texttt{False} have no meaning here.
 There is no way to check whether a boolean value is true or false.
-That is why a new notation had to be created for the boolean literals, which ended up into a module with the literals as \verb\Func\s.
+That is why a new notation had to be created for the boolean literals, which ended up into a module with the literals as \texttt{Func}s.
 
 \begin{lstlisting}
 import System
@@ -194,7 +195,7 @@ Boolean => Module {
 }
 \end{lstlisting}
 
-The Boolean module could then be implemented in \emph{prelude}.
+The \texttt{Boolean} module could then be implemented in \emph{prelude}.
 
 \begin{lstlisting}
 TypeFunc "boolean" => Boolean
@@ -204,18 +205,19 @@ boolean => Boolean {
 }
 \end{lstlisting}
 
-The boolean literals could now be called using \verb\True^boolean\.
-This way was noticeably the same as what happened inside the implementation of \verb\boolean\.
-The choice was then made to call the boolean literals directly with \verb\True^builtin\, which made the boolean module obsolete.
+The boolean literals could now be called using \texttt{True\^{}boolean}.
+This way was noticeably the same as what happened inside the implementation of
+\newline \texttt{boolean}.
+The choice was then made to call the boolean literals directly with \texttt{True\^{}builtin}, which made the boolean module obsolete.
 
 This choice brings us to the current state of the boolean literals.
 
 
 \subsubsection{Match}
-\emph{Match} started as a separate part of the standard library containing the \verb\match\ module.
+\emph{Match} started as a separate part of the standard library containing the \texttt{match} module.
 We will now look at how it was first created and how it has evolved into \emph{prelude}.
 
-The first iteration of the \verb\match\ module started with the import of \emph{prelude} and the declaration of the \verb\match\ module.
+The first iteration of the \texttt{match} module started with the import of \emph{prelude} and the declaration of the \texttt{match} module.
 
 \begin{lstlisting}
 import prelude
@@ -223,9 +225,9 @@ import prelude
 TypeFunc "match" => Type => Module
 \end{lstlisting}
 
-So far there are no problems yet with us a module for \verb\match\.
+So far there are no problems yet with us a module for \texttt{match}.
 
-Next we see the first part of implementation of the \verb\match\ module:
+Next we see the first part of implementation of the \texttt{match} module:
 Some syntactic sugar is created and the actual function is defined which will do the matching.
 
 \begin{lstlisting}
@@ -242,11 +244,11 @@ match ('a | 'b) => Module {
 \end{lstlisting}
 
 Now we see why the module is needed.
-It was thought that the \verb\match\ module would get a separate instance for every match that was executed.
+It was thought that the \texttt{match} module would get a separate instance for every match that was executed.
 
 When separate functions, like these, are needed to check the validity of another function it is better to group them together inside a module.
 
-The definitions of \verb\doMatch\ have not changed compared to what they are currently.
+The definitions of \texttt{doMatch} have not changed compared to what they are currently.
 
   % doMatch y with g h -> res
   % --------------------
@@ -257,16 +259,16 @@ The definitions of \verb\doMatch\ have not changed compared to what they are cur
 }
 \end{lstlisting}
 
-It became clear that \verb\Left\ and \verb\Right\ were not necessary, because they were simply passing type of the union.
+It became clear that \texttt{Left} and \texttt{Right} were not necessary, because they were simply passing type of the union.
 
 With this removal the use of a module became obsolete, because we do not need to group a single function.
-The \verb\doMatch\ function was then renamed \verb\match\ and placed inside \emph{prelude} directly.
+The \texttt{doMatch} function was then renamed \texttt{match} and placed inside \emph{prelude} directly.
 
 
 % \subsubsection{Recursive match}
 % The first itteration of match could not match nested pipes.
 % It could only detect a direct match.
-% As it only had the direct matches without the function that checks if \verb\Right\ is nested.
+% As it only had the direct matches without the function that checks if \texttt{Right} is nested.
 
 % The solution could have been left to the programmer.
 % He would have to create a separate match statement for every level of nesting.
@@ -280,7 +282,7 @@ This seemed the logical choice at the time, because the list monad needed a list
 
 Monads will be explained in section~\ref{sec:standardmonad} and the list monad in section~\ref{sec:standardmonadlist}.
 
-When coming back to the list monad it became apparent that \verb\List\ was not specific to the list monad.
+When coming back to the list monad it became apparent that \texttt{List} was not specific to the list monad.
 It could be used without the monad as a regular list implementation.
 
 The choice was then made to move it to \emph{prelude}.
@@ -295,8 +297,8 @@ Because of the import system of MC, MC can directly import the integer and float
 \emph{Number} is build up from different modules to give the programmer the freedom to choose what their custom numbers can do.
 The modules are arranged according to the mathematical groupings to built up numerical operators~\cite{bourbaki1998commutative}.
 
-It starts with the \verb\MonoidAdd\ module.
-It declares the \verb\+\ operator for the custom number.
+It starts with the \texttt{MonoidAdd} module.
+It declares the \texttt{+} operator for the custom number.
 
 \begin{lstlisting}
 TypeFunc "MonoidAdd" => Type => Module
@@ -306,10 +308,10 @@ MonoidAdd 'a => Module {
 }
 \end{lstlisting}
 
-\verb\MonoidAdd\ needs the identity as a base number from which the operations will work.
+\texttt{MonoidAdd} needs the identity as a base number from which the operations will work.
 
-Next we have the \verb\GroupAdd\ module.
-\verb\GroupAdd\ inherits everything from the module \verb\MonoidAdd\ and adds the \verb\-\ operator.
+Next we have the \texttt{GroupAdd} module.
+\texttt{GroupAdd} inherits everything from the module \texttt{MonoidAdd} and adds the \texttt{-} operator.
 
 \begin{lstlisting}
 TypeFunc "GroupAdd" => Type => Module
@@ -367,7 +369,7 @@ This was before the .NET import system was in place.
 Currently it is only needed for user defined number types.
 
 The first iteration of \emph{number} was just one module with all the operators declared.
-The first iteration works for the standard number types like \verb\Integer\ and \verb\Float\, but not \verb\Vectors\, because they cannot be divided.
+The first iteration works for the standard number types like \texttt{Integer} and \texttt{Float}, but not \texttt{Vectors}, because they cannot be divided.
 
 For this reason the current \emph{number} design is similar to the mathematical way.
 When implementing \emph{number} we only define what we need, which reduces the overhead generated.
@@ -384,7 +386,7 @@ This makes the runtime code much faster.
 % The way MC fixes this is to inline the code on compile time.
 % In this way the code that needs to be actually executed can be optimised by the compiler after which it is executed on runtime.
 
-Record is declared as a module and contains \verb\TypeFunc\s to make it work at compile time.
+Record is declared as a module and contains \texttt{TypeFunc}s to make it work at compile time.
 
 \begin{lstlisting}
 TypeFunc "Record" => Module
@@ -395,11 +397,11 @@ Record => Module{
 \end{lstlisting}
 
 Here we see the declarations which are the basis of a list of key/value pairs.
-\verb\Label\ acts as the key, \verb\Field\ as the value paired with the key and \verb\Rest\ contains the rest of the record.
+\texttt{Label} acts as the key, \texttt{Field} as the value paired with the key and \texttt{Rest} contains the rest of the record.
 
 When there is just one pair in the record we can get that record out easily, as we already have it.
 But when there are multiple record entries in a record we need a function to search through the record to find the sub record we want to have.
-For this the \verb\get\ function was created.
+For this the \texttt{get} function was created.
 
 \begin{lstlisting}
   TypeFunc "get" => String => Record => Record
@@ -412,11 +414,11 @@ For this the \verb\get\ function was created.
   get l rs => res
 \end{lstlisting}
 
-The \verb\get\ function takes a labels and a record.
+The \texttt{get} function takes a labels and a record.
 It checks the label of the record and if it is the same it returns the current record and if not the it recursively calls itself with the rest of the record.
 
-To manipulate these records there the \verb\set\ function was created.
-The \verb\set\ function takes a label, a field and a record.
+To manipulate these records there the \texttt{set} function was created.
+The \texttt{set} function takes a label, a field and a record.
 The field is the new value that needs to be paired with the label.
 
 \begin{lstlisting}
@@ -432,13 +434,13 @@ The field is the new value that needs to be paired with the label.
 \end{lstlisting}
 
 Because MC does not allow direct manipulation of values, the set function returns a new record instead of changing the value of the specified record.
-When the record does not match the current record \verb\set\ is called recursively, and the result is used as the new \verb\Rest\ for the current record.
+When the record does not match the current record \texttt{set} is called recursively, and the result is used as the new \texttt{Rest} for the current record.
 
 With this the declaration of the record is complete.
 Now we can look at how the definition of a record works.
 
 First we need to create a record entry.
-This is done with the \verb\TypeFunc\ \verb\RecordEntry\.
+This is done with the \texttt{TypeFunc} \texttt{RecordEntry}.
 
 \begin{lstlisting}
 TypeFunc "RecordEntry" => String => * => Record => Record
@@ -450,7 +452,7 @@ RecordEntry label field rest => Record{
 \end{lstlisting}
 
 We also need to create an empty record entry so we can end the record.
-This is done by the \verb\TypeFunc\ \verb\EmptyRecord\.
+This is done by the \texttt{TypeFunc} \texttt{EmptyRecord}.
 
 \begin{lstlisting}
 TypeFunc "EmptyRecord" => RecordEntry
@@ -461,7 +463,7 @@ EmptyRecord => RecordEntry {
 }
 \end{lstlisting}
 
-The programmer has to use \verb\EmptyRecord\ as the \verb\rest\ argument of the first record entry.
+The programmer has to use \texttt{EmptyRecord} as the \texttt{rest} argument of the first record entry.
 This creates an end to the record.
 
 
@@ -469,7 +471,7 @@ This creates an end to the record.
 The current record can only be instantiated and not updated.
 To expand the record to be updatable we need to add the update function.
 
-First we declare and define a \verb\TypeFunc\ which creates a new record from the original with inherit.
+First we declare and define a \texttt{TypeFunc} which creates a new record from the original with inherit.
 
 \begin{lstlisting}
 TypeFunc "updatableRecord" => Record => Record
@@ -477,7 +479,7 @@ updatableRecord r => Module {
    inherit r
 \end{lstlisting}
 
-The new module now contains everything of record \verb\r\.
+The new module now contains everything of record \texttt{r}.
 
 Then we declare and define the update function.
 
@@ -489,52 +491,53 @@ Then we declare and define the update function.
 }
 \end{lstlisting}
 
-Only the definition of \verb\update\ which checks for an empty record can be defined.
-It is the only situation in which we can be certain what the return value will be, namely \verb\Empty\.
+Only the definition of \texttt{update} which checks for an empty record can be defined.
+It is the only situation in which we can be certain what the return value will be, namely \texttt{Empty}.
 
-If the record is not \verb\Empty\ we cannot know what the programmer wants to do with \verb\update\.
-That is why we leave that definition of \verb\update\ up to the programmer.
+If the record is not \texttt{Empty} we cannot know what the programmer wants to do with \texttt{update}.
+That is why we leave that definition of \texttt{update} up to the programmer.
 
 
 
 \subsection{Evolution of record}
-Several parts of \verb\Record\ have changed.
+Several parts of \texttt{Record} have changed.
 We will go over them here.
 
 \subsubsection{Set}\label{sec:recordevolutionsetget}
-The original version of \verb\set\ checked the field-argument to be the same type of \verb\Field\ inside the record.
-For this \verb\Fields\ was needed, which contained the type of \verb\Field\.
+The original version of \texttt{set} checked the field-argument to be the same type of \texttt{Field} inside the record.
+For this \texttt{Fields} was needed, which contained the type of \texttt{Field}.
 
-However the checking of \verb\Fields\ needed to happen in the declaration of the \verb\set\.
+However the checking of \texttt{Fields} needed to happen in the declaration of the \texttt{set}.
 This required the declaration to have premises and this is not possible, because the declaration cannot be variable.
 
-The field-argument also did not need to be checked, because \verb\Field\ of a record can be anything.\footnote{As described in section~\ref{sec:standardrecord}.}
+The field-argument also did not need to be checked, because \texttt{Field} of a record can be anything.\footnote{As described in section~\ref{sec:standardrecord}.}
 
 \subsubsection{Set return}
-The return value of \verb\Set\ was first only the record that was changed and not all the previous records in the record structure.
-This was fixed by returning the recursive call to \verb\set\ as the new value of the current record.
+The return value of \texttt{Set} was first only the record that was changed and not all the previous records in the record structure.
+This was fixed by returning the recursive call to \texttt{set} as the new value of the current record.
 
 Now the entire record structure is returned and not just the record that is changed.
 
 
 \subsubsection{Cons}
-During the development the idea occurred that every \verb\Record\ had to have its own type signature.
-Because the field can be anything, it was thought to impact the type of the \verb\Record\.
+During the development the idea occurred that every \texttt{Record} had to have its own type signature.
+Because the field can be anything, it was thought to impact the type of the \texttt{Record}.
 
-This would be a problem when trying to declare the use of a specific \verb\Record\.
+This would be a problem when trying to declare the use of a specific
+\newline \texttt{Record}.
 
-This resulted in the creation of \verb\Cons\.
-\verb\Cons\ would be the type signature of that particular \verb\Record\.
+This resulted in the creation of \texttt{Cons}.
+\texttt{Cons} would be the type signature of that particular \texttt{Record}.
 
-It would consist of the types of the \verb\Label\, \verb\Field\ and \verb\Rest\.
+It would consist of the types of the \texttt{Label}, \texttt{Field} and \texttt{Rest}.
 
 \begin{lstlisting}
   TypeFunc "Cons" => Type
   Cons => (Label,Field,Rest)
 \end{lstlisting}
 
-It became apparent that every record is of type \verb\Record\ and that the type of \verb\Field\ had no impact on the type of the record.
-\verb\Cons\ was then removed.
+It became apparent that every record is of type \texttt{Record} and that the type of \texttt{Field} had no impact on the type of the record.
+\texttt{Cons} was then removed.
 
 This also reduced the complexity of the records for the user.
 Now the user can use the records without having to keep in mind which type belongs to which record.

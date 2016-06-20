@@ -190,7 +190,7 @@ Data "Left"  -> String -> String | Float
 Data "Right" -> Float  -> String | Float
 \end{lstlisting}
 
-Here we create two constructors whom both go to the same type, \verb\String | Float\.
+Here we create two constructors whom both go to the same type, \texttt{String | Float}.
 \verb\Left\ and \verb\Right\ can be seen as an alias for the \verb\String | Float\ union.
 
 Let us see how this is used.
@@ -315,7 +315,7 @@ switch a => res
 Here we can see how the types inside the tuple are switched and returned as a new tuple.
 
 {
-   \begin{wraptable}{r}{0.3\textwidth}
+   \begin{wraptable}{r}{0.37\textwidth}
       \begin{tabular}
          { | l | l | l | }
          \hline
@@ -362,7 +362,7 @@ TypeFunc "Add" => Type => Module
 
 Here we declare \verb\Add\ to take a type and return a \verb\Module\.
 
-We then want to define the module \verb\Add\ with the \verb\+\ operator and the \verb\identityAdd\ constant.
+We then want to define the module \verb\Add\ with the \verb\+\ operator and the \texttt{identityAdd} constant.
 
 \begin{lstlisting}
 Add 'a => Module {
@@ -402,7 +402,7 @@ Func "caretTest" -> Int
 caretTest -> identityAdd^IntAdd
 \end{lstlisting}
 
-This creates a constant named \verb\caretTest\ with the same value as \verb\identityAdd\ from the module \verb\IntAdd\.
+This creates a constant named \verb\caretTest\ with the same value as \texttt{identityAdd} from the module \verb\IntAdd\.
 Important to note is that we cannot call a function outside the module from within the module.
 The \emph{caret} notation is derived from \LaTeX.
 In \LaTeX\space the \emph{caret} is used to indicate superscript~\cite{beebe1992latex}.
@@ -636,7 +636,7 @@ Now we will give only one argument to \verb\add\ and create a new function \verb
 add 3 -> addThree
 \end{lstlisting}
 
-With this construct we have created the partially applied function \verb\addThree\.
+With this construct we have created the partially applied function \texttt{addThree}.
 When we look at what it contains we see that it has a closure with a partially implemented \verb\add\.
 
 \begin{lstlisting}

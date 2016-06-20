@@ -149,7 +149,7 @@ The position record is created seperately and included in the bike later.
 
 This is done to make the definition of the bike smaller.
 
-The \verb\RecordEntry\ is created in the premise and then passed to \verb\UpdatableRecord\.
+The \verb\RecordEntry\ is created in the premise and then passed to \texttt{UpdatableRecord}.
 
 \begin{lstlisting}
 TypeFunc "PositionRecord" => String => Vector2 => Record => Record
@@ -326,7 +326,7 @@ First we check for any collisions with the current point in the trail.
     True^builtin) -> newIsAlive
 \end{lstlisting}
 
-If there are no collisions and there are more points in the trail, \verb\checkTrails\ is recursively called.
+If there are no collisions and there are more points in the trail, \texttt{checkTrails} is recursively called.
 
 \begin{lstlisting}
   (if (newIsALive && (Rest^trail != Unit)) then
@@ -339,7 +339,7 @@ If there are no collisions and there are more points in the trail, \verb\checkTr
 
 Next we have \verb\checkCollisions\, which calls \verb\checkTrials\ for the trail of every bike.
 It takes a bike and a record of bikes.
-The position of the current bike and the trail of the first bike in the record, will be passed to \verb\checkTrails\.
+The position of the current bike and the trail of the first bike in the record, will be passed to \texttt{checkTrails}.
 
 \begin{lstlisting}
   Func "checkCollisions" -> Record -> Record -> Record
